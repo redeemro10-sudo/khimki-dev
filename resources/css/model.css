@@ -1,0 +1,119 @@
+.gallery-main {
+  height: 400px;
+}
+
+@media (min-width: 768px) {
+  .gallery-main {
+    height: 700px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .gallery-main {
+    height: 800px;
+  }
+}
+
+.gallery-thumbs {
+  height: 100px;
+}
+
+.gallery-thumbs .swiper-slide {
+  opacity: 0.6;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+  border-radius: 0.75rem;
+}
+
+.gallery-thumbs .swiper-slide-thumb-active {
+  opacity: 1;
+  border-color: #3b82f6;
+  transform: scale(1.05);
+}
+
+/* Убираем навигационные зоны из обычного потока */
+.nav-zone {
+  z-index: 10;
+}
+
+.nav-zone:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Стили для кнопок навигации основной галереи */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 18px !important;
+  font-weight: bold;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  transform: scale(1.1);
+}
+
+.swiper-pagination-bullet {
+  background: white !important;
+  opacity: 0.5 !important;
+  width: 10px !important;
+  height: 10px !important;
+}
+
+
+.swiper-pagination-bullet-active {
+  opacity: 1 !important;
+  background: white !important;
+}
+
+/* стили lightbox на мобильных */
+@media (max-width: 768px) {
+  .lb-container {
+    padding: 20px !important;
+  }
+
+  .lb-image {
+    max-width: calc(100vw - 40px) !important;
+    max-height: calc(100vh - 120px) !important;
+  }
+
+  .lb-nav a {
+    width: 50% !important;
+    /* левая/правая половина экрана */
+    height: 100% !important;
+    opacity: 1 !important;
+    /* всегда видимы на тач-устройствах */
+  }
+
+  .lb-prev {
+    left: 0 !important;
+  }
+
+  .lb-next {
+    right: 0 !important;
+  }
+
+  .lb-close {
+    top: 10px !important;
+    right: 10px !important;
+    font-size: 30px !important;
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .lb-number {
+    bottom: 20px !important;
+    font-size: 16px !important;
+  }
+}
+
+/* Улучшенная навигация для десктопа */
+@media (min-width: 769px) {
+  .lb-nav a {
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .lb-container:hover .lb-nav a {
+    opacity: 1;
+  }
+}

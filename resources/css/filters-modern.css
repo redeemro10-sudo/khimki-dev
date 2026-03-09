@@ -1,0 +1,316 @@
+/* resources/css/filters-modern.css */
+
+/* Базовые переменные */
+:root {
+  --filter-sidebar-width: 320px;
+  --filter-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --filter-padding: clamp(0.75rem, 2vw, 1.5rem);
+  --filter-gap: clamp(0.5rem, 1.5vw, 1rem);
+  --filter-radius: clamp(0.5rem, 1vw, 0.75rem);
+  --filter-font-sm: clamp(0.75rem, 2vw, 0.875rem);
+  --filter-font-base: clamp(0.875rem, 2.5vw, 1rem);
+  --filter-button-height: clamp(2.75rem, 6vh, 3.5rem);
+  --filter-modal-width: min(92vw, 28rem);
+  --filter-modal-height: min(92vh, 50rem);
+  --filter-modal-top: clamp(2vh, 4vh, 8vh);
+}
+
+/* Исправление для двойного range слайдера */
+.models-grid__form input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  height: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.models-grid__form input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  pointer-events: all;
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: 3px solid white;
+  border-radius: 50%;
+  cursor: grab;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+  transition: transform 0.2s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.models-grid__form input[type="range"]::-moz-range-thumb {
+  pointer-events: all;
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: 3px solid white;
+  border-radius: 50%;
+  cursor: grab;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+  transition: transform 0.2s ease;
+  position: relative;
+  z-index: 2;
+  border: 0;
+}
+
+.models-grid__form input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.models-grid__form input[type="range"]::-moz-range-thumb:hover {
+  transform: scale(1.15);
+}
+
+.models-grid__form input[type="range"]::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.05);
+}
+
+.models-grid__form input[type="range"]::-moz-range-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.05);
+}
+
+/* Контейнер для слайдеров */
+.models-grid__form .relative {
+  position: relative;
+  align-items: center;
+}
+
+/* Исправленные стили для инпутов */
+.models-grid__form input[type="number"] {
+  -moz-appearance: textfield;
+  min-width: 80px;
+}
+
+.models-grid__form input[type="number"]::-webkit-outer-spin-button,
+.models-grid__form input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Боковая панель на десктопе */
+@media (min-width: 1024px) {
+  .models-grid aside {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    padding: 1.5rem;
+  }
+}
+
+/* Модальное окно на мобильных */
+@media (max-width: 1023px) {
+  .models-grid aside {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.98);
+  }
+
+  /* Исправление для мобильных слайдеров */
+  .models-grid__form input[type="range"] {
+    width: 100%;
+  }
+}
+
+/* Улучшенные чекбоксы */
+.models-grid input[type="checkbox"] {
+  position: relative;
+  cursor: pointer;
+  transition: var(--filter-transition);
+}
+
+.models-grid input[type="checkbox"]:checked {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: transparent;
+}
+
+/* Hover эффекты для labels */
+.models-grid label {
+  transition: var(--filter-transition);
+}
+
+.models-grid label:hover {
+  background: rgba(243, 244, 246, 0.8);
+}
+
+/* Стилизация селекта сортировки */
+.models-grid select[name="sort"] {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+/* Кастомная полоса прокрутки */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db #f3f4f6;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Анимация появления карточек */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.models-grid__list li {
+  animation: fadeInUp 0.4s ease-out;
+  animation-fill-mode: both;
+}
+
+/* Стили для кнопок */
+.models-grid button[type="submit"] {
+  position: relative;
+  overflow: hidden;
+}
+
+.models-grid button[type="submit"]::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.models-grid button[type="submit"]:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Плавающая кнопка фильтров */
+@media (max-width: 1023px) {
+  button[id^="filters-toggle-"] {
+    position: fixed;
+    bottom: 5rem;
+    right: 1.5rem;
+    z-index: 30;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse {
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+  }
+}
+
+/* Улучшенные карточки */
+.models-grid .card {
+  transition: var(--filter-transition);
+}
+
+.models-grid .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2);
+}
+
+.models-grid .card-image img {
+  transition: transform 0.5s ease;
+}
+
+.models-grid .card:hover .card-image img {
+  transform: scale(1.05);
+}
+
+/* Счетчики в фильтрах */
+.models-grid span.text-gray-500.bg-gray-100 {
+  transition: var(--filter-transition);
+}
+
+.models-grid label:hover span.text-gray-500.bg-gray-100 {
+  background: #667eea;
+  color: white;
+}
+
+/* Кнопка "Показать еще" */
+.models-grid button[data-more] {
+  position: relative;
+  overflow: hidden;
+}
+
+.models-grid button[data-more]::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--primary-gradient);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.models-grid button[data-more]:hover::after {
+  transform: scaleX(1);
+}
+
+/* Пустое состояние */
+.models-grid__empty {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
