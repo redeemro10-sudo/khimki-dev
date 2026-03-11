@@ -9,16 +9,20 @@
     @php
       $siteName = get_bloginfo('name');
       $faqItems = \App\get_faq_items(get_the_ID());
+      $schemaContextKey = '@'.'context';
+      $schemaTypeKey = '@'.'type';
 
       $faqSchema = [
-          '@context' => 'https://schema.org',
-          '@type' => 'FAQPage',
+          $schemaContextKey => 'https://schema.org',
+          $schemaTypeKey => 'FAQPage',
           'mainEntity' => array_map(static function ($item) {
+              $schemaTypeKey = '@'.'type';
+
               return [
-                  '@type' => 'Question',
+                  $schemaTypeKey => 'Question',
                   'name' => $item['question'],
                   'acceptedAnswer' => [
-                      '@type' => 'Answer',
+                      $schemaTypeKey => 'Answer',
                       'text' => wp_strip_all_tags($item['answer']),
                   ],
               ];
