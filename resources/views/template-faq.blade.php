@@ -9,14 +9,15 @@
     @php
       $siteName = get_bloginfo('name');
       $faqItems = \App\get_faq_items(get_the_ID());
-      $schemaContextKey = '@'.'context';
-      $schemaTypeKey = '@'.'type';
+      $schemaPrefix = chr(64);
+      $schemaContextKey = $schemaPrefix.'context';
+      $schemaTypeKey = $schemaPrefix.'type';
 
       $faqSchema = [
           $schemaContextKey => 'https://schema.org',
           $schemaTypeKey => 'FAQPage',
           'mainEntity' => array_map(static function ($item) {
-              $schemaTypeKey = '@'.'type';
+              $schemaTypeKey = chr(64).'type';
 
               return [
                   $schemaTypeKey => 'Question',
