@@ -292,7 +292,7 @@ import.meta.glob([
 
     // Закрытие при изменении размера
     window.addEventListener('resize', function () {
-      if (window.innerWidth >= 768 && isMenuOpen()) {
+      if (window.innerWidth >= 1024 && isMenuOpen()) {
         console.log('Window resized, closing mobile menu');
         closeMobileNav();
       }
@@ -300,7 +300,7 @@ import.meta.glob([
 
     // Закрытие меню при клике по ссылке (только на мобильных)
     siteNav.addEventListener('click', function (e) {
-      if (window.innerWidth < 768 && e.target.tagName === 'A' && e.target.getAttribute('href') && e.target.getAttribute('href') !== '#') {
+      if (window.innerWidth < 1024 && e.target.tagName === 'A' && e.target.getAttribute('href') && e.target.getAttribute('href') !== '#') {
         setTimeout(closeMobileNav, 150);
       }
     });
