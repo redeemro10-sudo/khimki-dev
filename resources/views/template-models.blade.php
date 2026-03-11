@@ -16,7 +16,7 @@
                 $tax['service'] = ['prostitutki-po-vyzovu'];
                 break;
 
-            case 'deshyovye':
+            case 'deshovyye':
                 $price['max'] = 14999;
                 break;
 
