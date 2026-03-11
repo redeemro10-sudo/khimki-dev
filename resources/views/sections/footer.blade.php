@@ -33,6 +33,10 @@
                 <span>{!! $siteName !!}</span>
             </a>
 
+            <div class="text-sm leading-6 text-slate-500">
+                Каталог проверенных индивидуалок в Химках. Реальные фото, отзывы клиентов, все районы города.
+            </div>
+
             <ul class="space-y-3 text-sm leading-6 text-slate-500">
                 @foreach ($footerContacts as $contact)
                     <li class="flex items-start gap-3">
@@ -47,10 +51,7 @@
                 @endforeach
             </ul>
 
-            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-500 shadow-sm">
-                <span class="font-semibold text-slate-700">[18+]</span>
-                Сайт содержит контент, не предназначенный для лиц младше 18 лет. Продолжая, вы подтверждаете свой возраст.
-            </div>
+            
         </div>
 
         @if ($footerMenus->isNotEmpty())
@@ -60,5 +61,10 @@
                 @endforeach
             </div>
         @endif
+
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-500 shadow-sm">
+            <span class="font-semibold text-slate-700">[18+]</span>
+            Сайт содержит контент, не предназначенный для лиц младше 18 лет. Продолжая, вы подтверждаете свой возраст.
+        </div>
     </div>
 </footer>
