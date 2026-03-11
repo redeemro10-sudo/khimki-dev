@@ -77,10 +77,10 @@ add_action('after_setup_theme', function () {
      */
     register_nav_menus([
         'primary_navigation' => __('Primary Navigation', 'sage'),
-        'footer_navigation'  => __('Footer Navigation', 'sage'),
+        'footer_navigation'  => __('Footer: Sections', 'sage'),
         'footer_services'    => __('Footer: Escorts / Services', 'sage'),
-        'footer_community'   => __('Footer: Navigation / Community', 'sage'),
-        'footer_legal'       => __('Footer: Legal / Policies', 'sage'),
+        'footer_community'   => __('Footer: Information', 'sage'),
+        'footer_legal'       => __('Footer: Legal Information', 'sage'),
         'footer_locations'   => __('Footer: Cities / Popular', 'sage'),
     ]);
 
