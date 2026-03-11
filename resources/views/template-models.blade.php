@@ -9,10 +9,15 @@
 
         $slug = get_post_field('post_name', $pageId); // безопаснее, чем парсить URL
         $tax = [];
+        $price = [];
 
         switch ($slug) {
             case 'na-vyyezd':
                 $tax['service'] = ['prostitutki-po-vyzovu'];
+                break;
+
+            case 'deshyovye':
+                $price['max'] = 14999;
                 break;
 
             case 'proverennye':
@@ -42,6 +47,7 @@
             'per_page' => 48,
             'order' => 'date',
             'tax' => $tax, // базовый фильтр страницы
+            'price' => $price,
         ];
     @endphp
 
