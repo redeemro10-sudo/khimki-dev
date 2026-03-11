@@ -2,7 +2,7 @@
 
 <div {{ $attributes->merge(['class' => 'flex flex-col']) }}>
     @if ($title)
-        <h3 class="mb-4 border-b border-slate-200 pb-3 text-sm font-semibold uppercase tracking-wider text-slate-900">
+        <h3 class="mb-4 border-b border-black w-fit pb-3 text-sm font-semibold uppercase tracking-wider text-slate-900">
             {!! $title !!}
         </h3>
     @endif
