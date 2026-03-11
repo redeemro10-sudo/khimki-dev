@@ -6,7 +6,7 @@
 
 @section('content')
   @while(have_posts()) @php(the_post())
-    @php
+    <?php
       $siteName = get_bloginfo('name');
       $faqItems = \App\get_faq_items(get_the_ID());
       $schemaPrefix = chr(64);
@@ -29,7 +29,7 @@
               ];
           }, $faqItems),
       ];
-    @endphp
+    ?>
 
     @if (!empty($faqItems))
       <script type="application/ld+json">{!! wp_json_encode($faqSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
@@ -64,13 +64,13 @@
         </div>
 
         <div class="space-y-4">
-          @php
+          <?php
             ob_start();
-          @endphp
+          ?>
           @include('partials.content-page')
-          @php
+          <?php
             $pageContent = trim(ob_get_clean());
-          @endphp
+          ?>
 
           @if (!empty($pageContent))
             <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm prose max-w-none prose-slate">
