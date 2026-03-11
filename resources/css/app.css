@@ -19,8 +19,8 @@ footer nav ul {
 }
 
 footer nav ul li a {
-  color: #94a3b8;
-  /* text-slate-400 */
+  color: #475569;
+  /* text-slate-600 */
   text-decoration: none;
   font-size: 0.875rem;
   /* text-sm */
@@ -28,7 +28,7 @@ footer nav ul li a {
 }
 
 footer nav ul li a:hover {
-  color: #ffffff;
+  color: #0f172a;
 }
 
 article div a,
