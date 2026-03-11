@@ -30,25 +30,6 @@
             <nav id="siteNav"
                 class="site-nav-panel fixed left-0 top-0 z-[100] h-dvh w-80 -translate-x-full bg-white shadow-2xl transition-transform duration-300 ease-out lg:static lg:z-auto lg:h-auto lg:w-auto lg:translate-x-0 lg:bg-transparent lg:shadow-none"
                 aria-label="{{ wp_get_nav_menu_name('primary_navigation') }}">
-
-                <div class="mobile-nav-head flex items-center justify-between p-6 lg:hidden">
-                    <div class="mobile-nav-title flex items-center gap-3">
-                        <div
-                            class="site-brand-mark flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-purple-600">
-                            <span class="text-xs font-bold text-white">{{ substr($siteName, 0, 1) }}</span>
-                        </div>
-                        <span class="site-brand-text text-sm font-semibold text-gray-900">{!! $siteName !!}</span>
-                    </div>
-                    <button id="navClose"
-                        class="site-nav-close rounded-xl p-2 hover:bg-gray-100 nav-transition focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        aria-label="Закрыть">
-                        <svg class="h-5 w-5 text-gray-600" viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M18.3 5.7 12 12l6.3 6.3-1.4 1.4L10.6 13.4 4.3 19.7 2.9 18.3 9.2 12 2.9 5.7 4.3 4.3l6.3 6.3 6.3-6.3z" />
-                        </svg>
-                    </button>
-                </div>
-
                 {!! wp_nav_menu([
                     'theme_location' => 'primary_navigation',
                     'menu_class' => 'nav site-nav-list flex flex-col gap-1 p-6 lg:flex-row lg:items-center lg:gap-8 lg:p-0',
