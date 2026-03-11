@@ -12,7 +12,7 @@
             {!! wp_nav_menu([
                 'theme_location' => $location,
                 'container' => false,
-                'menu_class' => 'flex flex-col space-y-3 text-sm text-slate-600',
+                'menu_class' => 'flex flex-col text-sm text-slate-600',
                 'echo' => false,
                 'fallback_cb' => '__return_false',
             ]) !!}

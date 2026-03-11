@@ -14,8 +14,7 @@ footer nav ul {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  /* space-y-3 */
+  gap: 0;
 }
 
 footer nav ul li a {
