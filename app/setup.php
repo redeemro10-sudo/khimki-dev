@@ -8,6 +8,33 @@ namespace App;
 
 use Illuminate\Support\Facades\Vite;
 
+function get_faq_items(int $postId): array
+{
+    $items = get_post_meta($postId, '_faq_items', true);
+
+    if (! is_array($items)) {
+        return [];
+    }
+
+    return array_values(array_filter(array_map(static function ($item) {
+        if (! is_array($item)) {
+            return null;
+        }
+
+        $question = isset($item['question']) ? sanitize_text_field($item['question']) : '';
+        $answer = isset($item['answer']) ? wp_kses_post($item['answer']) : '';
+
+        if ($question === '' || trim(wp_strip_all_tags($answer)) === '') {
+            return null;
+        }
+
+        return [
+            'question' => $question,
+            'answer' => $answer,
+        ];
+    }, $items)));
+}
+
 /**
  * Inject styles into the block editor.
  *
@@ -157,6 +184,224 @@ add_action('widgets_init', function () {
         'name' => __('Footer', 'sage'),
         'id' => 'sidebar-footer',
     ] + $config);
+});
+
+add_action('add_meta_boxes_page', function ($post) {
+    if (! $post instanceof \WP_Post) {
+        return;
+    }
+
+    if (get_page_template_slug($post->ID) !== 'template-faq.blade.php') {
+        return;
+    }
+
+    add_meta_box(
+        'faq_items_metabox',
+        __('FAQ Questions', 'sage'),
+        function (\WP_Post $post) {
+            $faqItems = get_faq_items($post->ID);
+
+            if ($faqItems === []) {
+                $faqItems = [['question' => '', 'answer' => '']];
+            }
+
+            wp_nonce_field('save_faq_items', 'faq_items_nonce');
+            ?>
+            <div id="faq-items-metabox" class="faq-items-metabox">
+                <p style="margin-bottom:12px;">
+                    <?php esc_html_e('Add and sort questions for the FAQ page template. Empty rows are not saved.', 'sage'); ?>
+                </p>
+
+                <div class="faq-items-list" style="display:grid;gap:12px;">
+                    <?php foreach ($faqItems as $index => $item) : ?>
+                        <div class="faq-item" style="border:1px solid #dcdcde;border-radius:10px;padding:12px;background:#fff;">
+                            <p style="margin:0 0 8px;">
+                                <label style="display:block;font-weight:600;margin-bottom:6px;">
+                                    <?php esc_html_e('Question', 'sage'); ?>
+                                </label>
+                                <input type="text" name="faq_items[<?php echo esc_attr((string) $index); ?>][question]" value="<?php echo esc_attr($item['question']); ?>" style="width:100%;">
+                            </p>
+                            <p style="margin:0 0 10px;">
+                                <label style="display:block;font-weight:600;margin-bottom:6px;">
+                                    <?php esc_html_e('Answer', 'sage'); ?>
+                                </label>
+                                <textarea name="faq_items[<?php echo esc_attr((string) $index); ?>][answer]" rows="5" style="width:100%;"><?php echo esc_textarea($item['answer']); ?></textarea>
+                            </p>
+                            <div style="display:flex;gap:8px;">
+                                <button type="button" class="button faq-move-up"><?php esc_html_e('Up', 'sage'); ?></button>
+                                <button type="button" class="button faq-move-down"><?php esc_html_e('Down', 'sage'); ?></button>
+                                <button type="button" class="button button-link-delete faq-remove"><?php esc_html_e('Remove', 'sage'); ?></button>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+                <p style="margin-top:12px;">
+                    <button type="button" class="button button-secondary faq-add-item">
+                        <?php esc_html_e('Add question', 'sage'); ?>
+                    </button>
+                </p>
+            </div>
+
+            <template id="faq-item-template">
+                <div class="faq-item" style="border:1px solid #dcdcde;border-radius:10px;padding:12px;background:#fff;">
+                    <p style="margin:0 0 8px;">
+                        <label style="display:block;font-weight:600;margin-bottom:6px;">
+                            <?php esc_html_e('Question', 'sage'); ?>
+                        </label>
+                        <input type="text" data-name="question" style="width:100%;">
+                    </p>
+                    <p style="margin:0 0 10px;">
+                        <label style="display:block;font-weight:600;margin-bottom:6px;">
+                            <?php esc_html_e('Answer', 'sage'); ?>
+                        </label>
+                        <textarea data-name="answer" rows="5" style="width:100%;"></textarea>
+                    </p>
+                    <div style="display:flex;gap:8px;">
+                        <button type="button" class="button faq-move-up"><?php esc_html_e('Up', 'sage'); ?></button>
+                        <button type="button" class="button faq-move-down"><?php esc_html_e('Down', 'sage'); ?></button>
+                        <button type="button" class="button button-link-delete faq-remove"><?php esc_html_e('Remove', 'sage'); ?></button>
+                    </div>
+                </div>
+            </template>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const metabox = document.getElementById('faq-items-metabox');
+                    const template = document.getElementById('faq-item-template');
+
+                    if (!metabox || !template || metabox.dataset.ready === 'true') {
+                        return;
+                    }
+
+                    metabox.dataset.ready = 'true';
+
+                    const list = metabox.querySelector('.faq-items-list');
+                    const addButton = metabox.querySelector('.faq-add-item');
+
+                    const reindex = () => {
+                        [...list.querySelectorAll('.faq-item')].forEach((item, index) => {
+                            item.querySelectorAll('[name]').forEach((field) => {
+                                const match = field.name.match(/\[(question|answer)\]$/);
+                                if (!match) {
+                                    return;
+                                }
+
+                                field.name = `faq_items[${index}][${match[1]}]`;
+                            });
+                        });
+                    };
+
+                    const buildItem = () => {
+                        const fragment = template.content.cloneNode(true);
+                        const item = fragment.querySelector('.faq-item');
+
+                        item.querySelectorAll('[data-name]').forEach((field) => {
+                            const name = field.getAttribute('data-name');
+                            field.setAttribute('name', `faq_items[0][${name}]`);
+                            field.removeAttribute('data-name');
+                        });
+
+                        return item;
+                    };
+
+                    addButton.addEventListener('click', () => {
+                        list.appendChild(buildItem());
+                        reindex();
+                    });
+
+                    list.addEventListener('click', (event) => {
+                        const item = event.target.closest('.faq-item');
+
+                        if (!item) {
+                            return;
+                        }
+
+                        if (event.target.classList.contains('faq-remove')) {
+                            item.remove();
+
+                            if (!list.children.length) {
+                                list.appendChild(buildItem());
+                            }
+
+                            reindex();
+                        }
+
+                        if (event.target.classList.contains('faq-move-up')) {
+                            const previous = item.previousElementSibling;
+                            if (previous) {
+                                list.insertBefore(item, previous);
+                                reindex();
+                            }
+                        }
+
+                        if (event.target.classList.contains('faq-move-down')) {
+                            const next = item.nextElementSibling;
+                            if (next) {
+                                list.insertBefore(next, item);
+                                reindex();
+                            }
+                        }
+                    });
+                });
+            </script>
+            <?php
+        },
+        'page',
+        'normal',
+        'default'
+    );
+});
+
+add_action('save_post_page', function ($postId) {
+    if (! isset($_POST['faq_items_nonce']) || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['faq_items_nonce'])), 'save_faq_items')) {
+        return;
+    }
+
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    if (! current_user_can('edit_post', $postId)) {
+        return;
+    }
+
+    if (get_page_template_slug($postId) !== 'template-faq.blade.php') {
+        delete_post_meta($postId, '_faq_items');
+        return;
+    }
+
+    $rawItems = isset($_POST['faq_items']) ? wp_unslash($_POST['faq_items']) : [];
+
+    if (! is_array($rawItems)) {
+        delete_post_meta($postId, '_faq_items');
+        return;
+    }
+
+    $items = array_values(array_filter(array_map(static function ($item) {
+        if (! is_array($item)) {
+            return null;
+        }
+
+        $question = isset($item['question']) ? sanitize_text_field($item['question']) : '';
+        $answer = isset($item['answer']) ? wp_kses_post($item['answer']) : '';
+
+        if ($question === '' || trim(wp_strip_all_tags($answer)) === '') {
+            return null;
+        }
+
+        return [
+            'question' => $question,
+            'answer' => $answer,
+        ];
+    }, $rawItems)));
+
+    if ($items === []) {
+        delete_post_meta($postId, '_faq_items');
+        return;
+    }
+
+    update_post_meta($postId, '_faq_items', $items);
 });
 
 add_action('after_setup_theme', function () {
