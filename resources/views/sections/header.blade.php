@@ -1,4 +1,4 @@
-<header class="banner site-header sticky top-0 z-40 border-b border-gray-200/50 bg-white/90 backdrop-blur header-shadow">
+<header class="banner site-header sticky top-0 z-[120] border-b border-gray-200/50 bg-white/90 backdrop-blur header-shadow">
     <div class="site-header-inner mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-4">
         @php($siteName = get_bloginfo('name'))
 

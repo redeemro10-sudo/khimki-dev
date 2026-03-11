@@ -1223,6 +1223,7 @@ body:has(#siteNav.translate-x-0) {
 }
 
 .site-header {
+  --mobile-header-offset: 4.5rem;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.88));
 }
@@ -1285,6 +1286,18 @@ body:has(#siteNav.translate-x-0) {
   .mobile-nav-title {
     min-width: 0;
     flex: 1;
+  }
+
+  #siteNav {
+    top: var(--mobile-header-offset);
+    max-height: calc(100dvh - var(--mobile-header-offset) - 0.75rem);
+    border-top-left-radius: 1.25rem;
+    border-top-right-radius: 1.25rem;
+  }
+
+  #navOverlay {
+    top: var(--mobile-header-offset);
+    backdrop-filter: blur(6px);
   }
 }
 
