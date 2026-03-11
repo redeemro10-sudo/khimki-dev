@@ -37,33 +37,8 @@
 
     @include('partials.page-header')
 
-    <section class="mx-auto max-w-7xl px-4 py-4">
-      <div class="grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.35fr)] lg:items-start">
-        <div class="space-y-4 rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-6 shadow-sm">
-          <span class="inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-blue-700">
-            FAQ
-          </span>
-          <h2 class="text-2xl font-semibold text-slate-900">
-            Ответы на частые вопросы о {{ $siteName }}
-          </h2>
-          <p class="text-sm leading-6 text-slate-600">
-            Верхний текст страницы редактируется через обычный контент WordPress, а сами вопросы и ответы добавляются в
-            отдельном блоке FAQ под редактором страницы.
-          </p>
-
-          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-            <div class="rounded-2xl border border-slate-200 bg-white p-4">
-              <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Сколько вопросов</p>
-              <p class="mt-2 text-2xl font-semibold text-slate-900">{{ count($faqItems) }}</p>
-            </div>
-            <div class="rounded-2xl border border-slate-200 bg-white p-4">
-              <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Разметка SEO</p>
-              <p class="mt-2 text-sm font-medium text-slate-900">Schema.org FAQPage уже включена</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="space-y-4">
+    <section class="mx-auto max-w-5xl px-4 py-4">
+      <div class="space-y-4">
           <?php
             ob_start();
           ?>
@@ -109,7 +84,6 @@
               блок с вопросами под редактором.
             </div>
           @endif
-        </div>
       </div>
     </section>
   @endwhile
