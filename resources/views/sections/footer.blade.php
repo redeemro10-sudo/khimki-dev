@@ -27,7 +27,7 @@
         <div class="max-w-md space-y-5">
             <a class="brand inline-flex items-center gap-3 text-lg font-semibold text-slate-900" href="{{ home_url('/') }}">
                 <span
-                    class="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-sm font-bold text-white shadow-md">
+                    class="uppercase flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-sm font-bold text-white shadow-md">
                     {{ substr($siteName, 0, 1) }}
                 </span>
                 <span>{!! $siteName !!}</span>

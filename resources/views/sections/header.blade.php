@@ -6,7 +6,7 @@
             href="{{ home_url('/') }}">
             <div
                 class="site-brand-mark flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 shadow-md group-hover:scale-110 nav-transition">
-                <span class="text-sm font-bold text-white">{{ substr($siteName, 0, 1) }}</span>
+                <span class="text-sm font-bold text-white uppercase">{{ substr($siteName, 0, 1) }}</span>
             </div>
             <span class="site-brand-text">{!! $siteName !!}</span>
         </a>
