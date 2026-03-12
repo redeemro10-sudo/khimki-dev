@@ -8,12 +8,9 @@
     @endphp
 
     <section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <header class="mb-10 overflow-hidden rounded-[2rem] border border-slate-200 bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.16),_transparent_34%),linear-gradient(135deg,#f8fafc,#ffffff)] p-6 shadow-sm sm:p-8">
-            <div class="max-w-3xl space-y-4">
-                <span class="inline-flex rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
-                    Блог
-                </span>
-                <h1 class="text-3xl font-semibold leading-tight text-slate-950 sm:text-4xl">{{ $h1 }}</h1>
+        <header class="mb-10 overflow-hidden rounded-[2rem] p-6 shadow-sm sm:p-8">
+            <div class="max-w-3xl mx-auto space-y-4">
+                <h1 class="text-3xl font-semibold leading-tight text-center text-slate-950 sm:text-4xl">{{ $h1 }}</h1>
                 @if ($text !== '')
                     <div class="prose max-w-none prose-slate prose-p:text-slate-600 prose-headings:text-slate-900">
                         {!! wpautop(wp_kses_post($text)) !!}
