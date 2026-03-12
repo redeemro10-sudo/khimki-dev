@@ -15,8 +15,8 @@
     ])->filter(fn ($menu) => has_nav_menu($menu['location']));
 
     $footerContacts = [
-        ['label' => 'Телеграм', 'value' => '@prostitutkikhimki'],
-        ['label' => 'Email', 'value' => 'info@prostitutkikhimki.com'],
+        ['label' => 'Телеграм', 'value' => '@prostitutkikhimki', 'url' => 'https://t.me/prostitutkikhimki'],
+        ['label' => 'Email', 'value' => 'info@prostitutkikhimki.com', 'url' => 'mailto:info@prostitutkikhimki.com'],
         ['label' => null, 'value' => 'Химки, Московская область'],
         ['label' => null, 'value' => '24/7 (Круглосуточно)'],
     ];
@@ -45,7 +45,14 @@
                             @if (!empty($contact['label']))
                                 <span class="font-medium text-slate-700">{{ $contact['label'] }}:</span>
                             @endif
-                            <span class="{{ !empty($contact['label']) ? 'font-semibold text-slate-800' : '' }}">{{ $contact['value'] }}</span>
+                            @if (!empty($contact['url']))
+                                <a class="{{ !empty($contact['label']) ? 'font-semibold text-slate-800 hover:text-blue-600' : 'hover:text-blue-600' }} transition"
+                                    href="{{ $contact['url'] }}">
+                                    {{ $contact['value'] }}
+                                </a>
+                            @else
+                                <span class="{{ !empty($contact['label']) ? 'font-semibold text-slate-800' : '' }}">{{ $contact['value'] }}</span>
+                            @endif
                         </span>
                     </li>
                 @endforeach
