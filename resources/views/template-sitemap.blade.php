@@ -86,7 +86,6 @@
                 <li>
                   <a class="block rounded-2xl border border-slate-200 bg-white p-4 transition hover:bg-slate-50" href="{{ get_permalink($page) }}">
                     <h3 class="font-medium text-slate-900">{{ get_the_title($page) }}</h3>
-                    <div class="mt-1 text-sm text-slate-500">{{ wp_make_link_relative(get_permalink($page)) }}</div>
                   </a>
                 </li>
               @endforeach
