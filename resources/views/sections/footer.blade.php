@@ -32,18 +32,29 @@
     $sitemapPage = get_page_by_path('sitemap');
     $sitemapUrl = $sitemapPage ? get_permalink($sitemapPage) : home_url('/sitemap/');
     $copyrightYears = '2025-' . wp_date('Y');
+    $isFrontPage = is_front_page();
 @endphp
 
 <footer class="content-info mt-10 border-t">
     <div class="mx-auto grid max-w-7xl gap-10 px-4 py-8 text-sm text-slate-600 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,2fr)] lg:items-start">
         <div class="max-w-md space-y-5">
-            <a class="brand inline-flex items-center gap-3 text-lg font-semibold text-slate-900" href="{{ home_url('/') }}">
-                <span
-                    class="uppercase flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-sm font-bold text-white shadow-md">
-                    {{ substr($siteName, 0, 1) }}
+            @if ($isFrontPage)
+                <span class="brand inline-flex items-center gap-3 text-lg font-semibold text-slate-900">
+                    <span
+                        class="uppercase flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-sm font-bold text-white shadow-md">
+                        {{ substr($siteName, 0, 1) }}
+                    </span>
+                    <span>{!! $siteName !!}</span>
                 </span>
-                <span>{!! $siteName !!}</span>
-            </a>
+            @else
+                <a class="brand inline-flex items-center gap-3 text-lg font-semibold text-slate-900" href="{{ home_url('/') }}">
+                    <span
+                        class="uppercase flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-sm font-bold text-white shadow-md">
+                        {{ substr($siteName, 0, 1) }}
+                    </span>
+                    <span>{!! $siteName !!}</span>
+                </a>
+            @endif
 
             <div class="max-w-xs text-sm leading-6 text-slate-500">
                 Каталог проверенных индивидуалок в Химках. Реальные фото, отзывы клиентов, все районы города.
