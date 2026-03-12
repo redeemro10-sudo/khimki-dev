@@ -84,6 +84,16 @@
             <div class="models-grid__root">
                 <ul class="models-grid__list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     @forelse($ssrItems as $it)
+                        @php
+                            $imageAltParts = array_filter([
+                                !empty($it['title']) ? 'Имя: ' . $it['title'] : null,
+                                !empty($it['age']) ? 'Возраст: ' . $it['age'] : null,
+                                !empty($it['bust']) ? 'Грудь: ' . $it['bust'] : null,
+                            ]);
+                            $imageAlt = implode(', ', $imageAltParts);
+                            $imageTitle = !empty($it['title']) ? 'Эскортница ' . $it['title'] . (!empty($it['age']) ? ', ' . $it['age'] : '') : null;
+                            $isPriorityImage = $loop->first;
+                        @endphp
                         <li>
                             <article
                                 class="border rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow">
@@ -91,8 +101,12 @@
                                     <div class="relative h-72 overflow-hidden bg-slate-100">
                                         @if (!empty($it['thumb']))
                                             <img src="{{ esc_url($it['thumb']) }}"
-                                                alt="{{ esc_attr($it['title'] ?? '') }}" loading="lazy"
-                                                decoding="async" class="w-full h-full object-cover aspect-square">
+                                                alt="{{ esc_attr($imageAlt) }}"
+                                                @if ($imageTitle) title="{{ esc_attr($imageTitle) }}" @endif
+                                                loading="{{ $isPriorityImage ? 'eager' : 'lazy' }}"
+                                                fetchpriority="{{ $isPriorityImage ? 'high' : 'low' }}"
+                                                decoding="{{ $isPriorityImage ? 'auto' : 'async' }}"
+                                                class="w-full h-full object-cover aspect-square">
                                         @endif
                                         @if (!empty($it['tags']['video']))
                                             <span

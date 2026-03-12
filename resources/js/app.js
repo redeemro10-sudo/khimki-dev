@@ -34,6 +34,19 @@ import.meta.glob([
       return params;
     }
 
+    function buildModelImageMeta(item) {
+      const altParts = [
+        item.title ? `Имя: ${item.title}` : '',
+        item.age ? `Возраст: ${item.age}` : '',
+        item.bust ? `Грудь: ${item.bust}` : '',
+      ].filter(Boolean);
+
+      return {
+        alt: altParts.join(', '),
+        title: item.title ? `Эскортница ${item.title}${item.age ? `, ${item.age}` : ''}` : '',
+      };
+    }
+
     async function load(reset = false) {
       if (busy) return;
       busy = true;
@@ -49,10 +62,14 @@ import.meta.glob([
         } else {
           empty.classList.add('hidden');
         }
-        for (const it of (data.items || [])) {
+        for (const [index, it] of (data.items || []).entries()) {
           const card = document.createElement('article');
           card.className = 'border p-2';
-          const img = it.thumb ? `<img src="${it.thumb}" alt="" loading="lazy" decoding="async" fetchpriority="low" width="360" height="480">` : '';
+          const imageMeta = buildModelImageMeta(it);
+          const isPriorityImage = root.children.length === 0 && index === 0;
+          const img = it.thumb
+            ? `<img src="${it.thumb}" alt="${imageMeta.alt}"${imageMeta.title ? ` title="${imageMeta.title}"` : ''} loading="${isPriorityImage ? 'eager' : 'lazy'}" decoding="${isPriorityImage ? 'auto' : 'async'}" fetchpriority="${isPriorityImage ? 'high' : 'low'}" width="360" height="480">`
+            : '';
           card.innerHTML = `
           <a href="${it.link}" class="block">
             ${img}

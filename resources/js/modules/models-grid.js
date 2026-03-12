@@ -98,6 +98,19 @@ function renderCardBadges(tags) {
   ].join('');
 }
 
+function buildModelImageMeta(item) {
+  const altParts = [
+    item.title ? `Имя: ${item.title}` : '',
+    item.age ? `Возраст: ${item.age}` : '',
+    item.bust ? `Грудь: ${item.bust}` : '',
+  ].filter(Boolean);
+
+  return {
+    alt: altParts.join(', '),
+    title: item.title ? `Эскортница ${item.title}${item.age ? `, ${item.age}` : ''}` : '',
+  };
+}
+
 function renderCards(root, items) {
   let list = root.querySelector('ul.models-grid__list');
   if (!list) {
@@ -105,14 +118,16 @@ function renderCards(root, items) {
     list.className = 'models-grid__list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4';
     root.appendChild(list);
   }
-  for (const it of (items || [])) {
+  for (const [index, it] of (items || []).entries()) {
     const li = document.createElement('li');
     const badges = renderCardBadges(it.tags);
+    const imageMeta = buildModelImageMeta(it);
+    const isPriorityImage = list.children.length === 0 && index === 0;
     li.innerHTML = `
       <article class="card border rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow">
         <a href="${it.link}" class="block" rel="bookmark">
           <div class="card-image relative h-72 overflow-hidden bg-gray-100">
-            ${it.thumb ? `<img src="${it.thumb}" alt="${it.title || ''}" loading="lazy" decoding="async" class="w-full h-full object-cover aspect-square">` : ''}
+            ${it.thumb ? `<img src="${it.thumb}" alt="${imageMeta.alt}"${imageMeta.title ? ` title="${imageMeta.title}"` : ''} loading="${isPriorityImage ? 'eager' : 'lazy'}" fetchpriority="${isPriorityImage ? 'high' : 'low'}" decoding="${isPriorityImage ? 'auto' : 'async'}" class="w-full h-full object-cover aspect-square">` : ''}
             ${badges}
             <div class="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/60 to-transparent"></div>
           </div>

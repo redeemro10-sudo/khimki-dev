@@ -1,17 +1,37 @@
 @php
+    $id = $id ?? null;
+    $title = $title ?? null;
     $tags = $tags ?? [];
     $link = $link ?? '#';
     $thumb = $thumb ?? null;
+    $age = isset($age) ? (int) $age : 0;
+    $bust = $bust ?? null;
     $service = $service ?? null;
     $district = $district ?? null;
     $station = $station ?? null;
+    $isPriorityImage = !empty($isPriorityImage);
+
+    $imageAltParts = array_filter([
+        $title ? 'Имя: ' . $title : null,
+        $age ? 'Возраст: ' . $age : null,
+        $bust ? 'Грудь: ' . $bust : null,
+    ]);
+
+    $imageAlt = implode(', ', $imageAltParts);
+    $imageTitle = $title ? 'Эскортница ' . $title . ($age ? ', ' . $age : '') : null;
 @endphp
 
 <article class="card border rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow">
     <a href="{{ $link }}" class="block" rel="bookmark">
         <div class="card-image relative h-72 overflow-hidden bg-gray-100">
             @if (!empty($thumb))
-                <img src="{{ esc_url($thumb) }}" alt="{{ isset($title) ? e($title) : '' }}" loading="lazy" decoding="async"
+                <img
+                    src="{{ esc_url($thumb) }}"
+                    alt="{{ esc_attr($imageAlt) }}"
+                    @if ($imageTitle) title="{{ esc_attr($imageTitle) }}" @endif
+                    loading="{{ $isPriorityImage ? 'eager' : 'lazy' }}"
+                    fetchpriority="{{ $isPriorityImage ? 'high' : 'low' }}"
+                    decoding="{{ $isPriorityImage ? 'auto' : 'async' }}"
                     class="w-full h-full object-cover aspect-auto">
             @endif
 
