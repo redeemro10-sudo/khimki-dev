@@ -85,20 +85,20 @@
                     <div class="price-track absolute h-1.5 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full"
                         style="left: 0%; width: 100%;"></div>
                     {{-- Min slider --}}
-                    <input type="range" min="0" max="100000" step="500" value="0"
+                    <input type="range" min="0" max="50000" step="500" value="0"
                         class="price-slider absolute w-full h-1.5 bg-transparent appearance-none pointer-events-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-orange-500 [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-gray-900"
                         data-min-range>
                     {{-- Max slider --}}
-                    <input type="range" min="0" max="100000" step="500" value="100000"
+                    <input type="range" min="0" max="50000" step="500" value="50000"
                         class="price-slider absolute w-full h-1.5 bg-transparent appearance-none pointer-events-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-orange-500 [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-gray-900"
                         data-max-range>
                 </div>
                 <div class="flex items-center gap-2">
-                    <input type="number" name="price_min" min="0" step="100" value="0"
+                    <input type="number" name="price_min" min="0" max="50000" step="500" value="0"
                         class="flex-1 bg-gray-800 text-white border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500"
                         data-min-input placeholder="От">
                     <span class="text-gray-500">—</span>
-                    <input type="number" name="price_max" min="0" step="100" value="100000"
+                    <input type="number" name="price_max" min="0" max="50000" step="500" value="50000"
                         class="flex-1 bg-gray-800 text-white border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500"
                         data-max-input placeholder="До">
                 </div>
@@ -123,10 +123,10 @@
                 <div>
                     <label class="block text-gray-400 text-xs mb-2">Возраст</label>
                     <div class="flex items-center gap-2">
-                        <input type="number" name="age_min" min="18" max="99" placeholder="От"
+                        <input type="number" name="age_min" min="18" max="49" placeholder="От"
                             class="flex-1 bg-gray-800 text-white border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
                         <span class="text-gray-500">—</span>
-                        <input type="number" name="age_max" min="18" max="99" placeholder="До"
+                        <input type="number" name="age_max" min="18" max="49" placeholder="До"
                             class="flex-1 bg-gray-800 text-white border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
                     </div>
                 </div>
@@ -135,10 +135,10 @@
                 <div>
                     <label class="block text-gray-400 text-xs mb-2">Рост (см)</label>
                     <div class="flex items-center gap-2">
-                        <input type="number" name="height_min" min="120" max="220" placeholder="От"
+                        <input type="number" name="height_min" min="140" max="200" placeholder="От"
                             class="flex-1 bg-gray-800 text-white border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
                         <span class="text-gray-500">—</span>
-                        <input type="number" name="height_max" min="120" max="220" placeholder="До"
+                        <input type="number" name="height_max" min="140" max="200" placeholder="До"
                             class="flex-1 bg-gray-800 text-white border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
                     </div>
                 </div>
@@ -147,10 +147,10 @@
                 <div>
                     <label class="block text-gray-400 text-xs mb-2">Вес (кг)</label>
                     <div class="flex items-center gap-2">
-                        <input type="number" name="weight_min" min="35" max="160" placeholder="От"
+                        <input type="number" name="weight_min" min="40" max="120" placeholder="От"
                             class="flex-1 bg-gray-800 text-white border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
                         <span class="text-gray-500">—</span>
-                        <input type="number" name="weight_max" min="35" max="160" placeholder="До"
+                        <input type="number" name="weight_max" min="40" max="120" placeholder="До"
                             class="flex-1 bg-gray-800 text-white border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
                     </div>
                 </div>
@@ -382,11 +382,16 @@
         const priceTrack = container.querySelector('.price-track');
 
         if (minRange && maxRange && minInput && maxInput && priceTrack) {
+            const minLimit = Number(minRange.min || 0);
+            const maxLimit = Number(maxRange.max || 50000);
+            const priceStep = Number(minRange.step || 500);
+
             const updatePriceTrack = () => {
                 const min = parseInt(minRange.value);
                 const max = parseInt(maxRange.value);
-                const minPercent = (min / 100000) * 100;
-                const maxPercent = (max / 100000) * 100;
+                const span = Math.max(maxLimit - minLimit, 1);
+                const minPercent = ((min - minLimit) / span) * 100;
+                const maxPercent = ((max - minLimit) / span) * 100;
 
                 priceTrack.style.left = minPercent + '%';
                 priceTrack.style.width = (maxPercent - minPercent) + '%';
@@ -396,11 +401,11 @@
                 let minVal = parseInt(minRange.value);
                 let maxVal = parseInt(maxRange.value);
 
-                if (minVal > maxVal - 500) {
+                if (minVal > maxVal - priceStep) {
                     if (event.target === minRange) {
-                        minRange.value = maxVal - 500;
+                        minRange.value = maxVal - priceStep;
                     } else {
-                        maxRange.value = minVal + 500;
+                        maxRange.value = minVal + priceStep;
                     }
                 }
 
@@ -410,8 +415,8 @@
             };
 
             const syncInputs = () => {
-                minRange.value = minInput.value || 0;
-                maxRange.value = maxInput.value || 100000;
+                minRange.value = minInput.value || minLimit;
+                maxRange.value = maxInput.value || maxLimit;
                 updatePriceTrack();
             };
 

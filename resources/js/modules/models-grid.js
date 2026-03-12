@@ -347,15 +347,19 @@ export function initModelsGrids() {
 
     function syncFromRanges() {
       if (!minRange || !maxRange || !minInput || !maxInput) return;
-      let min = Number(minRange.value || 0);
-      let max = Number(maxRange.value || 100000);
+      const minLimit = Number(minRange.min || 0);
+      const maxLimit = Number(maxRange.max || 50000);
+      let min = Number(minRange.value || minLimit);
+      let max = Number(maxRange.value || maxLimit);
       if (min > max) [min, max] = [max, min];
       minInput.value = min; maxInput.value = max;
     }
     function syncFromInputs() {
       if (!minRange || !maxRange || !minInput || !maxInput) return;
-      let min = Number(minInput.value || 0);
-      let max = Number(maxInput.value || 100000);
+      const minLimit = Number(minInput.min || minRange.min || 0);
+      const maxLimit = Number(maxInput.max || maxRange.max || 50000);
+      let min = Number(minInput.value || minLimit);
+      let max = Number(maxInput.value || maxLimit);
       if (min > max) [min, max] = [max, min];
       minRange.value = min; maxRange.value = max;
     }
@@ -366,8 +370,10 @@ export function initModelsGrids() {
     maxInput?.addEventListener('input', syncFromInputs);
     clearBtn?.addEventListener('click', () => {
       if (!minRange || !maxRange || !minInput || !maxInput) return;
-      minRange.value = 0; maxRange.value = 100000;
-      minInput.value = 0; maxInput.value = 100000;
+      const minLimit = Number(minRange.min || 0);
+      const maxLimit = Number(maxRange.max || 50000);
+      minRange.value = minLimit; maxRange.value = maxLimit;
+      minInput.value = minLimit; maxInput.value = maxLimit;
     });
   });
 }

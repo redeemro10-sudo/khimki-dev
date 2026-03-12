@@ -89,11 +89,11 @@
                         <div class="flex items-center gap-2">
                             <input type="number" name="age_min"
                                 class="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500"
-                                placeholder="От" min="18" max="99">
+                                placeholder="От" min="18" max="49">
                             <span class="text-gray-400">—</span>
                             <input type="number" name="age_max"
                                 class="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500"
-                                placeholder="До" min="18" max="99">
+                                placeholder="До" min="18" max="49">
                         </div>
                     </div>
 
@@ -103,11 +103,11 @@
                         <div class="flex items-center gap-2">
                             <input type="number" name="price_min"
                                 class="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500"
-                                placeholder="От" min="0">
+                                placeholder="От" min="0" max="50000" step="500">
                             <span class="text-gray-400">—</span>
                             <input type="number" name="price_max"
                                 class="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500"
-                                placeholder="До" min="0">
+                                placeholder="До" min="0" max="50000" step="500">
                         </div>
                     </div>
                 </div>
