@@ -5,7 +5,13 @@
     @php
         $id = get_the_ID();
         $name = get_the_title() ?: '';
-        $district = wp_get_post_terms($id, 'district', ['fields' => 'names']);
+        $districtTerms = wp_get_post_terms($id, 'district', ['fields' => 'all']);
+        $district = array_values(array_map(static function ($term) {
+            return $term->name;
+        }, $districtTerms));
+        $districtName = $districtTerms[0]->name ?? null;
+        $districtSlug = $districtTerms[0]->slug ?? null;
+        $districtUrl = $districtSlug ? home_url('/rayony/' . $districtSlug . '/') : null;
         $station = wp_get_post_terms($id, 'rail_station', ['fields' => 'names']);
         /* $service = wp_get_post_terms($id, 'service', ['fields' => 'names']); */
         $services = wp_get_post_terms($id, 'service', ['fields' => 'all']); // массив WP_Term
@@ -50,7 +56,7 @@
         $videos = is_array($videos) ? array_values($videos) : [];
 
         // SEO заголовок
-        $bits = array_filter([$name, $district[0] ?? null, $station[0] ?? null]);
+        $bits = array_filter([$name, $districtName, $station[0] ?? null]);
         $h1 = implode(' · ', $bits);
         $modelImageAltParts = array_filter([
             $name ? 'Имя: ' . $name : null,
@@ -131,14 +137,20 @@
                                         {{ $station[0] }}
                                     </div>
                                 @endif
-                                @if (!empty($district[0]))
+                                @if ($districtName)
                                     <div class="flex items-center gap-1.5 text-gray-700">
                                         <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd"
                                                 d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
                                                 clip-rule="evenodd" />
                                         </svg>
-                                        {{ $district[0] }}
+                                        @if ($districtUrl)
+                                            <a href="{{ esc_url($districtUrl) }}" class="transition-colors hover:text-blue-700">
+                                                {{ $districtName }}
+                                            </a>
+                                        @else
+                                            {{ $districtName }}
+                                        @endif
                                     </div>
                                 @endif
                             </div>
@@ -397,14 +409,14 @@
                                 <!-- xs: flex-wrap; sm+: grid с авто-высотой рядов -->
                                 <div class="flex flex-wrap gap-2 sm:grid sm:grid-cols-3 sm:gap-3 sm:auto-rows-max">
                                     @foreach ($services as $s)
-                                        <a href="{{ esc_url($s['url']) }}"
+                                        <span
                                             class="service-chip inline-flex items-center justify-center
                   min-w-0 max-w-full whitespace-normal break-words text-center leading-tight
                   bg-white rounded-xl px-4 py-3 text-sm font-medium text-gray-700
-                  border border-gray-200 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700
+                  border border-gray-200
                   transition-all duration-200">
                                             {{ e($s['name']) }}
-                                        </a>
+                                        </span>
                                     @endforeach
                                 </div>
                             </div>
@@ -530,7 +542,7 @@
                         </div>
 
                         {{-- Локация для десктопа --}}
-                        @if (!empty($station[0]) || !empty($district[0]))
+                        @if (!empty($station[0]) || $districtName)
                             <div
                                 class="hidden lg:block bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6 border border-blue-100">
                                 <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
@@ -558,7 +570,7 @@
                                             </div>
                                         </div>
                                     @endif
-                                    @if (!empty($district[0]))
+                                    @if ($districtName)
                                         <div class="flex items-start gap-3">
                                             <div
                                                 class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center flex-shrink-0">
@@ -571,7 +583,15 @@
                                             </div>
                                             <div>
                                                 <div class="text-xs text-gray-600 mb-0.5">Район</div>
-                                                <div class="font-semibold text-gray-900">{{ $district[0] }}</div>
+                                                <div class="font-semibold text-gray-900">
+                                                    @if ($districtUrl)
+                                                        <a href="{{ esc_url($districtUrl) }}" class="transition-colors hover:text-blue-700">
+                                                            {{ $districtName }}
+                                                        </a>
+                                                    @else
+                                                        {{ $districtName }}
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
                                     @endif
