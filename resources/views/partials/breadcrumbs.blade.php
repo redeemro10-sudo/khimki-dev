@@ -18,6 +18,7 @@
         $a = '/' . trim((string) parse_url($blogArchiveUrl, PHP_URL_PATH), '/'); // напр. '/blog'
         return $p === $a || str_starts_with($p, $a . '/');
     };
+    $paged = max(1, (int) get_query_var('paged'), (int) get_query_var('page'));
 
     $trail = [];
     $trail[] = ['label' => 'Главная', 'url' => home_url('/')];
@@ -29,7 +30,14 @@
     }
     // Архив CPT blog
     elseif (is_post_type_archive('blog')) {
-        $trail[] = ['label' => $blogLabel, 'url' => null, 'current' => true];
+        if ($paged > 1) {
+            $trail = [
+                ['label' => $blogLabel, 'url' => $blogArchiveUrl],
+                ['label' => 'Страница ' . $paged, 'url' => null, 'current' => true],
+            ];
+        } else {
+            $trail[] = ['label' => $blogLabel, 'url' => null, 'current' => true];
+        }
     }
     // Таксономии
     elseif (is_tax() || is_category() || is_tag()) {
