@@ -7,23 +7,30 @@
         $text = $page ? (string) get_post_meta($page->ID, '_page_text', true) : '';
     @endphp
 
-    <section class="wrap mx-auto max-w-[1200px] px-6 py-6">
-        <header class="mb-6">
-            <h1 class="break-words text-2xl font-bold">{{ $h1 }}</h1>
-            @if ($text !== '')
-                <div class="prose prose-invert max-w-none break-words">{!! wpautop(wp_kses_post($text)) !!}</div>
-            @endif
+    <section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <header class="mb-10 overflow-hidden rounded-[2rem] border border-slate-200 bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.16),_transparent_34%),linear-gradient(135deg,#f8fafc,#ffffff)] p-6 shadow-sm sm:p-8">
+            <div class="max-w-3xl space-y-4">
+                <span class="inline-flex rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
+                    Блог
+                </span>
+                <h1 class="text-3xl font-semibold leading-tight text-slate-950 sm:text-4xl">{{ $h1 }}</h1>
+                @if ($text !== '')
+                    <div class="prose max-w-none prose-slate prose-p:text-slate-600 prose-headings:text-slate-900">
+                        {!! wpautop(wp_kses_post($text)) !!}
+                    </div>
+                @endif
+            </div>
         </header>
 
         @if (have_posts())
-            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
                 @while (have_posts())
                     @php(the_post())
                     @include('partials.post-card')
                 @endwhile
             </div>
 
-            <nav class="blog-pagination mt-8 flex justify-center" aria-label="Пагинация блога">
+            <nav class="blog-pagination mt-10 flex justify-center" aria-label="Пагинация блога">
                 {!! get_the_posts_pagination([
                     'prev_text' => '←',
                     'next_text' => '→',
@@ -32,7 +39,10 @@
                 ]) !!}
             </nav>
         @else
-            <p class="text-center text-muted">Публикаций пока нет.</p>
+            <div class="rounded-[2rem] border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
+                <p class="text-lg font-medium text-slate-700">Публикаций пока нет.</p>
+                <p class="mt-2 text-sm text-slate-500">Когда появятся новые материалы, они будут показаны здесь.</p>
+            </div>
         @endif
     </section>
 @endsection
