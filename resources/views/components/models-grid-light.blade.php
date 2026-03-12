@@ -80,7 +80,7 @@
         @endif
 
         {{-- Контент (грид) --}}
-        <div class="flex-1">
+        <section class="flex-1">
             <div class="models-grid__root">
                 <ul class="models-grid__list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     @forelse($ssrItems as $it)
@@ -155,7 +155,7 @@
             </div>
 
             <p class="models-grid__empty hidden">No results</p>
-        </div>
+        </section>
     </div>
 
     {{-- локальный JS для открытия/закрытия фильтров (ID-изолирован) --}}
