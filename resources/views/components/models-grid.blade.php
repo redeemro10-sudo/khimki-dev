@@ -344,7 +344,7 @@
         @endif
 
         {{-- Основной контент --}}
-        <div class="flex-1">
+        <section class="flex-1">
             {{-- Сортировка и счетчик --}}
             <div class="flex items-center justify-between mb-6 pb-4 border-b">
                 <div class="text-sm text-gray-600">
@@ -385,7 +385,7 @@
                     Показать ещё
                 </button>
             </div>
-        </div>
+        </section>
     </div>
 </section>
 
