@@ -561,7 +561,7 @@
                         {{-- 3. БЛОК КОНТАКТОВ (MAX VERTICAL С ПРОВЕРКОЙ НА ПУСТОТУ) --}}
                         @php
                             $max_data = [
-                                'phone' => null,
+                                'phone' => '79879815874',
                                 'tg'    => '@elllie_mng',
                                 'wa'    => '79879815874',
                                 'max'   => base64_encode('https://max.ru/u/f9LHodD0cOKe3IufFQsYRevc9Xg5C9Ti1M8oCrvpFvP3YizC1L0e0bBa5VU')
@@ -629,8 +629,8 @@
                                         @if($max_data['max'])
                                             <button type="button" 
                                                 onclick="window.open(atob('{{ $max_data['max'] }}'), '_blank')"
-                                                class="flex items-center justify-center gap-3 w-full bg-white text-blue-600 font-bold uppercase py-4 px-6 rounded-xl hover:bg-blue-50 transform hover:scale-[1.01] transition-all duration-200 shadow-lg outline-none cursor-pointer">
-                                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 1000 1000">
+                                                class="flex items-center justify-center gap-3 w-full py-4 px-6 bg-white/10 hover:bg-white/20 rounded-xl transition-all duration-200 border border-white/20 outline-none cursor-pointer">
+                                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 1000 1000">
                                                     <path d="M508.2 878.3c-75 0-109.8-11-170.4-54.7-38.3 49.3-159.7 87.8-165 21.9 0-49.5-11-91.2-23.4-136.9-14.8-56.2-31.6-118.8-31.6-209.5 0-216.6 177.8-379.6 388.4-379.6 210.8 0 376 171 376 381.6.7 207.3-166.6 376.1-374 377.2m3.1-571.6c-102.6-5.3-182.5 65.7-200.2 177-14.6 92.2 11.3 204.4 33.4 210.2 10.6 2.6 37.2-19 53.8-35.6a190 190 0 0 0 92.7 33c106.3 5.1 197.1-75.8 204.2-182 4.2-106.3-77.7-196.5-184-202.6Z"/>
                                                 </svg>
                                                 Написать в MAX
