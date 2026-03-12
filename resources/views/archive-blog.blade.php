@@ -24,7 +24,12 @@
             </div>
 
             <nav class="blog-pagination mt-8 flex justify-center" aria-label="Пагинация блога">
-                {!! get_the_posts_pagination(['prev_text' => '←', 'next_text' => '→', 'type' => 'list']) !!}
+                {!! get_the_posts_pagination([
+                    'prev_text' => '←',
+                    'next_text' => '→',
+                    'type' => 'list',
+                    'screen_reader_text' => '',
+                ]) !!}
             </nav>
         @else
             <p class="text-center text-muted">Публикаций пока нет.</p>
