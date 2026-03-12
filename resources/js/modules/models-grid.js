@@ -48,6 +48,71 @@ function formToParams(form) {
   return params;
 }
 
+function clampNumber(value, min, max) {
+  if (!Number.isFinite(value)) return null;
+  return Math.min(Math.max(value, min), max);
+}
+
+function normalizeNumberInput(input) {
+  if (!input) return null;
+
+  const raw = String(input.value || '').trim();
+  if (raw === '') return null;
+
+  const min = Number(input.min || Number.NEGATIVE_INFINITY);
+  const max = Number(input.max || Number.POSITIVE_INFINITY);
+  const step = Number(input.step || 1);
+  const parsed = Number(raw);
+
+  if (!Number.isFinite(parsed)) {
+    input.value = '';
+    return null;
+  }
+
+  let normalized = clampNumber(parsed, min, max);
+  if (Number.isFinite(step) && step > 0) {
+    normalized = Math.round(normalized / step) * step;
+    normalized = clampNumber(normalized, min, max);
+  }
+
+  input.value = String(normalized);
+  return normalized;
+}
+
+function normalizeRangePair(minInput, maxInput) {
+  if (!minInput || !maxInput) return;
+
+  const minValue = normalizeNumberInput(minInput);
+  const maxValue = normalizeNumberInput(maxInput);
+
+  if (minValue === null || maxValue === null) return;
+
+  if (minValue > maxValue) {
+    minInput.value = String(maxValue);
+    maxInput.value = String(minValue);
+  }
+}
+
+function normalizeFilterNumericFields(form) {
+  if (!form) return;
+
+  form.querySelectorAll('input[type="number"]').forEach((input) => {
+    normalizeNumberInput(input);
+  });
+
+  [
+    ['price_min', 'price_max'],
+    ['age_min', 'age_max'],
+    ['height_min', 'height_max'],
+    ['weight_min', 'weight_max'],
+  ].forEach(([minName, maxName]) => {
+    normalizeRangePair(
+      form.querySelector(`[name="${minName}"]`),
+      form.querySelector(`[name="${maxName}"]`),
+    );
+  });
+}
+
 function applyOrderParams(uiValue, params) {
   switch (uiValue) {
     case 'date':
@@ -198,6 +263,11 @@ export function initModelsGrids() {
     const sortSelect = wrap.querySelector('select[name="sort"]');
     const hasSSR = wrap.dataset.ssr === '1';
 
+    form?.querySelectorAll('input[type="number"]').forEach((input) => {
+      input.addEventListener('change', () => normalizeFilterNumericFields(form));
+      input.addEventListener('blur', () => normalizeFilterNumericFields(form));
+    });
+
     // 1) Выставляем селект из текущего cfg.order (если есть такой option)
     if (sortSelect) {
       const opt = [...sortSelect.options].find(o => o.value === (cfg.order || 'date'));
@@ -255,6 +325,8 @@ export function initModelsGrids() {
     async function load(reset = false) {
       if (busy) return; busy = true;
       if (reset) { cfg.page = 1; root.innerHTML = ''; }
+
+      normalizeFilterNumericFields(form);
 
       const params = { page: cfg.page, per_page: cfg.per_page };
       applyOrderParams(cfg.order || 'date', params);
