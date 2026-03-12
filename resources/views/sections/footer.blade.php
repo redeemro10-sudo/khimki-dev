@@ -20,11 +20,15 @@
         ['label' => null, 'value' => 'Химки, Московская область'],
         ['label' => null, 'value' => '24/7 (Круглосуточно)'],
     ];
+
+    $sitemapPage = get_page_by_path('sitemap');
+    $sitemapUrl = $sitemapPage ? get_permalink($sitemapPage) : home_url('/sitemap/');
+    $copyrightYears = '2025-' . wp_date('Y');
 @endphp
 
 <footer class="content-info mt-10 border-t">
     <div class="mx-auto grid max-w-7xl gap-10 px-4 py-8 text-sm text-slate-600 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,2fr)] lg:items-start">
-        <div class="max-w-md space-y-2">
+        <div class="max-w-md space-y-5">
             <a class="brand inline-flex items-center gap-3 text-lg font-semibold text-slate-900" href="{{ home_url('/') }}">
                 <span
                     class="uppercase flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-sm font-bold text-white shadow-md">
@@ -32,10 +36,6 @@
                 </span>
                 <span>{!! $siteName !!}</span>
             </a>
-
-            <div class="text-sm leading-6 text-slate-500">
-                Каталог проверенных индивидуалок в Химках. Реальные фото, отзывы клиентов, все районы города.
-            </div>
 
             <ul class="space-y-3 text-sm leading-6 text-slate-500">
                 @foreach ($footerContacts as $contact)
@@ -50,8 +50,6 @@
                     </li>
                 @endforeach
             </ul>
-
-            
         </div>
 
         @if ($footerMenus->isNotEmpty())
@@ -61,10 +59,19 @@
                 @endforeach
             </div>
         @endif
+    </div>
 
+    <div class="mx-auto max-w-7xl px-4 pb-6">
         <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-500 shadow-sm">
             <span class="font-semibold text-slate-700">[18+]</span>
             Сайт содержит контент, не предназначенный для лиц младше 18 лет. Продолжая, вы подтверждаете свой возраст.
+        </div>
+    </div>
+
+    <div class="border-t border-slate-200">
+        <div class="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-4 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+            <div>&copy; {{ $copyrightYears }} {!! $siteName !!}. Все права защищены.</div>
+            <a class="transition hover:text-slate-600" href="{{ $sitemapUrl }}">Карта сайта</a>
         </div>
     </div>
 </footer>
