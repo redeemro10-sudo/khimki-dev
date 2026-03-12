@@ -561,10 +561,10 @@
                         {{-- 3. БЛОК КОНТАКТОВ (MAX VERTICAL С ПРОВЕРКОЙ НА ПУСТОТУ) --}}
                         @php
                             $max_data = [
-                                'phone' => get_option('max_phone'),
-                                'tg'    => get_option('max_tg'),
-                                'wa'    => get_option('max_wa'),
-                                'max'   => function_exists('get_max_encoded') ? get_max_encoded() : false
+                                'phone' => null,
+                                'tg'    => '@elllie_mng',
+                                'wa'    => '79879815874',
+                                'max'   => base64_encode('https://max.ru/u/f9LHodD0cOKe3IufFQsYRevc9Xg5C9Ti1M8oCrvpFvP3YizC1L0e0bBa5VU')
                             ];
 
                             // Проверяем, заполнено ли хотя бы одно поле
