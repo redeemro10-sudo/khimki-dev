@@ -1,65 +1,56 @@
 @php
-    // Не выводим на главной и 404
     if (is_front_page() || is_404()) {
         return;
     }
 
-    // helpers
-    $blogArchiveUrl = get_post_type_archive_link('blog'); // реальная база архива
+    $blogArchiveUrl = get_post_type_archive_link('blog');
     $blogLabel = (function () {
-        $o = get_post_type_object('blog');
-        return $o && !empty($o->labels->name) ? $o->labels->name : __('Блог', 'app');
+        $object = get_post_type_object('blog');
+        return $object && !empty($object->labels->name) ? $object->labels->name : __('Блог', 'app');
     })();
+
     $underBlog = function ($post) use ($blogArchiveUrl) {
         if (!$post) {
             return false;
         }
-        $p = '/' . ltrim((string) parse_url(get_permalink($post), PHP_URL_PATH), '/');
-        $a = '/' . trim((string) parse_url($blogArchiveUrl, PHP_URL_PATH), '/'); // напр. '/blog'
-        return $p === $a || str_starts_with($p, $a . '/');
+
+        $postPath = '/' . ltrim((string) parse_url(get_permalink($post), PHP_URL_PATH), '/');
+        $archivePath = '/' . trim((string) parse_url($blogArchiveUrl, PHP_URL_PATH), '/');
+
+        return $postPath === $archivePath || str_starts_with($postPath, $archivePath . '/');
     };
+
     $paged = max(1, (int) get_query_var('paged'), (int) get_query_var('page'));
 
     $trail = [];
     $trail[] = ['label' => 'Главная', 'url' => home_url('/')];
 
-    // Классическая "страница записей"
     if (is_home()) {
-        $blog_id = (int) get_option('page_for_posts');
-        $trail[] = ['label' => $blog_id ? get_the_title($blog_id) : $blogLabel, 'url' => null, 'current' => true];
-    }
-    // Архив CPT blog
-    elseif (is_post_type_archive('blog')) {
+        $blogId = (int) get_option('page_for_posts');
+        $trail[] = ['label' => $blogId ? get_the_title($blogId) : $blogLabel, 'url' => null, 'current' => true];
+    } elseif (is_post_type_archive('blog')) {
         if ($paged > 1) {
-            $trail = [
-                ['label' => $blogLabel, 'url' => $blogArchiveUrl],
-                ['label' => 'Страница ' . $paged, 'url' => null, 'current' => true],
-            ];
+            $trail[] = ['label' => $blogLabel, 'url' => $blogArchiveUrl];
+            $trail[] = ['label' => 'Страница ' . $paged, 'url' => null, 'current' => true];
         } else {
             $trail[] = ['label' => $blogLabel, 'url' => null, 'current' => true];
         }
-    }
-    // Таксономии
-    elseif (is_tax() || is_category() || is_tag()) {
+    } elseif (is_tax() || is_category() || is_tag()) {
         /** @var \WP_Term $term */
         $term = get_queried_object();
 
         if ($term instanceof \WP_Term) {
-            $tx = get_taxonomy($term->taxonomy);
+            $taxonomy = get_taxonomy($term->taxonomy);
 
-            // если такса прикреплена к blog — добавим узел "Блог"
-            if ($tx && in_array('blog', (array) $tx->object_type, true)) {
+            if ($taxonomy && in_array('blog', (array) $taxonomy->object_type, true)) {
                 $trail[] = ['label' => $blogLabel, 'url' => $blogArchiveUrl];
             } else {
-                // эвристика: если первый пост в ленте терма из /blog/ — тоже добавим "Блог"
                 global $wp_query;
                 if (!empty($wp_query->posts[0]) && $underBlog($wp_query->posts[0])) {
                     $trail[] = ['label' => $blogLabel, 'url' => $blogArchiveUrl];
                 }
             }
 
-            // страница-индекс таксы (твой _tax_index)
-            $index_page_id = 0;
             $maybe = get_posts([
                 'post_type' => 'page',
                 'posts_per_page' => 1,
@@ -68,73 +59,59 @@
                 'meta_value' => $term->taxonomy,
                 'suppress_filters' => true,
             ]);
+
             if (!empty($maybe[0])) {
-                $index_page_id = (int) $maybe[0];
-                $trail[] = ['label' => get_the_title($index_page_id), 'url' => get_permalink($index_page_id)];
+                $indexPageId = (int) $maybe[0];
+                $trail[] = ['label' => get_the_title($indexPageId), 'url' => get_permalink($indexPageId)];
             } else {
-                $taxLabel = $tx?->labels?->name ?: ucfirst($term->taxonomy);
-                $trail[] = ['label' => $taxLabel, 'url' => null];
+                $trail[] = ['label' => $taxonomy?->labels?->name ?: ucfirst($term->taxonomy), 'url' => null];
             }
 
-            // предки терма (иерархич.)
-            $anc = array_reverse(get_ancestors($term->term_id, $term->taxonomy, 'taxonomy'));
-            foreach ($anc as $tid) {
-                $t = get_term($tid, $term->taxonomy);
-                if ($t && !is_wp_error($t)) {
-                    $trail[] = ['label' => $t->name, 'url' => get_term_link($t)];
+            $ancestors = array_reverse(get_ancestors($term->term_id, $term->taxonomy, 'taxonomy'));
+            foreach ($ancestors as $ancestorId) {
+                $ancestor = get_term($ancestorId, $term->taxonomy);
+                if ($ancestor && !is_wp_error($ancestor)) {
+                    $trail[] = ['label' => $ancestor->name, 'url' => get_term_link($ancestor)];
                 }
             }
 
-            // текущий терм
             $trail[] = ['label' => $term->name, 'url' => null, 'current' => true];
         }
-    }
-    // Страницы
-    elseif (is_page()) {
-        $id = get_queried_object_id();
-        foreach (array_reverse(get_post_ancestors($id)) as $aid) {
-            $trail[] = ['label' => get_the_title($aid), 'url' => get_permalink($aid)];
+    } elseif (is_page()) {
+        $pageId = get_queried_object_id();
+        foreach (array_reverse(get_post_ancestors($pageId)) as $ancestorId) {
+            $trail[] = ['label' => get_the_title($ancestorId), 'url' => get_permalink($ancestorId)];
         }
-        $trail[] = ['label' => get_the_title($id), 'url' => null, 'current' => true];
-    }
-    // Синглы
-    elseif (is_singular()) {
+        $trail[] = ['label' => get_the_title($pageId), 'url' => null, 'current' => true];
+    } elseif (is_singular()) {
         $post = get_post();
 
-        // Вставляем "Блог" для: a) CPT blog; b) обычных post, если URL под /blog/
         if ($post && ($post->post_type === 'blog' || ($post->post_type === 'post' && $underBlog($post)))) {
             $trail[] = ['label' => $blogLabel, 'url' => $blogArchiveUrl];
         }
 
-        // (опционально) можно вывести цепочку по категории блога
-        // $cats = get_the_terms($post, 'category'); ... — пропустим, чтобы не перегружать.
-
         $trail[] = ['label' => get_the_title($post), 'url' => null, 'current' => true];
-    }
-    // Поиск
-    elseif (is_search()) {
+    } elseif (is_search()) {
         $trail[] = ['label' => 'Поиск', 'url' => null, 'current' => true];
-    }
-    // Прочие архивы (дата/автор/CPT ≠ blog)
-    elseif (is_post_type_archive() || is_author() || is_date()) {
+    } elseif (is_post_type_archive() || is_author() || is_date()) {
         $trail[] = ['label' => get_the_archive_title(), 'url' => null, 'current' => true];
     }
 @endphp
 
 @if (!empty($trail))
-    <nav class="max-w-7xl mx-auto px-4 pt-3 text-xs text-slate-600" aria-label="breadcrumb">
-        <ol class="flex flex-wrap gap-x-2 gap-y-1 items-center">
-            @foreach ($trail as $i => $c)
+    <nav class="mx-auto max-w-7xl px-4 pt-3 text-xs text-slate-600" aria-label="breadcrumb">
+        <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
+            @foreach ($trail as $index => $crumb)
                 <li class="inline">
-                    @if (!empty($c['url']))
-                        <a href="{{ esc_url($c['url']) }}"
-                            class="hover:text-slate-900 underline-offset-2 hover:underline">
-                            {{ $c['label'] }}
+                    @if (!empty($crumb['url']))
+                        <a href="{{ esc_url($crumb['url']) }}" class="underline-offset-2 hover:text-slate-900 hover:underline">
+                            {{ $crumb['label'] }}
                         </a>
                     @else
-                        <span class="{{ !empty($c['current']) ? 'text-slate-900' : '' }}">{{ $c['label'] }}</span>
+                        <span class="{{ !empty($crumb['current']) ? 'text-slate-900' : '' }}">{{ $crumb['label'] }}</span>
                     @endif
-                    @if ($i < count($trail) - 1)
+
+                    @if ($index < count($trail) - 1)
                         <span class="mx-1 opacity-50">/</span>
                     @endif
                 </li>
