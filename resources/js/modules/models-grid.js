@@ -81,6 +81,23 @@ function renderBadges(tags) {
   return b.join('');
 }
 
+function renderCardBadges(tags) {
+  if (!tags) return '';
+
+  const left = [];
+  const right = [];
+
+  if (tags.video) left.push('<span class="rounded-full bg-red-500 px-2 py-1 text-[10px] font-bold text-white">ВИДЕО</span>');
+  if (tags.verified) left.push('<span class="rounded-full bg-green-500 px-2 py-1 text-[10px] font-bold text-white">✓</span>');
+  if (tags.vip) right.push('<span class="rounded-full bg-yellow-500 px-2 py-1 text-[10px] font-bold text-white">VIP</span>');
+  if (tags.online) right.push('<span class="rounded-full bg-blue-500 px-2 py-1 text-[10px] font-bold text-white">ONLINE</span>');
+
+  return [
+    left.length ? `<div class="absolute left-2 top-2 z-10 flex max-w-[calc(100%-1rem)] flex-wrap gap-2">${left.join('')}</div>` : '',
+    right.length ? `<div class="absolute right-2 top-2 z-10 flex max-w-[calc(100%-1rem)] flex-wrap justify-end gap-2">${right.join('')}</div>` : '',
+  ].join('');
+}
+
 function renderCards(root, items) {
   let list = root.querySelector('ul.models-grid__list');
   if (!list) {
@@ -90,7 +107,7 @@ function renderCards(root, items) {
   }
   for (const it of (items || [])) {
     const li = document.createElement('li');
-    const badges = renderBadges(it.tags);
+    const badges = renderCardBadges(it.tags);
     li.innerHTML = `
       <article class="card border rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow">
         <a href="${it.link}" class="block" rel="bookmark">
