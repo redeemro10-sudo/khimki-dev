@@ -47,8 +47,8 @@
             </figure>
         @endif
 
-        <div class="mx-auto max-w-3xl rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-            <div class="blog-entry-content prose max-w-none prose-slate prose-headings:font-semibold prose-headings:text-slate-950 prose-p:text-slate-700 prose-p:leading-7 prose-a:text-blue-700 prose-a:no-underline hover:prose-a:text-blue-800 prose-strong:text-slate-900 prose-li:text-slate-700 prose-blockquote:border-slate-300 prose-blockquote:text-slate-700 prose-img:rounded-2xl">
+        <div class="mx-auto max-w-3xl rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8 lg:p-10">
+            <div class="blog-entry-content prose max-w-none prose-slate prose-headings:font-semibold prose-headings:text-slate-950 prose-p:text-slate-700 prose-a:text-blue-700 prose-a:no-underline hover:prose-a:text-blue-800 prose-strong:text-slate-900 prose-li:text-slate-700 prose-blockquote:border-slate-300 prose-blockquote:text-slate-700 prose-img:rounded-2xl">
                 @if (!empty($seoText))
                     {!! wpautop(wp_kses_post($seoText)) !!}
                 @else

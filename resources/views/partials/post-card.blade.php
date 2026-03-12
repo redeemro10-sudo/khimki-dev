@@ -25,11 +25,11 @@
             <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-950/55 via-slate-950/10 to-transparent"></div>
 
             <div class="absolute left-4 top-4 flex flex-wrap items-center gap-2">
-                <span class="rounded-full bg-white/92 px-3 py-1 text-xs font-semibold text-slate-800 shadow-sm">
+                <span class="rounded-full bg-slate-950/88 px-3.5 py-1.5 text-xs font-semibold text-white shadow-lg shadow-slate-950/20 ring-1 ring-white/15 backdrop-blur-sm">
                     {{ get_the_date('d.m.Y') }}
                 </span>
                 @if ($primaryCategory)
-                    <span class="rounded-full bg-blue-600/92 px-3 py-1 text-xs font-semibold text-white shadow-sm">
+                    <span class="rounded-full bg-blue-600 px-3.5 py-1.5 text-xs font-semibold text-white shadow-lg shadow-blue-900/20 ring-1 ring-white/15">
                         {{ $primaryCategory->name }}
                     </span>
                 @endif
@@ -37,16 +37,16 @@
         </figure>
     </a>
 
-    <div class="flex min-h-[220px] flex-col p-5">
+    <div class="flex min-h-[220px] flex-col px-6 py-5 sm:px-6 sm:py-6">
         <h3 class="mb-3 text-lg font-semibold leading-snug text-slate-900">
             <a href="{{ get_permalink() }}" class="transition hover:text-blue-700">{{ get_the_title() }}</a>
         </h3>
 
         @if ($summary !== '')
-            <p class="mb-5 text-sm leading-6 text-slate-600">{{ $summary }}</p>
+            <p class="mb-6 text-sm leading-6 text-slate-600">{{ $summary }}</p>
         @endif
 
-        <div class="mt-auto flex items-center justify-between gap-3 border-t border-slate-100 pt-4">
+        <div class="mt-auto flex items-center justify-between gap-3 border-t border-slate-100 pt-5">
             <time class="text-xs font-medium uppercase tracking-[0.18em] text-slate-400" datetime="{{ get_post_time('c', true) }}">
                 {{ get_the_date('j F Y') }}
             </time>
