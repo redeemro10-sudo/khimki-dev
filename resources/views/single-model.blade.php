@@ -561,17 +561,17 @@
                         {{-- 3. БЛОК КОНТАКТОВ (MAX VERTICAL С ПРОВЕРКОЙ НА ПУСТОТУ) --}}
                         @php
                             $max_data = [
-                                'phone' => '79879815874',
-                                'tg'    => '@elllie_mng',
-                                'wa'    => '79879815874',
-                                'max'   => base64_encode('https://max.ru/u/f9LHodD0cOKe3IufFQsYRevc9Xg5C9Ti1M8oCrvpFvP3YizC1L0e0bBa5VU')
+                                'encoded_phone' => base64_encode('tel:79879815874'),
+                                'encoded_tg'    => base64_encode('https://t.me/elllie_mng'),
+                                'encoded_wa'    => base64_encode('https://wa.me/79879815874'),
+                                'encoded_max'   => base64_encode('https://max.ru/u/f9LHodD0cOKe3IufFQsYRevc9Xg5C9Ti1M8oCrvpFvP3YizC1L0e0bBa5VU'),
                             ];
 
                             // Проверяем, заполнено ли хотя бы одно поле
-                            $has_any_contact = !empty($max_data['phone']) || 
-                                            !empty($max_data['tg']) || 
-                                            !empty($max_data['wa']) || 
-                                            !empty($max_data['max']);
+                            $has_any_contact = !empty($max_data['encoded_phone']) || 
+                                            !empty($max_data['encoded_tg']) || 
+                                            !empty($max_data['encoded_wa']) || 
+                                            !empty($max_data['encoded_max']);
                         @endphp
 
                         @if($has_any_contact)
@@ -592,9 +592,9 @@
                                     <div class="flex flex-col gap-3">
 
                                         {{-- Кнопка: Telegram --}}
-                                        @if($max_data['tg'])
+                                        @if($max_data['encoded_tg'])
                                             <button type="button" 
-                                                onclick="window.open('https://t.me/' + atob('{{ base64_encode(str_replace('@', '', $max_data['tg'])) }}'), '_blank')"
+                                                data-contact-link="{{ $max_data['encoded_tg'] }}"
                                                 class="flex items-center justify-center gap-3 w-full py-4 px-6 bg-white/10 hover:bg-white/20 rounded-xl transition-all duration-200 border border-white/20 outline-none cursor-pointer">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path fill="#ffffff" d="M470.435 45.423L16.827 221.249c-18.254 8.188-24.428 24.585-4.412 33.484l116.37 37.173l281.368-174.79c15.363-10.973 31.091-8.047 17.557 4.024L186.053 341.075l-7.591 93.076c7.031 14.371 19.905 14.438 28.117 7.295l66.858-63.589l114.505 86.187c26.595 15.826 41.066 5.613 46.788-23.394l75.105-357.47c7.798-35.705-5.5-51.437-39.4-37.757z"></path></svg>
                                                 Telegram
@@ -602,9 +602,9 @@
                                         @endif
 
                                         {{-- Кнопка: WhatsApp --}}
-                                        @if($max_data['wa'])
+                                        @if($max_data['encoded_wa'])
                                             <button type="button" 
-                                                onclick="window.open('https://wa.me/' + atob('{{ base64_encode(preg_replace('/[^0-9]/', '', $max_data['wa'])) }}'), '_blank')"
+                                                data-contact-link="{{ $max_data['encoded_wa'] }}"
                                                 class="flex items-center justify-center gap-3 w-full py-4 px-6 bg-white/10 hover:bg-white/20 rounded-xl transition-all duration-200 border border-white/20 outline-none cursor-pointer">
                                                 <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                                                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
@@ -614,9 +614,9 @@
                                         @endif
 
                                         {{-- Кнопка: Телефон --}}
-                                        @if($max_data['phone'])
+                                        @if($max_data['encoded_phone'])
                                             <button type="button" 
-                                                onclick="window.location.href='tel:' + atob('{{ base64_encode(preg_replace('/[^0-9+]/', '', $max_data['phone'])) }}')"
+                                                data-contact-link="{{ $max_data['encoded_phone'] }}"
                                                 class="flex items-center justify-center gap-3 w-full py-4 px-6 bg-white/10 hover:bg-white/20 rounded-xl transition-all duration-200 border border-white/20 outline-none cursor-pointer">
                                                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
@@ -626,9 +626,9 @@
                                         @endif             
                                                                   
                                         {{-- Кнопка: MAX (Акцентная) --}}
-                                        @if($max_data['max'])
+                                        @if($max_data['encoded_max'])
                                             <button type="button" 
-                                                onclick="window.open(atob('{{ $max_data['max'] }}'), '_blank')"
+                                                data-contact-link="{{ $max_data['encoded_max'] }}"
                                                 class="flex items-center justify-center gap-3 w-full py-4 px-6 bg-white/10 hover:bg-white/20 rounded-xl transition-all duration-200 border border-white/20 outline-none cursor-pointer">
                                                 <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 1000 1000">
                                                     <path d="M508.2 878.3c-75 0-109.8-11-170.4-54.7-38.3 49.3-159.7 87.8-165 21.9 0-49.5-11-91.2-23.4-136.9-14.8-56.2-31.6-118.8-31.6-209.5 0-216.6 177.8-379.6 388.4-379.6 210.8 0 376 171 376 381.6.7 207.3-166.6 376.1-374 377.2m3.1-571.6c-102.6-5.3-182.5 65.7-200.2 177-14.6 92.2 11.3 204.4 33.4 210.2 10.6 2.6 37.2-19 53.8-35.6a190 190 0 0 0 92.7 33c106.3 5.1 197.1-75.8 204.2-182 4.2-106.3-77.7-196.5-184-202.6Z"/>

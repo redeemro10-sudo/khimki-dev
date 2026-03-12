@@ -15,8 +15,16 @@
     ])->filter(fn ($menu) => has_nav_menu($menu['location']));
 
     $footerContacts = [
-        ['label' => 'Телеграм', 'value' => '@prostitutkikhimki', 'url' => 'https://t.me/prostitutkikhimki'],
-        ['label' => 'Email', 'value' => 'info@prostitutkikhimki.com', 'url' => 'mailto:info@prostitutkikhimki.com'],
+        [
+            'label' => 'Телеграм',
+            'encoded_value' => base64_encode('@prostitutkikhimki'),
+            'encoded_url' => base64_encode('https://t.me/prostitutkikhimki'),
+        ],
+        [
+            'label' => 'Email',
+            'encoded_value' => base64_encode('info@prostitutkikhimki.com'),
+            'encoded_url' => base64_encode('mailto:info@prostitutkikhimki.com'),
+        ],
         ['label' => null, 'value' => 'Химки, Московская область'],
         ['label' => null, 'value' => '24/7 (Круглосуточно)'],
     ];
@@ -49,10 +57,10 @@
                             @if (!empty($contact['label']))
                                 <span class="font-medium text-slate-700">{{ $contact['label'] }}:</span>
                             @endif
-                            @if (!empty($contact['url']))
+                            @if (!empty($contact['encoded_url']))
                                 <a class="{{ !empty($contact['label']) ? 'font-semibold text-slate-800 hover:text-blue-600' : 'hover:text-blue-600' }} transition"
-                                    href="{{ $contact['url'] }}">
-                                    {{ $contact['value'] }}
+                                    data-contact-link="{{ $contact['encoded_url'] }}"
+                                    data-contact-text="{{ $contact['encoded_value'] }}">
                                 </a>
                             @else
                                 <span class="{{ !empty($contact['label']) ? 'font-semibold text-slate-800' : '' }}">{{ $contact['value'] }}</span>

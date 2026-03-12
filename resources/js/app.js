@@ -333,6 +333,55 @@ import.meta.glob([
     });
   });
 
+  document.addEventListener('DOMContentLoaded', () => {
+    const decodeContactValue = (value) => {
+      if (!value) return '';
+
+      try {
+        return window.atob(value);
+      } catch (error) {
+        console.error('Failed to decode contact value', error);
+        return '';
+      }
+    };
+
+    document.querySelectorAll('[data-contact-text]').forEach((element) => {
+      const decodedText = decodeContactValue(element.getAttribute('data-contact-text'));
+
+      if (decodedText) {
+        element.textContent = decodedText;
+      }
+    });
+
+    document.querySelectorAll('[data-contact-link]').forEach((element) => {
+      const decodedLink = decodeContactValue(element.getAttribute('data-contact-link'));
+
+      if (!decodedLink) return;
+
+      const isExternalLink = /^https?:\/\//i.test(decodedLink);
+
+      if (element.tagName === 'A') {
+        element.setAttribute('href', decodedLink);
+
+        if (isExternalLink) {
+          element.setAttribute('target', '_blank');
+          element.setAttribute('rel', 'noopener');
+        }
+
+        return;
+      }
+
+      element.addEventListener('click', () => {
+        if (isExternalLink) {
+          window.open(decodedLink, '_blank', 'noopener');
+          return;
+        }
+
+        window.location.href = decodedLink;
+      });
+    });
+  });
+
   // Добавьте этот код в консоль браузера для отладки фильтров
 
   // 1. Проверка инициализации
