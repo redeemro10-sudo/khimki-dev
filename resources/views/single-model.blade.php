@@ -10,8 +10,8 @@
             return $term->name;
         }, $districtTerms));
         $districtName = $districtTerms[0]->name ?? null;
-        $districtSlug = $districtTerms[0]->slug ?? null;
-        $districtUrl = $districtSlug ? home_url('/rayony/' . $districtSlug . '/') : null;
+        $districtUrl = ! empty($districtTerms[0]) ? get_term_link($districtTerms[0]) : null;
+        $districtUrl = is_wp_error($districtUrl) ? null : $districtUrl;
         $station = wp_get_post_terms($id, 'rail_station', ['fields' => 'names']);
         /* $service = wp_get_post_terms($id, 'service', ['fields' => 'names']); */
         $services = wp_get_post_terms($id, 'service', ['fields' => 'all']); // массив WP_Term
