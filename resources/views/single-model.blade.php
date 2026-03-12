@@ -52,6 +52,13 @@
         // SEO заголовок
         $bits = array_filter([$name, $district[0] ?? null, $station[0] ?? null]);
         $h1 = implode(' · ', $bits);
+        $modelImageAltParts = array_filter([
+            $name ? 'Имя: ' . $name : null,
+            $age ? 'Возраст: ' . $age : null,
+            $bust ? 'Грудь: ' . $bust : null,
+        ]);
+        $modelImageAlt = implode(', ', $modelImageAltParts);
+        $modelImageTitle = $name ? 'Эскортница ' . $name . ($age ? ', ' . $age : '') : null;
     @endphp
 
     <article itemscope itemtype="https://schema.org/Person" class="single-model">
@@ -194,7 +201,7 @@
                                             <div class="swiper-slide">
                                                 <a href="{{ wp_get_attachment_image_url($imgId, 'full') }}"
                                                     data-lightbox="gallery"
-                                                    data-title="{{ get_post_meta($imgId, '_wp_attachment_image_alt', true) }}">
+                                                    data-title="{{ esc_attr($modelImageAlt) }}">
                                                     <div class="relative overflow-hidden aspect-[3/4] lg:aspect-[4/5]">
                                                         @php
                                                             // Создаем правильный атрибут sizes без 'auto'
@@ -211,11 +218,21 @@
                                                                             ? 'is-lcp '
                                                                             : '') .
                                                                         'w-full h-full object-cover hover:scale-105 transition-transform duration-500',
+                                                                    'alt' => $modelImageAlt,
+                                                                    'title' => $modelImageTitle,
                                                                     'sizes' => $sizes,
                                                                     'loading' =>
                                                                         $imgIndex === 0 && empty($videos)
                                                                             ? 'eager'
                                                                             : 'lazy',
+                                                                    'fetchpriority' =>
+                                                                        $imgIndex === 0 && empty($videos)
+                                                                            ? 'high'
+                                                                            : 'low',
+                                                                    'decoding' =>
+                                                                        $imgIndex === 0 && empty($videos)
+                                                                            ? 'auto'
+                                                                            : 'async',
                                                                 ],
                                                             );
 
@@ -302,8 +319,12 @@
                                                                 [
                                                                     'class' =>
                                                                         'w-full h-full object-cover group-hover:scale-110 transition-transform duration-300',
+                                                                    'alt' => $modelImageAlt,
+                                                                    'title' => $modelImageTitle,
                                                                     'sizes' => $thumb_sizes,
                                                                     'loading' => 'lazy',
+                                                                    'fetchpriority' => 'low',
+                                                                    'decoding' => 'async',
                                                                 ],
                                                             );
 
