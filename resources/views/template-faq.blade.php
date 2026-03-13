@@ -7,33 +7,8 @@
 @section('content')
   @while(have_posts()) @php(the_post())
     <?php
-      $siteName = get_bloginfo('name');
       $faqItems = \App\get_faq_items(get_the_ID());
-      $schemaPrefix = chr(64);
-      $schemaContextKey = $schemaPrefix.'context';
-      $schemaTypeKey = $schemaPrefix.'type';
-
-      $faqSchema = [
-          $schemaContextKey => 'https://schema.org',
-          $schemaTypeKey => 'FAQPage',
-          'mainEntity' => array_map(static function ($item) {
-              $schemaTypeKey = chr(64).'type';
-
-              return [
-                  $schemaTypeKey => 'Question',
-                  'name' => $item['question'],
-                  'acceptedAnswer' => [
-                      $schemaTypeKey => 'Answer',
-                      'text' => wp_strip_all_tags($item['answer']),
-                  ],
-              ];
-          }, $faqItems),
-      ];
     ?>
-
-    @if (!empty($faqItems))
-      <script type="application/ld+json">{!! wp_json_encode($faqSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
-    @endif
 
     @include('partials.page-header')
 
