@@ -10,6 +10,9 @@
         $articleHtml = preg_replace('/\sitemprop=(["\']).*?\1/iu', '', $articleHtml);
         $articleHtml = preg_replace('/\sitemtype=(["\']).*?\1/iu', '', $articleHtml);
         $articleHtml = preg_replace('/\sitemscope\b/iu', '', $articleHtml);
+        $articleHtml = preg_replace('/<\/p>\s*<\/p>/iu', '</p>', $articleHtml);
+        $articleHtml = preg_replace('/(<\/(?:div|section|article|figure|figcaption|blockquote|li|ul|ol|table|tbody|thead|tfoot|tr|td|th|h[1-6])>)\s*<\/p>/iu', '$1', $articleHtml);
+        $articleHtml = force_balance_tags($articleHtml);
     @endphp
 
     <article {{ post_class('mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8') }}>
