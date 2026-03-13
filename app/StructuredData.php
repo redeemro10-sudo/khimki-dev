@@ -237,7 +237,8 @@ class StructuredData
         $listId = untrailingslashit($ctx['url']) . '/#article-list';
 
         $items = [];
-        foreach ($posts as $index => $post) {
+        $position = $offset + 1;
+        foreach ($posts as $post) {
             if (!$post instanceof WP_Post) {
                 continue;
             }
@@ -245,7 +246,7 @@ class StructuredData
             $articleUrl = get_permalink($post);
             $items[] = [
                 '@type' => 'ListItem',
-                'position' => $offset + $index + 1,
+                'position' => $position++,
                 'item' => self::prune([
                     '@type' => 'BlogPosting',
                     '@id' => $articleUrl . '#blogposting',
@@ -366,7 +367,8 @@ class StructuredData
         $listId = $ctx['url'] . '#list';
         $items = [];
 
-        foreach ($terms as $index => $term) {
+        $position = 1;
+        foreach ($terms as $term) {
             if (!$term instanceof WP_Term) {
                 continue;
             }
@@ -374,12 +376,8 @@ class StructuredData
             $termUrl = get_term_link($term);
             $items[] = [
                 '@type' => 'ListItem',
-                'position' => $index + 1,
-                'item' => [
-                    '@type' => 'Thing',
-                    'name' => $term->name,
-                    'url' => is_wp_error($termUrl) ? null : $termUrl,
-                ],
+                'position' => $position++,
+                'item' => self::taxonomyIndexItemSchema($taxSlug, $term, is_wp_error($termUrl) ? null : $termUrl),
             ];
         }
 
@@ -399,16 +397,35 @@ class StructuredData
         ];
     }
 
+    private static function taxonomyIndexItemSchema(string $taxonomy, WP_Term $term, ?string $url): array
+    {
+        if (in_array($taxonomy, ['district', 'rail_station'], true)) {
+            return self::prune([
+                '@type' => 'Place',
+                'name' => $term->name,
+                'url' => $url,
+                'containedInPlace' => self::cityNode(),
+            ]);
+        }
+
+        return self::prune([
+            '@type' => 'Thing',
+            'name' => $term->name,
+            'url' => $url,
+        ]);
+    }
+
     private static function sitemapGraphs(array $ctx): array
     {
         $entries = self::sitemapEntries();
         $listId = $ctx['url'] . '#navigation-list';
 
         $items = [];
-        foreach ($entries as $index => $entry) {
+        $position = 1;
+        foreach ($entries as $entry) {
             $items[] = [
                 '@type' => 'ListItem',
-                'position' => $index + 1,
+                'position' => $position++,
                 'name' => $entry['name'],
                 'url' => $entry['url'],
             ];
@@ -442,7 +459,8 @@ class StructuredData
         $listId = $ctx['url'] . '#list';
         $mappedItems = [];
 
-        foreach ($items as $index => $item) {
+        $position = 1;
+        foreach ($items as $item) {
             if (!is_array($item)) {
                 continue;
             }
@@ -450,7 +468,7 @@ class StructuredData
             $caption = self::modelImageCaption($item);
             $mappedItems[] = [
                 '@type' => 'ListItem',
-                'position' => $index + 1,
+                'position' => $position++,
                 'item' => self::prune([
                     '@type' => 'Person',
                     'name' => $item['title'] ?? null,
@@ -483,6 +501,56 @@ class StructuredData
 
     private static function breadcrumbsSchema(array $ctx): ?array
     {
+        if (is_post_type_archive('blog') || is_home()) {
+            return [
+                '@type' => 'BreadcrumbList',
+                '@id' => $ctx['url'] . '#breadcrumb',
+                'itemListElement' => [
+                    [
+                        '@type' => 'ListItem',
+                        'position' => 1,
+                        'name' => self::homeCrumbLabel(),
+                        'item' => home_url('/'),
+                    ],
+                    [
+                        '@type' => 'ListItem',
+                        'position' => 2,
+                        'name' => self::blogLabel(),
+                        'item' => $ctx['url'],
+                    ],
+                ],
+            ];
+        }
+
+        if (self::isBlogSingle()) {
+            $post = get_post();
+            if ($post instanceof WP_Post) {
+                return [
+                    '@type' => 'BreadcrumbList',
+                    '@id' => $ctx['url'] . '#breadcrumb',
+                    'itemListElement' => [
+                        [
+                            '@type' => 'ListItem',
+                            'position' => 1,
+                            'name' => self::homeCrumbLabel(),
+                            'item' => home_url('/'),
+                        ],
+                        [
+                            '@type' => 'ListItem',
+                            'position' => 2,
+                            'name' => self::blogLabel(),
+                            'item' => get_post_type_archive_link('blog'),
+                        ],
+                        [
+                            '@type' => 'ListItem',
+                            'position' => 3,
+                            'name' => get_the_title($post),
+                        ],
+                    ],
+                ];
+            }
+        }
+
         $trail = self::breadcrumbTrail();
         if ($trail === [] || count($trail) < 2) {
             return null;
