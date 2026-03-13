@@ -471,7 +471,7 @@ class StructuredData
 
         return [
             self::basePageNode('CollectionPage', $ctx, [
-                'about' => ['@id' => $ctx['organizationId']],
+                'about' => is_front_page() ? ['@id' => $ctx['organizationId']] : null,
                 'mainEntity' => ['@id' => $listId],
             ]),
             [
@@ -494,12 +494,23 @@ class StructuredData
         }
 
         $items = [];
+        $lastIndex = count($trail) - 1;
         foreach ($trail as $index => $crumb) {
+            $itemUrl = $crumb['url'] ?? null;
+            if ($itemUrl === null && $index === $lastIndex) {
+                $itemUrl = $ctx['url'];
+            }
+
+            $label = (string) ($crumb['label'] ?? '');
+            if ($index === 0) {
+                $label = self::homeCrumbLabel();
+            }
+
             $items[] = self::prune([
                 '@type' => 'ListItem',
                 'position' => $index + 1,
-                'name' => wp_strip_all_tags((string) ($crumb['label'] ?? '')),
-                'item' => $crumb['url'] ?? null,
+                'name' => wp_strip_all_tags($label),
+                'item' => $itemUrl,
             ]);
         }
 
@@ -570,23 +581,26 @@ class StructuredData
     private static function logoSchema(): ?array
     {
         $logoId = (int) get_theme_mod('custom_logo');
-        if ($logoId <= 0) {
-            return null;
+        if ($logoId > 0) {
+            $logoUrl = wp_get_attachment_image_url($logoId, 'full');
+            if ($logoUrl) {
+                $meta = wp_get_attachment_metadata($logoId);
+
+                return self::prune([
+                    '@type' => 'ImageObject',
+                    'url' => $logoUrl,
+                    'width' => isset($meta['width']) ? (int) $meta['width'] : null,
+                    'height' => isset($meta['height']) ? (int) $meta['height'] : null,
+                ]);
+            }
         }
 
-        $logoUrl = wp_get_attachment_image_url($logoId, 'full');
-        if (!$logoUrl) {
-            return null;
-        }
-
-        $meta = wp_get_attachment_metadata($logoId);
-
-        return self::prune([
+        return [
             '@type' => 'ImageObject',
-            'url' => $logoUrl,
-            'width' => isset($meta['width']) ? (int) $meta['width'] : null,
-            'height' => isset($meta['height']) ? (int) $meta['height'] : null,
-        ]);
+            'url' => home_url('/images/logo.svg'),
+            'width' => 36,
+            'height' => 36,
+        ];
     }
 
     private static function imageObjectFromAttachment(int $attachmentId, string $id): ?array
@@ -1130,6 +1144,11 @@ class StructuredData
         $slug = (string) get_post_field('post_name', get_queried_object_id());
 
         return in_array($slug, ['privacy', 'terms'], true);
+    }
+
+    private static function homeCrumbLabel(): string
+    {
+        return 'Индивидуалки Химки';
     }
 
     private static function canonical(): string
