@@ -72,6 +72,7 @@
                                 <a class="{{ !empty($contact['label']) ? 'font-semibold text-slate-800 hover:text-blue-600' : 'hover:text-blue-600' }} transition"
                                     data-contact-link="{{ $contact['encoded_url'] }}"
                                     data-contact-text="{{ $contact['encoded_value'] }}">
+                                    {{ base64_decode($contact['encoded_value']) }}
                                 </a>
                             @else
                                 <span class="{{ !empty($contact['label']) ? 'font-semibold text-slate-800' : '' }}">{{ $contact['value'] }}</span>
