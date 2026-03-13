@@ -6,8 +6,8 @@
 
 @section('content')
   @while(have_posts()) @php(the_post())
-    @php
-      $pageByTemplate = static function (string $template): ?\WP_Post {
+    <?php
+      $pageByTemplate = static function ($template) {
           $pages = get_posts([
               'post_type' => 'page',
               'posts_per_page' => 1,
@@ -20,8 +20,8 @@
           return $pages[0] ?? null;
       };
 
-      $resolvePageLink = static function (array $paths, string $label, ?string $fallbackUrl = null): ?array {
-          foreach ($paths as $path) {
+      $resolvePageLink = static function ($paths, $label, $fallbackUrl = null) {
+          foreach ((array) $paths as $path) {
               $page = get_page_by_path($path);
               if ($page instanceof \WP_Post) {
                   return [
@@ -103,7 +103,7 @@
               $serviceTerms = [];
           }
       }
-    @endphp
+    ?>
 
     @include('partials.page-header')
 
