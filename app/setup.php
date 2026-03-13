@@ -614,6 +614,7 @@ add_action('template_redirect', function () {
         $html = preg_replace('#<script[^>]+type=["\']speculationrules["\'][^>]*>.*?</script>#is', '', $html, 1);
         // инлайн block supports
         $html = preg_replace('#<style[^>]+id=["\']core-block-supports-inline-css["\'][^>]*>.*?</style>#is', '', $html, 1);
+        $html = preg_replace('#<link\b[^>]*rel=["\']preload["\'][^>]*\bas=["\']video["\'][^>]*>#i', '', $html);
         return $html;
     });
 });
