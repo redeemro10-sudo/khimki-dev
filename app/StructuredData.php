@@ -126,12 +126,7 @@ class StructuredData
             'logo' => self::logoSchema(),
             'email' => self::contact('email') ?: null,
             'telephone' => self::contact('phone') ?: null,
-            'contactPoint' => [
-                '@type' => 'ContactPoint',
-                'contactType' => 'customer service',
-                'areaServed' => self::cityNode(),
-                'availableLanguage' => ['Russian'],
-            ],
+            'contactPoint' => self::contactPointSchema(),
             'areaServed' => self::cityNode(),
             'sameAs' => $sameAs ?: null,
         ];
@@ -585,22 +580,47 @@ class StructuredData
             $logoUrl = wp_get_attachment_image_url($logoId, 'full');
             if ($logoUrl) {
                 $meta = wp_get_attachment_metadata($logoId);
+                $width = isset($meta['width']) ? (int) $meta['width'] : null;
+                $height = isset($meta['height']) ? (int) $meta['height'] : null;
 
-                return self::prune([
-                    '@type' => 'ImageObject',
-                    'url' => $logoUrl,
-                    'width' => isset($meta['width']) ? (int) $meta['width'] : null,
-                    'height' => isset($meta['height']) ? (int) $meta['height'] : null,
-                ]);
+                if (($width ?? 0) >= 112) {
+                    return self::prune([
+                        '@type' => 'ImageObject',
+                        'url' => $logoUrl,
+                        'width' => $width,
+                        'height' => $height,
+                    ]);
+                }
             }
         }
 
         return [
             '@type' => 'ImageObject',
-            'url' => home_url('/images/logo.svg'),
-            'width' => 36,
-            'height' => 36,
+            'url' => get_theme_file_uri('resources/images/web-app-manifest-512x512.png'),
+            'width' => 512,
+            'height' => 512,
         ];
+    }
+
+    private static function contactPointSchema(): ?array
+    {
+        $phone = self::contact('phone');
+        $email = self::contact('email');
+        $url = self::primaryContactUrl();
+
+        if (!$phone && !$email && !$url) {
+            return null;
+        }
+
+        return self::prune([
+            '@type' => 'ContactPoint',
+            'contactType' => 'customer service',
+            'telephone' => $phone ?: null,
+            'email' => $email ?: null,
+            'url' => $url ?: null,
+            'areaServed' => self::cityNode(),
+            'availableLanguage' => ['Russian'],
+        ]);
     }
 
     private static function imageObjectFromAttachment(int $attachmentId, string $id): ?array
@@ -1208,6 +1228,18 @@ class StructuredData
         $value = get_option('contact_' . $key);
 
         return $value ? (is_string($value) ? trim($value) : (string) $value) : null;
+    }
+
+    private static function primaryContactUrl(): ?string
+    {
+        foreach (['telegram_url', 'whatsapp_url', 'viber_url', 'instagram_url', 'vk_url'] as $key) {
+            $value = self::contact($key);
+            if ($value) {
+                return $value;
+            }
+        }
+
+        return null;
     }
 
     private static function prune($value)
