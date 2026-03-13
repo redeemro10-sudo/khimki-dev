@@ -6,65 +6,104 @@
 
 @section('content')
   @while(have_posts()) @php(the_post())
-    <?php
-      $currentPageId = get_the_ID();
-
-      $pages = get_pages([
-          'sort_column' => 'menu_order,post_title',
-          'sort_order' => 'ASC',
-          'post_status' => 'publish',
-      ]);
-
-      $pageLinks = array_values(array_filter($pages, static function ($page) use ($currentPageId) {
-          return $page instanceof \WP_Post
-              && (int) $page->ID !== (int) $currentPageId
-              && (int) $page->post_parent === 0;
-      }));
-
-      $archiveLinks = [];
-
-      if (post_type_exists('blog')) {
-          $blogType = get_post_type_object('blog');
-          $blogArchiveUrl = get_post_type_archive_link('blog');
-
-          if ($blogType && $blogArchiveUrl) {
-              $archiveLinks[] = [
-                  'title' => $blogType->labels->name ?? 'Блог',
-                  'url' => $blogArchiveUrl,
-                  'description' => 'Архив статей и публикаций',
-              ];
-          }
-      }
-
-      $taxonomySections = [];
-
-      foreach ([
-          ['slug' => 'service', 'title' => 'Услуги'],
-          ['slug' => 'district', 'title' => 'Районы'],
-          ['slug' => 'rail_station', 'title' => 'Станции'],
-          ['slug' => 'nationality', 'title' => 'Национальность'],
-          ['slug' => 'hair_color', 'title' => 'Цвет волос'],
-      ] as $section) {
-          if (! taxonomy_exists($section['slug'])) {
-              continue;
-          }
-
-          $terms = get_terms([
-              'taxonomy' => $section['slug'],
-              'hide_empty' => true,
-              'parent' => 0,
+    @php
+      $pageByTemplate = static function (string $template): ?\WP_Post {
+          $pages = get_posts([
+              'post_type' => 'page',
+              'posts_per_page' => 1,
+              'post_status' => 'publish',
+              'meta_key' => '_wp_page_template',
+              'meta_value' => $template,
+              'suppress_filters' => true,
           ]);
 
-          if (is_wp_error($terms) || empty($terms)) {
-              continue;
+          return $pages[0] ?? null;
+      };
+
+      $resolvePageLink = static function (array $paths, string $label, ?string $fallbackUrl = null): ?array {
+          foreach ($paths as $path) {
+              $page = get_page_by_path($path);
+              if ($page instanceof \WP_Post) {
+                  return [
+                      'label' => $label,
+                      'url' => get_permalink($page),
+                  ];
+              }
           }
 
-          $taxonomySections[] = [
-              'title' => $section['title'],
-              'terms' => $terms,
-          ];
+          if ($fallbackUrl) {
+              return [
+                  'label' => $label,
+                  'url' => $fallbackUrl,
+              ];
+          }
+
+          return null;
+      };
+
+      $infoLinks = array_values(array_filter([
+          $resolvePageLink(['o-nas', 'about'], 'О нас'),
+          (function () {
+              $blogUrl = get_post_type_archive_link('blog');
+
+              return $blogUrl ? [
+                  'label' => 'Блог',
+                  'url' => $blogUrl,
+              ] : null;
+          })(),
+          (function () use ($pageByTemplate, $resolvePageLink) {
+              $faqPage = $pageByTemplate('template-faq.blade.php');
+              if ($faqPage instanceof \WP_Post) {
+                  return [
+                      'label' => get_the_title($faqPage) ?: 'FAQ',
+                      'url' => get_permalink($faqPage),
+                  ];
+              }
+
+              return $resolvePageLink(['faq'], 'FAQ');
+          })(),
+      ]));
+
+      $sectionLinks = array_values(array_filter([
+          $resolvePageLink(['proverennye'], 'Проверенные', home_url('/proverennye/')),
+          $resolvePageLink(['deshovyye'], 'Дешёвые', home_url('/deshovyye/')),
+          $resolvePageLink(['elitnye'], 'Элитные', home_url('/elitnye/')),
+          $resolvePageLink(['na-vyyezd'], 'Выезд', home_url('/na-vyyezd/')),
+          $resolvePageLink(['apartamenty'], 'Апартаменты', home_url('/apartamenty/')),
+          $resolvePageLink(['uslugi'], 'Услуги', home_url('/uslugi/')),
+          $resolvePageLink(['rajony'], 'Районы', home_url('/rajony/')),
+      ]));
+
+      $districtTerms = [];
+      if (taxonomy_exists('district')) {
+          $districtTerms = get_terms([
+              'taxonomy' => 'district',
+              'hide_empty' => true,
+              'parent' => 0,
+              'orderby' => 'name',
+              'order' => 'ASC',
+          ]);
+
+          if (is_wp_error($districtTerms)) {
+              $districtTerms = [];
+          }
       }
-    ?>
+
+      $serviceTerms = [];
+      if (taxonomy_exists('service')) {
+          $serviceTerms = get_terms([
+              'taxonomy' => 'service',
+              'hide_empty' => true,
+              'parent' => 0,
+              'orderby' => 'name',
+              'order' => 'ASC',
+          ]);
+
+          if (is_wp_error($serviceTerms)) {
+              $serviceTerms = [];
+          }
+      }
+    @endphp
 
     @include('partials.page-header')
 
@@ -74,45 +113,73 @@
           @include('partials.content-page', ['contentClass' => 'catalog-copy'])
         </div>
 
-        @if (!empty($pageLinks))
-          <section class="space-y-4">
-            <div class="flex items-center justify-between gap-4">
-              <h2 class="text-2xl font-semibold text-slate-900">Основные страницы</h2>
-              <span class="text-sm text-slate-400">{{ count($pageLinks) }} ссылок</span>
-            </div>
+        <div class="grid gap-6 lg:grid-cols-2">
+          <section class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 class="text-2xl font-semibold text-slate-900">Информация</h2>
 
-            <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              @foreach ($pageLinks as $page)
-                <li>
-                  <a class="block rounded-2xl border border-slate-200 bg-white p-4 transition hover:bg-slate-50" href="{{ get_permalink($page) }}">
-                    <h3 class="font-medium text-slate-900">{{ get_the_title($page) }}</h3>
-                  </a>
-                </li>
-              @endforeach
-            </ul>
+            @if (!empty($infoLinks))
+              <ul class="mt-4 space-y-3">
+                @foreach ($infoLinks as $link)
+                  <li>
+                    <a class="text-base text-slate-700 transition hover:text-slate-950 hover:underline" href="{{ $link['url'] }}">
+                      {{ $link['label'] }}
+                    </a>
+                  </li>
+                @endforeach
+              </ul>
+            @endif
           </section>
-        @endif
 
-        @if (!empty($archiveLinks))
-          <section class="space-y-4">
-            <h2 class="text-2xl font-semibold text-slate-900">Разделы сайта</h2>
+          <section class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 class="text-2xl font-semibold text-slate-900">Разделы</h2>
 
-            <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              @foreach ($archiveLinks as $link)
-                <li>
-                  <a class="block rounded-2xl border border-slate-200 bg-white p-4 transition hover:bg-slate-50" href="{{ $link['url'] }}">
-                    <h3 class="font-medium text-slate-900">{{ $link['title'] }}</h3>
-                    <div class="mt-1 text-sm text-slate-500">{{ $link['description'] }}</div>
-                  </a>
-                </li>
-              @endforeach
-            </ul>
+            @if (!empty($sectionLinks))
+              <ul class="mt-4 space-y-3">
+                @foreach ($sectionLinks as $link)
+                  <li>
+                    <a class="text-base text-slate-700 transition hover:text-slate-950 hover:underline" href="{{ $link['url'] }}">
+                      {{ $link['label'] }}
+                    </a>
+                  </li>
+                @endforeach
+              </ul>
+            @endif
           </section>
-        @endif
+        </div>
 
-        @foreach ($taxonomySections as $section)
-          <x-terms-list :terms="$section['terms']" :title="$section['title']" />
-        @endforeach
+        <div class="grid gap-6 lg:grid-cols-2">
+          <section class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 class="text-2xl font-semibold text-slate-900">Районы</h2>
+
+            @if (!empty($districtTerms))
+              <ul class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                @foreach ($districtTerms as $term)
+                  <li>
+                    <a class="text-base text-slate-700 transition hover:text-slate-950 hover:underline" href="{{ get_term_link($term) }}">
+                      {{ $term->name }}
+                    </a>
+                  </li>
+                @endforeach
+              </ul>
+            @endif
+          </section>
+
+          <section class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 class="text-2xl font-semibold text-slate-900">Услуги</h2>
+
+            @if (!empty($serviceTerms))
+              <ul class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                @foreach ($serviceTerms as $term)
+                  <li>
+                    <a class="text-base text-slate-700 transition hover:text-slate-950 hover:underline" href="{{ get_term_link($term) }}">
+                      {{ $term->name }}
+                    </a>
+                  </li>
+                @endforeach
+              </ul>
+            @endif
+          </section>
+        </div>
       </div>
     </section>
   @endwhile
