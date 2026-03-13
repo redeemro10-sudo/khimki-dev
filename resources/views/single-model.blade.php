@@ -601,12 +601,7 @@
 
                         {{-- 3. БЛОК КОНТАКТОВ (MAX VERTICAL С ПРОВЕРКОЙ НА ПУСТОТУ) --}}
                         @php
-                            $max_data = [
-                                'encoded_phone' => base64_encode('tel:79879815874'),
-                                'encoded_tg'    => base64_encode('https://t.me/elllie_mng'),
-                                'encoded_wa'    => base64_encode('https://wa.me/79879815874'),
-                                'encoded_max'   => base64_encode('https://max.ru/u/f9LHodD0cOKe3IufFQsYRevc9Xg5C9Ti1M8oCrvpFvP3YizC1L0e0bBa5VU'),
-                            ];
+                            $max_data = \App\ContactData::modelLinks();
 
                             // Проверяем, заполнено ли хотя бы одно поле
                             $has_any_contact = !empty($max_data['encoded_phone']) || 

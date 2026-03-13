@@ -14,20 +14,7 @@
         ],
     ])->filter(fn ($menu) => has_nav_menu($menu['location']));
 
-    $footerContacts = [
-        [
-            'label' => 'Телеграм',
-            'encoded_value' => base64_encode('@prostitutkikhimki'),
-            'encoded_url' => base64_encode('https://t.me/prostitutkikhimki'),
-        ],
-        [
-            'label' => 'Email',
-            'encoded_value' => base64_encode('info@prostitutkikhimki.com'),
-            'encoded_url' => base64_encode('mailto:info@prostitutkikhimki.com'),
-        ],
-        ['label' => null, 'value' => 'Химки, Московская область'],
-        ['label' => null, 'value' => '24/7 (Круглосуточно)'],
-    ];
+    $footerContacts = \App\ContactData::footerContacts();
 
     $sitemapPage = get_page_by_path('sitemap');
     $sitemapUrl = $sitemapPage ? get_permalink($sitemapPage) : home_url('/sitemap/');
@@ -71,8 +58,9 @@
                             @if (!empty($contact['encoded_url']))
                                 <a class="{{ !empty($contact['label']) ? 'font-semibold text-slate-800 hover:text-blue-600' : 'hover:text-blue-600' }} transition"
                                     data-contact-link="{{ $contact['encoded_url'] }}"
-                                    data-contact-text="{{ $contact['encoded_value'] }}">
-                                    {{ base64_decode($contact['encoded_value']) }}
+                                    data-contact-text="{{ $contact['encoded_value'] }}"
+                                    aria-label="{{ $contact['label'] ?: 'Контакт' }}">
+                                    Показать
                                 </a>
                             @else
                                 <span class="{{ !empty($contact['label']) ? 'font-semibold text-slate-800' : '' }}">{{ $contact['value'] }}</span>
