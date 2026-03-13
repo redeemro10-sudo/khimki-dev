@@ -10,9 +10,7 @@
 
     <section class="mx-auto max-w-4xl px-4 py-4">
       <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
-        <div class="prose max-w-none prose-slate prose-headings:text-slate-900 prose-p:text-slate-600 prose-li:text-slate-600">
-          @include('partials.content-page')
-        </div>
+        @include('partials.content-page', ['contentClass' => 'catalog-copy'])
       </article>
     </section>
   @endwhile

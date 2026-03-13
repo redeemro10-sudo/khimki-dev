@@ -1,7 +1,7 @@
 @php
     $id = get_the_ID();
     $pageText = $id ? get_post_meta($id, '_page_text', true) : '';
-    $contentClass = $contentClass ?? 'prose mt-2 max-w-none';
+    $contentClass = $contentClass ?? 'catalog-copy';
 @endphp
 
 @if (!empty($pageText))

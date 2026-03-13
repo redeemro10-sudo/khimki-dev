@@ -70,9 +70,9 @@
 
     <section class="mx-auto max-w-7xl px-4 py-4">
       <div class="space-y-8">
-        <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm prose max-w-none prose-slate">
-          @include('partials.content-page')
-        </article>
+        <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+          @include('partials.content-page', ['contentClass' => 'catalog-copy'])
+        </div>
 
         @if (!empty($pageLinks))
           <section class="space-y-4">

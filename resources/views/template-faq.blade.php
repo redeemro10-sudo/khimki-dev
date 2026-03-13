@@ -17,15 +17,15 @@
           <?php
             ob_start();
           ?>
-          @include('partials.content-page')
+          @include('partials.content-page', ['contentClass' => 'catalog-copy'])
           <?php
             $pageContent = trim(ob_get_clean());
           ?>
 
           @if (!empty($pageContent))
-            <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm prose max-w-none prose-slate">
+            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
               {!! $pageContent !!}
-            </article>
+            </div>
           @endif
 
           @if (!empty($faqItems))
