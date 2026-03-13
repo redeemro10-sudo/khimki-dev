@@ -38,9 +38,9 @@
     </a>
 
     <div class="flex min-h-[220px] flex-col px-6 py-5 sm:px-6 sm:py-6">
-        <h3 class="mb-3 text-lg font-semibold leading-snug text-slate-900">
+        <div class="mb-3 text-lg font-semibold leading-snug text-slate-900">
             <a href="{{ get_permalink() }}" class="transition hover:text-blue-700">{{ get_the_title() }}</a>
-        </h3>
+        </div>
 
         @if ($summary !== '')
             <p class="mb-6 text-sm leading-6 text-slate-600">{{ $summary }}</p>
