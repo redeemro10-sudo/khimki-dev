@@ -2,9 +2,9 @@
 
 <div {{ $attributes->merge(['class' => 'flex flex-col']) }}>
     @if ($title)
-        <h3 class="mb-4 border-b border-black w-fit pb-3 text-sm font-semibold uppercase tracking-wider text-slate-900">
+        <div class="mb-4 border-b border-black w-fit pb-3 text-sm font-semibold uppercase tracking-wider text-slate-900">
             {!! $title !!}
-        </h3>
+        </div>
     @endif
 
     @if (has_nav_menu($location))
