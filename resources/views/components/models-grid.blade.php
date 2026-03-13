@@ -1,4 +1,4 @@
-@props([
+﻿@props([
     'title' => null,
     'id' => null,
     'showFilters' => true,
@@ -10,20 +10,20 @@
     $cfg = is_array($config ?? null) ? $config : [];
     $showFilters = (bool) ($showFilters ?? true);
 
-    // SSR через REST-контроллер
+    // SSR С‡РµСЂРµР· REST-РєРѕРЅС‚СЂРѕР»Р»РµСЂ
     $req = new \WP_REST_Request('GET', '/site/v1/models');
     $req->set_param('page', 1);
     $req->set_param('per_page', (int) ($cfg['per_page'] ?? 12));
     $req->set_param('order', $cfg['order'] ?? 'date');
 
-    // Таксономии
+    // РўР°РєСЃРѕРЅРѕРјРёРё
     foreach ((array) ($cfg['tax'] ?? []) as $tax => $vals) {
         if (!empty($vals)) {
             $req->set_param($tax, array_values((array) $vals));
         }
     }
 
-    // Цена
+    // Р¦РµРЅР°
     if (array_key_exists('price', $cfg)) {
         if (isset($cfg['price']['min'])) {
             $req->set_param('price_min', (int) $cfg['price']['min']);
@@ -33,7 +33,7 @@
         }
     }
 
-    // Прочие мета (диапазоны и bool)
+    // РџСЂРѕС‡РёРµ РјРµС‚Р° (РґРёР°РїР°Р·РѕРЅС‹ Рё bool)
     foreach ((array) ($cfg['meta'] ?? []) as $k => $v) {
         if (is_array($v) && isset($v[0], $v[1])) {
             if ($k === 'age') {
@@ -86,7 +86,7 @@
 
     <div class="flex flex-col lg:flex-row gap-6">
         @if ($showFilters)
-            {{-- Мобильная кнопка открытия фильтров --}}
+            {{-- РњРѕР±РёР»СЊРЅР°СЏ РєРЅРѕРїРєР° РѕС‚РєСЂС‹С‚РёСЏ С„РёР»СЊС‚СЂРѕРІ --}}
             <button type="button" id="filters-toggle-{{ $id }}"
                 class="lg:hidden fixed bottom-6 right-6 z-30 flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -94,22 +94,22 @@
                         d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4">
                     </path>
                 </svg>
-                <span class="font-medium">Фильтры</span>
+                <span class="font-medium">Р¤РёР»СЊС‚СЂС‹</span>
             </button>
 
-            {{-- Оверлей для модального окна --}}
+            {{-- РћРІРµСЂР»РµР№ РґР»СЏ РјРѕРґР°Р»СЊРЅРѕРіРѕ РѕРєРЅР° --}}
             <div id="filters-overlay-{{ $id }}"
                 class="fixed inset-0 bg-black/50 z-40 opacity-0 pointer-events-none transition-opacity duration-300 lg:hidden">
             </div>
 
-            {{-- Фильтры: модальное окно на мобильных, боковая панель на десктопе --}}
+            {{-- Р¤РёР»СЊС‚СЂС‹: РјРѕРґР°Р»СЊРЅРѕРµ РѕРєРЅРѕ РЅР° РјРѕР±РёР»СЊРЅС‹С…, Р±РѕРєРѕРІР°СЏ РїР°РЅРµР»СЊ РЅР° РґРµСЃРєС‚РѕРїРµ --}}
             <aside id="filters-sidebar-{{ $id }}"
                 class="fixed inset-y-0 left-0 z-50 w-full max-w-sm bg-white shadow-2xl transform -translate-x-full transition-transform duration-300 ease-out
                        lg:static lg:transform-none lg:w-80 lg:shadow-none lg:bg-transparent">
 
-                {{-- Мобильный заголовок фильтров --}}
+                {{-- РњРѕР±РёР»СЊРЅС‹Р№ Р·Р°РіРѕР»РѕРІРѕРє С„РёР»СЊС‚СЂРѕРІ --}}
                 <div class="lg:hidden sticky top-0 bg-white border-b px-4 py-4 flex items-center justify-between">
-                    <h3 class="text-lg font-semibold text-gray-900">Фильтры</h3>
+                    <h3 class="text-lg font-semibold text-gray-900">Р¤РёР»СЊС‚СЂС‹</h3>
                     <button type="button" id="filters-close-{{ $id }}"
                         class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -119,11 +119,11 @@
                     </button>
                 </div>
 
-                {{-- Форма фильтров --}}
+                {{-- Р¤РѕСЂРјР° С„РёР»СЊС‚СЂРѕРІ --}}
                 <form class="models-grid__form p-4 lg:p-0 h-full lg:h-auto overflow-y-auto lg:overflow-visible">
                     <div class="space-y-6 pb-20 lg:pb-0">
 
-                        {{-- Скрытые пресеты --}}
+                        {{-- РЎРєСЂС‹С‚С‹Рµ РїСЂРµСЃРµС‚С‹ --}}
                         @if (!empty($cfg['tax']) && is_array($cfg['tax']))
                             @foreach ($cfg['tax'] as $taxKey => $vals)
                                 @foreach ((array) $vals as $val)
@@ -133,11 +133,11 @@
                             @endforeach
                         @endif
 
-                        {{-- Поиск --}}
+                        {{-- РџРѕРёСЃРє --}}
                         {{--                         <div class="bg-white lg:bg-gray-50 rounded-xl p-4 lg:border lg:border-gray-200">
-                            <label class="block text-sm font-semibold text-gray-700 mb-3">Поиск</label>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">РџРѕРёСЃРє</label>
                             <div class="relative">
-                                <input type="search" name="q" placeholder="Имя или ID модели"
+                                <input type="search" name="q" placeholder="РРјСЏ РёР»Рё ID РјРѕРґРµР»Рё"
                                     class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                     autocomplete="off">
                                 <svg class="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none"
@@ -148,141 +148,141 @@
                             </div>
                         </div> --}}
 
-                        {{-- Цена --}}
+                        {{-- Р¦РµРЅР° --}}
                         <div class="bg-white lg:bg-gray-50 rounded-xl p-4 lg:border lg:border-gray-200">
-                            <label class="block text-sm font-semibold text-gray-700 mb-3">Цена (₽)</label>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">Р¦РµРЅР° (в‚Ѕ)</label>
                             <div class="space-y-3">
                                 <div class="relative">
-                                    <input type="range" min="0" max="100000" step="500" value="0"
+                                    <input type="range" min="8000" max="50000" step="500" value="8000"
                                         class="h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider-thumb"
                                         data-min-range>
-                                    <input type="range" min="0" max="100000" step="500" value="100000"
+                                    <input type="range" min="8000" max="50000" step="500" value="50000"
                                         class="h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider-thumb absolute top-0"
                                         data-max-range>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <input type="number" name="price_min" min="0" step="100"
+                                    <input type="number" name="price_min" min="8000" max="50000" step="500"
                                         class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        value="0" data-min-input placeholder="От">
-                                    <span class="text-gray-500">—</span>
-                                    <input type="number" name="price_max" min="0" step="100"
+                                        value="8000" data-min-input placeholder="РћС‚">
+                                    <span class="text-gray-500">вЂ”</span>
+                                    <input type="number" name="price_max" min="8000" max="50000" step="500"
                                         class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        value="100000" data-max-input placeholder="До">
+                                        value="50000" data-max-input placeholder="Р”Рѕ">
                                 </div>
                                 <button type="button" class="text-xs text-blue-600 hover:text-blue-700 font-medium"
                                     data-clear-price>
-                                    Сбросить диапазон
+                                    РЎР±СЂРѕСЃРёС‚СЊ РґРёР°РїР°Р·РѕРЅ
                                 </button>
                             </div>
                         </div>
 
-                        {{-- Параметры (возраст, рост, вес) --}}
+                        {{-- РџР°СЂР°РјРµС‚СЂС‹ (РІРѕР·СЂР°СЃС‚, СЂРѕСЃС‚, РІРµСЃ) --}}
                         <div class="bg-white lg:bg-gray-50 rounded-xl p-4 lg:border lg:border-gray-200 space-y-4">
-                            <h4 class="text-sm font-semibold text-gray-700">Параметры</h4>
+                            <h4 class="text-sm font-semibold text-gray-700">РџР°СЂР°РјРµС‚СЂС‹</h4>
 
-                            {{-- Возраст --}}
+                            {{-- Р’РѕР·СЂР°СЃС‚ --}}
                             <div>
-                                <label class="block text-xs font-medium text-gray-600 mb-2">Возраст</label>
+                                <label class="block text-xs font-medium text-gray-600 mb-2">Р’РѕР·СЂР°СЃС‚</label>
                                 <div class="flex items-center gap-2">
-                                    <input type="number" name="age_min" min="18" max="99" placeholder="От"
+                                    <input type="number" name="age_min" min="18" max="99" placeholder="РћС‚"
                                         class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500">
-                                    <span class="text-gray-500">—</span>
-                                    <input type="number" name="age_max" min="18" max="99" placeholder="До"
+                                    <span class="text-gray-500">вЂ”</span>
+                                    <input type="number" name="age_max" min="18" max="99" placeholder="Р”Рѕ"
                                         class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500">
                                 </div>
                             </div>
 
-                            {{-- Рост --}}
+                            {{-- Р РѕСЃС‚ --}}
                             <div>
-                                <label class="block text-xs font-medium text-gray-600 mb-2">Рост (см)</label>
+                                <label class="block text-xs font-medium text-gray-600 mb-2">Р РѕСЃС‚ (СЃРј)</label>
                                 <div class="flex items-center gap-2">
                                     <input type="number" name="height_min" min="120" max="220"
-                                        placeholder="От"
+                                        placeholder="РћС‚"
                                         class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500">
-                                    <span class="text-gray-500">—</span>
+                                    <span class="text-gray-500">вЂ”</span>
                                     <input type="number" name="height_max" min="120" max="220"
-                                        placeholder="До"
+                                        placeholder="Р”Рѕ"
                                         class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500">
                                 </div>
                             </div>
 
-                            {{-- Вес --}}
+                            {{-- Р’РµСЃ --}}
                             <div>
-                                <label class="block text-xs font-medium text-gray-600 mb-2">Вес (кг)</label>
+                                <label class="block text-xs font-medium text-gray-600 mb-2">Р’РµСЃ (РєРі)</label>
                                 <div class="flex items-center gap-2">
                                     <input type="number" name="weight_min" min="35" max="160"
-                                        placeholder="От"
+                                        placeholder="РћС‚"
                                         class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500">
-                                    <span class="text-gray-500">—</span>
+                                    <span class="text-gray-500">вЂ”</span>
                                     <input type="number" name="weight_max" min="35" max="160"
-                                        placeholder="До"
+                                        placeholder="Р”Рѕ"
                                         class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500">
                                 </div>
                             </div>
                         </div>
 
-                        {{-- Особенности --}}
+                        {{-- РћСЃРѕР±РµРЅРЅРѕСЃС‚Рё --}}
                         <div class="bg-white lg:bg-gray-50 rounded-xl p-4 lg:border lg:border-gray-200">
-                            <h4 class="text-sm font-semibold text-gray-700 mb-3">Особенности</h4>
+                            <h4 class="text-sm font-semibold text-gray-700 mb-3">РћСЃРѕР±РµРЅРЅРѕСЃС‚Рё</h4>
                             <label
                                 class="flex items-center gap-3 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition-colors">
                                 <input type="checkbox" name="has_video" value="1"
                                     class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
-                                <span class="text-sm text-gray-700">Только с видео</span>
+                                <span class="text-sm text-gray-700">РўРѕР»СЊРєРѕ СЃ РІРёРґРµРѕ</span>
                             </label>
                         </div>
 
-                        {{-- Таксономии --}}
+                        {{-- РўР°РєСЃРѕРЅРѕРјРёРё --}}
                         @php
                             $taxFilters = [
                                 'service' => [
-                                    'label' => 'Услуги',
+                                    'label' => 'РЈСЃР»СѓРіРё',
                                     'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
                                 ],
                                 'district' => [
-                                    'label' => 'Районы',
+                                    'label' => 'Р Р°Р№РѕРЅС‹',
                                     'icon' =>
                                         'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z',
                                 ],
-                                'rail_station' => ['label' => 'Метро', 'icon' => 'M8 7h8m-8 5h8m-8 5h8M3 3h18v18H3z'],
+                                'rail_station' => ['label' => 'РњРµС‚СЂРѕ', 'icon' => 'M8 7h8m-8 5h8m-8 5h8M3 3h18v18H3z'],
                                 'feature' => [
-                                    'label' => 'Избранное',
+                                    'label' => 'РР·Р±СЂР°РЅРЅРѕРµ',
                                     'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
                                 ],
                                 'hair_color' => [
-                                    'label' => 'Цвет волос',
+                                    'label' => 'Р¦РІРµС‚ РІРѕР»РѕСЃ',
                                     'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
                                 ],
                                 'nationality' => [
-                                    'label' => 'Национальность',
+                                    'label' => 'РќР°С†РёРѕРЅР°Р»СЊРЅРѕСЃС‚СЊ',
                                     'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
                                 ],
                                 'bust_size' => [
-                                    'label' => 'Размер груди',
+                                    'label' => 'Р Р°Р·РјРµСЂ РіСЂСѓРґРё',
                                     'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
                                 ],
                                 'massage' => [
-                                    'label' => 'Массаж',
+                                    'label' => 'РњР°СЃСЃР°Р¶',
                                     'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
                                 ],
                                 'physique' => [
-                                    'label' => 'Телосложение',
+                                    'label' => 'РўРµР»РѕСЃР»РѕР¶РµРЅРёРµ',
                                     'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
                                 ],
                                 'intimate_haircut' => [
-                                    'label' => 'Интимная стрижка',
+                                    'label' => 'РРЅС‚РёРјРЅР°СЏ СЃС‚СЂРёР¶РєР°',
                                     'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
                                 ],
                                 'striptease_services' => [
-                                    'label' => 'Услуги стриптиза',
+                                    'label' => 'РЈСЃР»СѓРіРё СЃС‚СЂРёРїС‚РёР·Р°',
                                     'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
                                 ],
                                 'extreme_services' => [
-                                    'label' => 'Экстрим услуги',
+                                    'label' => 'Р­РєСЃС‚СЂРёРј СѓСЃР»СѓРіРё',
                                     'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
                                 ],
                                 'sado_maso' => [
-                                    'label' => 'БДСМ (Садо-мазо)',
+                                    'label' => 'Р‘Р”РЎРњ (РЎР°РґРѕ-РјР°Р·Рѕ)',
                                     'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
                                 ],
                             ];
@@ -326,16 +326,16 @@
                             @endif
                         @endforeach
 
-                        {{-- Кнопки действий --}}
+                        {{-- РљРЅРѕРїРєРё РґРµР№СЃС‚РІРёР№ --}}
                         <div
                             class="sticky bottom-0 bg-white lg:bg-transparent p-4 lg:p-0 border-t lg:border-0 -mx-4 lg:mx-0 space-y-3">
                             <button type="submit"
                                 class="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-[1.02] transition-all duration-200 shadow-lg">
-                                Применить фильтры
+                                РџСЂРёРјРµРЅРёС‚СЊ С„РёР»СЊС‚СЂС‹
                             </button>
                             <button type="reset"
                                 class="w-full px-6 py-3 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors">
-                                Сбросить все
+                                РЎР±СЂРѕСЃРёС‚СЊ РІСЃРµ
                             </button>
                         </div>
                     </div>
@@ -343,53 +343,53 @@
             </aside>
         @endif
 
-        {{-- Основной контент --}}
+        {{-- РћСЃРЅРѕРІРЅРѕР№ РєРѕРЅС‚РµРЅС‚ --}}
         <section class="flex-1">
-            {{-- Сортировка и счетчик --}}
+            {{-- РЎРѕСЂС‚РёСЂРѕРІРєР° Рё СЃС‡РµС‚С‡РёРє --}}
             <div class="flex items-center justify-between mb-6 pb-4 border-b">
                 <div class="text-sm text-gray-600">
-                    Найдено: <span class="font-semibold text-gray-900"
-                        id="models-count-{{ $id }}">{{ count($ssrItems) }}</span> моделей
+                    РќР°Р№РґРµРЅРѕ: <span class="font-semibold text-gray-900"
+                        id="models-count-{{ $id }}">{{ count($ssrItems) }}</span> РјРѕРґРµР»РµР№
                 </div>
                 <select name="sort"
                     class="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <option value="date">Новые</option>
-                    <option value="price_asc">Цена: по возрастанию</option>
-                    <option value="price_desc">Цена: по убыванию</option>
-                    <option value="popular">Популярные</option>
+                    <option value="date">РќРѕРІС‹Рµ</option>
+                    <option value="price_asc">Р¦РµРЅР°: РїРѕ РІРѕР·СЂР°СЃС‚Р°РЅРёСЋ</option>
+                    <option value="price_desc">Р¦РµРЅР°: РїРѕ СѓР±С‹РІР°РЅРёСЋ</option>
+                    <option value="popular">РџРѕРїСѓР»СЏСЂРЅС‹Рµ</option>
                 </select>
             </div>
 
-            {{-- Грид моделей --}}
+            {{-- Р“СЂРёРґ РјРѕРґРµР»РµР№ --}}
             <div class="models-grid__root">
                 @if ($hasSSR)
                     @include('components.models-cards', ['items' => $ssrItems])
                 @endif
             </div>
 
-            {{-- Пустой результат --}}
+            {{-- РџСѓСЃС‚РѕР№ СЂРµР·СѓР»СЊС‚Р°С‚ --}}
             <div class="models-grid__empty {{ $hasSSR ? 'hidden' : '' }} text-center py-12">
                 <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor"
                     viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                <p class="text-gray-500 text-lg">Модели не найдены</p>
-                <p class="text-gray-400 text-sm mt-2">Попробуйте изменить параметры поиска</p>
+                <p class="text-gray-500 text-lg">РњРѕРґРµР»Рё РЅРµ РЅР°Р№РґРµРЅС‹</p>
+                <p class="text-gray-400 text-sm mt-2">РџРѕРїСЂРѕР±СѓР№С‚Рµ РёР·РјРµРЅРёС‚СЊ РїР°СЂР°РјРµС‚СЂС‹ РїРѕРёСЃРєР°</p>
             </div>
 
-            {{-- Кнопка "Показать ещё" --}}
+            {{-- РљРЅРѕРїРєР° "РџРѕРєР°Р·Р°С‚СЊ РµС‰С‘" --}}
             <div class="text-center mt-8">
                 <button type="button" data-more
                     class="px-8 py-3 bg-white border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:border-gray-400 hover:shadow-md transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
-                    Показать ещё
+                    РџРѕРєР°Р·Р°С‚СЊ РµС‰С‘
                 </button>
             </div>
         </section>
     </div>
 </section>
 
-{{-- Скрипт управления фильтрами --}}
+{{-- РЎРєСЂРёРїС‚ СѓРїСЂР°РІР»РµРЅРёСЏ С„РёР»СЊС‚СЂР°РјРё --}}
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -400,7 +400,7 @@
             const overlay = document.getElementById(`filters-overlay-${gridId}`);
 
             if (toggleBtn && sidebar && overlay) {
-                // Открытие фильтров
+                // РћС‚РєСЂС‹С‚РёРµ С„РёР»СЊС‚СЂРѕРІ
                 toggleBtn.addEventListener('click', function() {
                     sidebar.classList.remove('-translate-x-full');
                     overlay.classList.remove('opacity-0', 'pointer-events-none');
@@ -408,7 +408,7 @@
                     document.body.classList.add('overflow-hidden');
                 });
 
-                // Закрытие фильтров
+                // Р—Р°РєСЂС‹С‚РёРµ С„РёР»СЊС‚СЂРѕРІ
                 const closeFilters = function() {
                     sidebar.classList.add('-translate-x-full');
                     overlay.classList.add('opacity-0', 'pointer-events-none');
@@ -419,7 +419,7 @@
                 closeBtn?.addEventListener('click', closeFilters);
                 overlay.addEventListener('click', closeFilters);
 
-                // Закрытие по Escape
+                // Р—Р°РєСЂС‹С‚РёРµ РїРѕ Escape
                 document.addEventListener('keydown', function(e) {
                     if (e.key === 'Escape' && !sidebar.classList.contains('-translate-x-full')) {
                         closeFilters();
@@ -431,7 +431,7 @@
 @endpush
 
 <style>
-    /* Кастомная полоса прокрутки */
+    /* РљР°СЃС‚РѕРјРЅР°СЏ РїРѕР»РѕСЃР° РїСЂРѕРєСЂСѓС‚РєРё */
     .custom-scrollbar::-webkit-scrollbar {
         width: 6px;
     }
@@ -450,7 +450,7 @@
         background: #9ca3af;
     }
 
-    /* Стили для range слайдеров */
+    /* РЎС‚РёР»Рё РґР»СЏ range СЃР»Р°Р№РґРµСЂРѕРІ */
     .slider-thumb::-webkit-slider-thumb {
         appearance: none;
         width: 20px;
@@ -472,7 +472,7 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
-    /* Анимация появления карточек */
+    /* РђРЅРёРјР°С†РёСЏ РїРѕСЏРІР»РµРЅРёСЏ РєР°СЂС‚РѕС‡РµРє */
     @keyframes fadeInUp {
         from {
             opacity: 0;

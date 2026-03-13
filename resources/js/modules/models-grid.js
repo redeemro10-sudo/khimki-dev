@@ -419,7 +419,7 @@ export function initModelsGrids() {
 
     function syncFromRanges() {
       if (!minRange || !maxRange || !minInput || !maxInput) return;
-      const minLimit = Number(minRange.min || 0);
+      const minLimit = Number(minRange.min || 8000);
       const maxLimit = Number(maxRange.max || 50000);
       let min = Number(minRange.value || minLimit);
       let max = Number(maxRange.value || maxLimit);
@@ -428,7 +428,7 @@ export function initModelsGrids() {
     }
     function syncFromInputs() {
       if (!minRange || !maxRange || !minInput || !maxInput) return;
-      const minLimit = Number(minInput.min || minRange.min || 0);
+      const minLimit = Number(minInput.min || minRange.min || 8000);
       const maxLimit = Number(maxInput.max || maxRange.max || 50000);
       let min = Number(minInput.value || minLimit);
       let max = Number(maxInput.value || maxLimit);
@@ -442,7 +442,7 @@ export function initModelsGrids() {
     maxInput?.addEventListener('input', syncFromInputs);
     clearBtn?.addEventListener('click', () => {
       if (!minRange || !maxRange || !minInput || !maxInput) return;
-      const minLimit = Number(minRange.min || 0);
+      const minLimit = Number(minRange.min || 8000);
       const maxLimit = Number(maxRange.max || 50000);
       minRange.value = minLimit; maxRange.value = maxLimit;
       minInput.value = minLimit; maxInput.value = maxLimit;

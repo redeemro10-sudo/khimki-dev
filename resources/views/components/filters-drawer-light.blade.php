@@ -92,10 +92,10 @@
                     </summary>
                     <div class="px-4 pb-4 space-y-3">
                         <div class="flex items-center gap-2">
-                            <input type="number" name="price_min" min="0" max="50000" step="500"
+                            <input type="number" name="price_min" min="8000" max="50000" step="500"
                                 class="w-1/2 border rounded-lg px-3 py-2 text-sm" placeholder="От">
                             <span class="text-slate-400">—</span>
-                            <input type="number" name="price_max" min="0" max="50000" step="500"
+                            <input type="number" name="price_max" min="8000" max="50000" step="500"
                                 class="w-1/2 border rounded-lg px-3 py-2 text-sm" placeholder="До">
                         </div>
                     </div>

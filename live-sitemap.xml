@@ -1,0 +1,450 @@
+﻿<?xml version='1.0' encoding='UTF-8'?><?xml-stylesheet type='text/xsl' href='https://khimki-dev.krasnodar-night.com/app/plugins/google-sitemap-generator/sitemap.xsl'?><!-- sitemap-generator-url='http://www.arnebrachhold.de' sitemap-generator-version='4.1.21' -->
+<!-- generated-on='13.03.2026 15:22' -->
+<sitemapindex xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd' xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>	<sitemap>
+		<loc>https://khimki-dev.krasnodar-night.com/sitemap-misc.xml</loc>
+		<lastmod>2026-03-12T09:43:16+00:00</lastmod>
+	</sitemap>
+	<sitemap>
+		<loc>https://khimki-dev.krasnodar-night.com/service-sitemap.xml</loc>
+		<lastmod>2026-03-12T09:43:16+00:00</lastmod>
+	</sitemap>
+	<sitemap>
+		<loc>https://khimki-dev.krasnodar-night.com/district-sitemap.xml</loc>
+		<lastmod>2026-03-12T09:43:16+00:00</lastmod>
+	</sitemap>
+	<sitemap>
+		<loc>https://khimki-dev.krasnodar-night.com/feature-sitemap.xml</loc>
+		<lastmod>2026-03-12T09:43:16+00:00</lastmod>
+	</sitemap>
+	<sitemap>
+		<loc>https://khimki-dev.krasnodar-night.com/hair_color-sitemap.xml</loc>
+		<lastmod>2026-03-12T09:43:16+00:00</lastmod>
+	</sitemap>
+	<sitemap>
+		<loc>https://khimki-dev.krasnodar-night.com/aye_color-sitemap.xml</loc>
+		<lastmod>2026-03-12T09:43:16+00:00</lastmod>
+	</sitemap>
+	<sitemap>
+		<loc>https://khimki-dev.krasnodar-night.com/nationality-sitemap.xml</loc>
+		<lastmod>2026-03-12T09:43:16+00:00</lastmod>
+	</sitemap>
+	<sitemap>
+		<loc>https://khimki-dev.krasnodar-night.com/bust_size-sitemap.xml</loc>
+		<lastmod>2026-03-12T09:43:16+00:00</lastmod>
+	</sitemap>
+	<sitemap>
+		<loc>https://khimki-dev.krasnodar-night.com/physique-sitemap.xml</loc>
+		<lastmod>2026-03-12T09:43:16+00:00</lastmod>
+	</sitemap>
+	<sitemap>
+		<loc>https://khimki-dev.krasnodar-night.com/intimate_haircut-sitemap.xml</loc>
+		<lastmod>2026-03-12T09:43:16+00:00</lastmod>
+	</sitemap>
+	<sitemap>
+		<loc>https://khimki-dev.krasnodar-night.com/extreme_services-sitemap.xml</loc>
+		<lastmod>2026-03-12T09:43:16+00:00</lastmod>
+	</sitemap>
+	<sitemap>
+		<loc>https://khimki-dev.krasnodar-night.com/sado_maso-sitemap.xml</loc>
+		<lastmod>2026-03-12T09:43:16+00:00</lastmod>
+	</sitemap>
+	<sitemap>
+		<loc>https://khimki-dev.krasnodar-night.com/model-sitemap.xml</loc>
+		<lastmod>2026-03-12T09:43:16+00:00</lastmod>
+	</sitemap>
+	<sitemap>
+		<loc>https://khimki-dev.krasnodar-night.com/blog-sitemap.xml</loc>
+		<lastmod>2026-02-21T09:09:31+00:00</lastmod>
+	</sitemap>
+	<sitemap>
+		<loc>https://khimki-dev.krasnodar-night.com/page-sitemap.xml</loc>
+		<lastmod>2026-03-11T16:51:19+00:00</lastmod>
+	</sitemap>
+</sitemapindex><!-- <pre>array(24) {
+  [0]=>
+  array(5) {
+    [0]=>
+    string(101) "SELECT option_name, option_value FROM wp_options WHERE autoload IN ( 'yes', 'on', 'auto-on', 'auto' )"
+    [1]=>
+    float(0.0008580684661865234)
+    [2]=>
+    string(249) "require('wp-blog-header.php'), require_once('wp-load.php'), require_once('/var/www/admin_panel__usr/data/www/khimki-dev.krasnodar-night.com/web/wp-config.php'), require_once('wp-settings.php'), wp_not_installed, is_blog_installed, wp_load_alloptions"
+    [3]=>
+    float(1773415370.754245)
+    [4]=>
+    array(0) {
+    }
+  }
+  [1]=>
+  array(5) {
+    [0]=>
+    string(84) "SELECT option_value FROM wp_options WHERE option_name = 'bedrock_autoloader' LIMIT 1"
+    [1]=>
+    float(0.0003299713134765625)
+    [2]=>
+    string(409) "require('wp-blog-header.php'), require_once('wp-load.php'), require_once('/var/www/admin_panel__usr/data/www/khimki-dev.krasnodar-night.com/web/wp-config.php'), require_once('wp-settings.php'), include_once('/mu-plugins/bedrock-autoloader.php'), Roots\Bedrock\Autoloader->__construct, Roots\Bedrock\Autoloader->loadPlugins, Roots\Bedrock\Autoloader->checkCache, get_site_option, get_network_option, get_option"
+    [3]=>
+    float(1773415370.758297)
+    [4]=>
+    array(0) {
+    }
+  }
+  [2]=>
+  array(5) {
+    [0]=>
+    string(93) "SELECT option_value FROM wp_options WHERE option_name = 'using_application_passwords' LIMIT 1"
+    [1]=>
+    float(0.00043392181396484375)
+    [2]=>
+    string(451) "require('wp-blog-header.php'), require_once('wp-load.php'), require_once('/var/www/admin_panel__usr/data/www/khimki-dev.krasnodar-night.com/web/wp-config.php'), require_once('wp-settings.php'), WP->init, wp_get_current_user, _wp_get_current_user, apply_filters('determine_current_user'), WP_Hook->apply_filters, wp_validate_application_password, wp_authenticate_application_password, WP_Application_Passwords::is_in_use, get_network_option, get_option"
+    [3]=>
+    float(1773415370.778021)
+    [4]=>
+    array(0) {
+    }
+  }
+  [3]=>
+  array(5) {
+    [0]=>
+    string(229) "SELECT option_name, option_value FROM wp_options WHERE option_name IN ('_site_transient_wp_theme_files_patterns-c57f13c839767a90df32e3779ca84efd','_site_transient_timeout_wp_theme_files_patterns-c57f13c839767a90df32e3779ca84efd')"
+    [1]=>
+    float(0.0005311965942382812)
+    [2]=>
+    string(451) "require('wp-blog-header.php'), require_once('wp-load.php'), require_once('/var/www/admin_panel__usr/data/www/khimki-dev.krasnodar-night.com/web/wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, _register_theme_block_patterns, WP_Theme->get_block_patterns, WP_Theme->get_pattern_cache, get_site_transient, wp_prime_site_option_caches, wp_prime_network_option_caches, wp_prime_option_caches"
+    [3]=>
+    float(1773415370.78451)
+    [4]=>
+    array(0) {
+    }
+  }
+  [4]=>
+  array(5) {
+    [0]=>
+    string(88) "SELECT option_value FROM wp_options WHERE option_name = 'app_core_db_indexes_v1' LIMIT 1"
+    [1]=>
+    float(0.0006380081176757812)
+    [2]=>
+    string(324) "require('wp-blog-header.php'), require_once('wp-load.php'), require_once('/var/www/admin_panel__usr/data/www/khimki-dev.krasnodar-night.com/web/wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, AppCore\Infrastructure\Migrations\Indexes->maybeMigrate, get_option"
+    [3]=>
+    float(1773415370.788433)
+    [4]=>
+    array(0) {
+    }
+  }
+  [5]=>
+  array(5) {
+    [0]=>
+    string(216) "SELECT SQL_CALC_FOUND_ROWS  wp_posts.ID
+					 FROM wp_posts 
+					 WHERE 1=1  AND ((wp_posts.post_type = 'post' AND (wp_posts.post_status = 'publish')))
+					 
+					 ORDER BY wp_posts.post_date DESC
+					 LIMIT 0, 10"
+    [1]=>
+    float(0.00040984153747558594)
+    [2]=>
+    string(98) "require('wp-blog-header.php'), wp, WP->main, WP->query_posts, WP_Query->query, WP_Query->get_posts"
+    [3]=>
+    float(1773415370.790806)
+    [4]=>
+    array(0) {
+    }
+  }
+  [6]=>
+  array(5) {
+    [0]=>
+    string(67) "SELECT option_value FROM wp_options WHERE option_name = 'sm_cpages'"
+    [1]=>
+    float(0.0003669261932373047)
+    [2]=>
+    string(362) "require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorLoader::do_template_redirect, GoogleSitemapGeneratorLoader::call_show_sitemap, GoogleSitemapGenerator->show_sitemap, GoogleSitemapGenerator->initate, GoogleSitemapGenerator->load_pages"
+    [3]=>
+    float(1773415370.791815)
+    [4]=>
+    array(0) {
+    }
+  }
+  [7]=>
+  array(5) {
+    [0]=>
+    string(181) "SELECT post_modified_gmt FROM wp_posts WHERE post_status = 'publish' AND post_type IN ('post', 'page', 'attachment', 'model', 'blog', 'seed') ORDER BY post_modified_gmt DESC LIMIT 1"
+    [1]=>
+    float(0.0012218952178955078)
+    [2]=>
+    string(455) "require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorLoader::do_template_redirect, GoogleSitemapGeneratorLoader::call_show_sitemap, GoogleSitemapGenerator->show_sitemap, do_action('sm_build_index'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorStandardBuilder->index, get_lastpostmodified, _get_last_post_time"
+    [3]=>
+    float(1773415370.79373)
+    [4]=>
+    array(0) {
+    }
+  }
+  [8]=>
+  array(5) {
+    [0]=>
+    string(173) "SELECT post_date_gmt FROM wp_posts WHERE post_status = 'publish' AND post_type IN ('post', 'page', 'attachment', 'model', 'blog', 'seed') ORDER BY post_date_gmt DESC LIMIT 1"
+    [1]=>
+    float(0.0009388923645019531)
+    [2]=>
+    string(473) "require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorLoader::do_template_redirect, GoogleSitemapGeneratorLoader::call_show_sitemap, GoogleSitemapGenerator->show_sitemap, do_action('sm_build_index'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorStandardBuilder->index, get_lastpostmodified, get_lastpostdate, _get_last_post_time"
+    [3]=>
+    float(1773415370.795046)
+    [4]=>
+    array(0) {
+    }
+  }
+  [9]=>
+  array(5) {
+    [0]=>
+    string(173) "SELECT DISTINCT * FROM wp_terms as t INNER JOIN wp_term_taxonomy as tt WHERE `tt`.taxonomy = 'service' AND `tt`.term_id = `t`.term_id AND `tt`.count != 0 ORDER BY t.name ASC"
+    [1]=>
+    float(0.0004508495330810547)
+    [2]=>
+    string(462) "require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorLoader::do_template_redirect, GoogleSitemapGeneratorLoader::call_show_sitemap, GoogleSitemapGenerator->show_sitemap, do_action('sm_build_index'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorStandardBuilder->index, GoogleSitemapGeneratorStandardBuilder->get_terms"
+    [3]=>
+    float(1773415370.796241)
+    [4]=>
+    array(0) {
+    }
+  }
+  [10]=>
+  array(5) {
+    [0]=>
+    string(174) "SELECT DISTINCT * FROM wp_terms as t INNER JOIN wp_term_taxonomy as tt WHERE `tt`.taxonomy = 'district' AND `tt`.term_id = `t`.term_id AND `tt`.count != 0 ORDER BY t.name ASC"
+    [1]=>
+    float(0.0004000663757324219)
+    [2]=>
+    string(462) "require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorLoader::do_template_redirect, GoogleSitemapGeneratorLoader::call_show_sitemap, GoogleSitemapGenerator->show_sitemap, do_action('sm_build_index'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorStandardBuilder->index, GoogleSitemapGeneratorStandardBuilder->get_terms"
+    [3]=>
+    float(1773415370.796742)
+    [4]=>
+    array(0) {
+    }
+  }
+  [11]=>
+  array(5) {
+    [0]=>
+    string(173) "SELECT DISTINCT * FROM wp_terms as t INNER JOIN wp_term_taxonomy as tt WHERE `tt`.taxonomy = 'feature' AND `tt`.term_id = `t`.term_id AND `tt`.count != 0 ORDER BY t.name ASC"
+    [1]=>
+    float(0.00026798248291015625)
+    [2]=>
+    string(462) "require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorLoader::do_template_redirect, GoogleSitemapGeneratorLoader::call_show_sitemap, GoogleSitemapGenerator->show_sitemap, do_action('sm_build_index'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorStandardBuilder->index, GoogleSitemapGeneratorStandardBuilder->get_terms"
+    [3]=>
+    float(1773415370.7972)
+    [4]=>
+    array(0) {
+    }
+  }
+  [12]=>
+  array(5) {
+    [0]=>
+    string(176) "SELECT DISTINCT * FROM wp_terms as t INNER JOIN wp_term_taxonomy as tt WHERE `tt`.taxonomy = 'hair_color' AND `tt`.term_id = `t`.term_id AND `tt`.count != 0 ORDER BY t.name ASC"
+    [1]=>
+    float(0.00023102760314941406)
+    [2]=>
+    string(462) "require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorLoader::do_template_redirect, GoogleSitemapGeneratorLoader::call_show_sitemap, GoogleSitemapGenerator->show_sitemap, do_action('sm_build_index'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorStandardBuilder->index, GoogleSitemapGeneratorStandardBuilder->get_terms"
+    [3]=>
+    float(1773415370.797514)
+    [4]=>
+    array(0) {
+    }
+  }
+  [13]=>
+  array(5) {
+    [0]=>
+    string(175) "SELECT DISTINCT * FROM wp_terms as t INNER JOIN wp_term_taxonomy as tt WHERE `tt`.taxonomy = 'aye_color' AND `tt`.term_id = `t`.term_id AND `tt`.count != 0 ORDER BY t.name ASC"
+    [1]=>
+    float(0.000370025634765625)
+    [2]=>
+    string(462) "require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorLoader::do_template_redirect, GoogleSitemapGeneratorLoader::call_show_sitemap, GoogleSitemapGenerator->show_sitemap, do_action('sm_build_index'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorStandardBuilder->index, GoogleSitemapGeneratorStandardBuilder->get_terms"
+    [3]=>
+    float(1773415370.797785)
+    [4]=>
+    array(0) {
+    }
+  }
+  [14]=>
+  array(5) {
+    [0]=>
+    string(177) "SELECT DISTINCT * FROM wp_terms as t INNER JOIN wp_term_taxonomy as tt WHERE `tt`.taxonomy = 'nationality' AND `tt`.term_id = `t`.term_id AND `tt`.count != 0 ORDER BY t.name ASC"
+    [1]=>
+    float(0.00017905235290527344)
+    [2]=>
+    string(462) "require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorLoader::do_template_redirect, GoogleSitemapGeneratorLoader::call_show_sitemap, GoogleSitemapGenerator->show_sitemap, do_action('sm_build_index'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorStandardBuilder->index, GoogleSitemapGeneratorStandardBuilder->get_terms"
+    [3]=>
+    float(1773415370.798199)
+    [4]=>
+    array(0) {
+    }
+  }
+  [15]=>
+  array(5) {
+    [0]=>
+    string(175) "SELECT DISTINCT * FROM wp_terms as t INNER JOIN wp_term_taxonomy as tt WHERE `tt`.taxonomy = 'bust_size' AND `tt`.term_id = `t`.term_id AND `tt`.count != 0 ORDER BY t.name ASC"
+    [1]=>
+    float(0.00015091896057128906)
+    [2]=>
+    string(462) "require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorLoader::do_template_redirect, GoogleSitemapGeneratorLoader::call_show_sitemap, GoogleSitemapGenerator->show_sitemap, do_action('sm_build_index'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorStandardBuilder->index, GoogleSitemapGeneratorStandardBuilder->get_terms"
+    [3]=>
+    float(1773415370.798409)
+    [4]=>
+    array(0) {
+    }
+  }
+  [16]=>
+  array(5) {
+    [0]=>
+    string(174) "SELECT DISTINCT * FROM wp_terms as t INNER JOIN wp_term_taxonomy as tt WHERE `tt`.taxonomy = 'physique' AND `tt`.term_id = `t`.term_id AND `tt`.count != 0 ORDER BY t.name ASC"
+    [1]=>
+    float(0.0001590251922607422)
+    [2]=>
+    string(462) "require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorLoader::do_template_redirect, GoogleSitemapGeneratorLoader::call_show_sitemap, GoogleSitemapGenerator->show_sitemap, do_action('sm_build_index'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorStandardBuilder->index, GoogleSitemapGeneratorStandardBuilder->get_terms"
+    [3]=>
+    float(1773415370.798583)
+    [4]=>
+    array(0) {
+    }
+  }
+  [17]=>
+  array(5) {
+    [0]=>
+    string(182) "SELECT DISTINCT * FROM wp_terms as t INNER JOIN wp_term_taxonomy as tt WHERE `tt`.taxonomy = 'intimate_haircut' AND `tt`.term_id = `t`.term_id AND `tt`.count != 0 ORDER BY t.name ASC"
+    [1]=>
+    float(0.0002129077911376953)
+    [2]=>
+    string(462) "require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorLoader::do_template_redirect, GoogleSitemapGeneratorLoader::call_show_sitemap, GoogleSitemapGenerator->show_sitemap, do_action('sm_build_index'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorStandardBuilder->index, GoogleSitemapGeneratorStandardBuilder->get_terms"
+    [3]=>
+    float(1773415370.798804)
+    [4]=>
+    array(0) {
+    }
+  }
+  [18]=>
+  array(5) {
+    [0]=>
+    string(182) "SELECT DISTINCT * FROM wp_terms as t INNER JOIN wp_term_taxonomy as tt WHERE `tt`.taxonomy = 'extreme_services' AND `tt`.term_id = `t`.term_id AND `tt`.count != 0 ORDER BY t.name ASC"
+    [1]=>
+    float(0.00023293495178222656)
+    [2]=>
+    string(462) "require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorLoader::do_template_redirect, GoogleSitemapGeneratorLoader::call_show_sitemap, GoogleSitemapGenerator->show_sitemap, do_action('sm_build_index'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorStandardBuilder->index, GoogleSitemapGeneratorStandardBuilder->get_terms"
+    [3]=>
+    float(1773415370.799046)
+    [4]=>
+    array(0) {
+    }
+  }
+  [19]=>
+  array(5) {
+    [0]=>
+    string(175) "SELECT DISTINCT * FROM wp_terms as t INNER JOIN wp_term_taxonomy as tt WHERE `tt`.taxonomy = 'sado_maso' AND `tt`.term_id = `t`.term_id AND `tt`.count != 0 ORDER BY t.name ASC"
+    [1]=>
+    float(0.00018906593322753906)
+    [2]=>
+    string(462) "require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorLoader::do_template_redirect, GoogleSitemapGeneratorLoader::call_show_sitemap, GoogleSitemapGenerator->show_sitemap, do_action('sm_build_index'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorStandardBuilder->index, GoogleSitemapGeneratorStandardBuilder->get_terms"
+    [3]=>
+    float(1773415370.79932)
+    [4]=>
+    array(0) {
+    }
+  }
+  [20]=>
+  array(5) {
+    [0]=>
+    string(263) "SELECT
+					COUNT(p.ID) AS `numposts`,
+					MAX(p.post_modified_gmt) as `last_mod`
+					FROM
+						wp_posts p
+					WHERE
+						p.post_password = ''
+						AND p.post_type = 'model'
+						AND p.post_status = 'publish'
+						
+					ORDER BY
+						p.post_date_gmt DESC"
+    [1]=>
+    float(0.0005640983581542969)
+    [2]=>
+    string(412) "require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorLoader::do_template_redirect, GoogleSitemapGeneratorLoader::call_show_sitemap, GoogleSitemapGenerator->show_sitemap, do_action('sm_build_index'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorStandardBuilder->index"
+    [3]=>
+    float(1773415370.799914)
+    [4]=>
+    array(0) {
+    }
+  }
+  [21]=>
+  array(5) {
+    [0]=>
+    string(262) "SELECT
+					COUNT(p.ID) AS `numposts`,
+					MAX(p.post_modified_gmt) as `last_mod`
+					FROM
+						wp_posts p
+					WHERE
+						p.post_password = ''
+						AND p.post_type = 'blog'
+						AND p.post_status = 'publish'
+						
+					ORDER BY
+						p.post_date_gmt DESC"
+    [1]=>
+    float(0.00040411949157714844)
+    [2]=>
+    string(412) "require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorLoader::do_template_redirect, GoogleSitemapGeneratorLoader::call_show_sitemap, GoogleSitemapGenerator->show_sitemap, do_action('sm_build_index'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorStandardBuilder->index"
+    [3]=>
+    float(1773415370.800562)
+    [4]=>
+    array(0) {
+    }
+  }
+  [22]=>
+  array(5) {
+    [0]=>
+    string(262) "SELECT
+					COUNT(p.ID) AS `numposts`,
+					MAX(p.post_modified_gmt) as `last_mod`
+					FROM
+						wp_posts p
+					WHERE
+						p.post_password = ''
+						AND p.post_type = 'post'
+						AND p.post_status = 'publish'
+						
+					ORDER BY
+						p.post_date_gmt DESC"
+    [1]=>
+    float(0.0001518726348876953)
+    [2]=>
+    string(412) "require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorLoader::do_template_redirect, GoogleSitemapGeneratorLoader::call_show_sitemap, GoogleSitemapGenerator->show_sitemap, do_action('sm_build_index'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorStandardBuilder->index"
+    [3]=>
+    float(1773415370.801042)
+    [4]=>
+    array(0) {
+    }
+  }
+  [23]=>
+  array(5) {
+    [0]=>
+    string(262) "SELECT
+					COUNT(p.ID) AS `numposts`,
+					MAX(p.post_modified_gmt) as `last_mod`
+					FROM
+						wp_posts p
+					WHERE
+						p.post_password = ''
+						AND p.post_type = 'page'
+						AND p.post_status = 'publish'
+						
+					ORDER BY
+						p.post_date_gmt DESC"
+    [1]=>
+    float(0.0003650188446044922)
+    [2]=>
+    string(412) "require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorLoader::do_template_redirect, GoogleSitemapGeneratorLoader::call_show_sitemap, GoogleSitemapGenerator->show_sitemap, do_action('sm_build_index'), WP_Hook->do_action, WP_Hook->apply_filters, GoogleSitemapGeneratorStandardBuilder->index"
+    [3]=>
+    float(1773415370.801233)
+    [4]=>
+    array(0) {
+    }
+  }
+}
+</pre><h4>Total Query Time</h4><pre>24 queries in 0.01 seconds.</pre> --> <!-- Request ID: 8f03ff55b8da5efdf9523fbefccf7e2e; Queries for sitemap: 18; Total queries: 24; Seconds: 0.01; Memory for sitemap: 1KB; Total memory: 6MB -->

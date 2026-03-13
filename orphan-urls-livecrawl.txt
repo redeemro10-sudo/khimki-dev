@@ -1,0 +1,58 @@
+﻿Corrected orphan URLs from live crawl
+
+Total sitemap URLs: 350
+Crawled internal HTML pages: 324
+Total orphan URLs: 46
+
+## taxonomy-detail (41)
+https://khimki-dev.krasnodar-night.com/features/vip
+https://khimki-dev.krasnodar-night.com/features/proverennyye
+https://khimki-dev.krasnodar-night.com/hair-color/blondinka
+https://khimki-dev.krasnodar-night.com/hair-color/bryunetka
+https://khimki-dev.krasnodar-night.com/hair-color/rusyye
+https://khimki-dev.krasnodar-night.com/hair-color/ryzhaya
+https://khimki-dev.krasnodar-night.com/hair-color/shatenka
+https://khimki-dev.krasnodar-night.com/aye-color/goluboy
+https://khimki-dev.krasnodar-night.com/aye-color/zelonyy
+https://khimki-dev.krasnodar-night.com/aye-color/kariy
+https://khimki-dev.krasnodar-night.com/aye-color/seryy
+https://khimki-dev.krasnodar-night.com/nationalities/aziatka
+https://khimki-dev.krasnodar-night.com/nationalities/kazashka
+https://khimki-dev.krasnodar-night.com/nationalities/russkaya
+https://khimki-dev.krasnodar-night.com/nationalities/tatarka
+https://khimki-dev.krasnodar-night.com/nationalities/uzbechka
+https://khimki-dev.krasnodar-night.com/bust-size/1
+https://khimki-dev.krasnodar-night.com/bust-size/2
+https://khimki-dev.krasnodar-night.com/bust-size/3
+https://khimki-dev.krasnodar-night.com/bust-size/4
+https://khimki-dev.krasnodar-night.com/physique/polnaya
+https://khimki-dev.krasnodar-night.com/physique/sportivnaya
+https://khimki-dev.krasnodar-night.com/physique/stroynaya
+https://khimki-dev.krasnodar-night.com/physique/khudaya
+https://khimki-dev.krasnodar-night.com/intimate-haircut/akkuratnaya-strizhka
+https://khimki-dev.krasnodar-night.com/intimate-haircut/naturalnaya-strizhka
+https://khimki-dev.krasnodar-night.com/intimate-haircut/polnaya-depilyatsiya
+https://khimki-dev.krasnodar-night.com/extreme-services/anilingus-delayu
+https://khimki-dev.krasnodar-night.com/extreme-services/anilingus-prinimayu
+https://khimki-dev.krasnodar-night.com/extreme-services/zolotoy-dozhd-vydacha
+https://khimki-dev.krasnodar-night.com/extreme-services/zolotoy-dozhd-priyem
+https://khimki-dev.krasnodar-night.com/extreme-services/strapon
+https://khimki-dev.krasnodar-night.com/extreme-services/fisting-analnyy
+https://khimki-dev.krasnodar-night.com/extreme-services/fisting-klassicheskiy
+https://khimki-dev.krasnodar-night.com/bdsm/bondazh
+https://khimki-dev.krasnodar-night.com/bdsm/gospozha
+https://khimki-dev.krasnodar-night.com/bdsm/legkaya-dominatsiya
+https://khimki-dev.krasnodar-night.com/bdsm/porka
+https://khimki-dev.krasnodar-night.com/bdsm/rabynya
+https://khimki-dev.krasnodar-night.com/bdsm/trampling
+https://khimki-dev.krasnodar-night.com/bdsm/fetish
+
+## page (4)
+https://khimki-dev.krasnodar-night.com/bust-size
+https://khimki-dev.krasnodar-night.com/individualki
+https://khimki-dev.krasnodar-night.com/bdsm
+https://khimki-dev.krasnodar-night.com/kontakty
+
+## model (1)
+https://khimki-dev.krasnodar-night.com/model/id-1
+

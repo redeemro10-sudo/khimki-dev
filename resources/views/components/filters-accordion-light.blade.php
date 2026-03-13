@@ -85,20 +85,20 @@
                     <div class="price-track absolute h-1.5 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full"
                         style="left: 0%; width: 100%;"></div>
                     {{-- Min slider --}}
-                    <input type="range" min="0" max="50000" step="500" value="0"
+                    <input type="range" min="8000" max="50000" step="500" value="8000"
                         class="price-slider absolute w-full h-1.5 bg-transparent appearance-none pointer-events-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-orange-500 [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-gray-900"
                         data-min-range>
                     {{-- Max slider --}}
-                    <input type="range" min="0" max="50000" step="500" value="50000"
+                    <input type="range" min="8000" max="50000" step="500" value="50000"
                         class="price-slider absolute w-full h-1.5 bg-transparent appearance-none pointer-events-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-orange-500 [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-gray-900"
                         data-max-range>
                 </div>
                 <div class="flex items-center gap-2">
-                    <input type="number" name="price_min" min="0" max="50000" step="500" value="0"
+                    <input type="number" name="price_min" min="8000" max="50000" step="500" value="8000"
                         class="flex-1 bg-gray-800 text-white border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500"
                         data-min-input placeholder="От">
                     <span class="text-gray-500">—</span>
-                    <input type="number" name="price_max" min="0" max="50000" step="500" value="50000"
+                    <input type="number" name="price_max" min="8000" max="50000" step="500" value="50000"
                         class="flex-1 bg-gray-800 text-white border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500"
                         data-max-input placeholder="До">
                 </div>
@@ -382,7 +382,7 @@
         const priceTrack = container.querySelector('.price-track');
 
         if (minRange && maxRange && minInput && maxInput && priceTrack) {
-            const minLimit = Number(minRange.min || 0);
+            const minLimit = Number(minRange.min || 8000);
             const maxLimit = Number(maxRange.max || 50000);
             const priceStep = Number(minRange.step || 500);
 
