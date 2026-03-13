@@ -4,12 +4,12 @@
         @php($isFrontPage = is_front_page())
 
         @if ($isFrontPage)
-            <span class="brand site-brand group flex items-center gap-3 text-lg font-bold text-gray-900">
+            <div class="brand site-brand group flex items-center gap-3 text-lg font-bold text-gray-900">
                 <div class="site-brand-mark flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 shadow-md">
                     <span class="text-sm font-bold text-white uppercase">{{ substr($siteName, 0, 1) }}</span>
                 </div>
                 <span class="site-brand-text">{!! $siteName !!}</span>
-            </span>
+            </div>
         @else
             <a class="brand site-brand group flex items-center gap-3 text-lg font-bold text-gray-900 hover:text-blue-600 nav-transition"
                 href="{{ home_url('/') }}">
