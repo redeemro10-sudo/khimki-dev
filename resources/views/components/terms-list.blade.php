@@ -21,7 +21,7 @@
             @foreach ($items as $t)
                 <li>
                     <a class="block border rounded-2xl p-4 hover:bg-gray-50 transition" href="{{ get_term_link($t) }}">
-                        <h3 class="font-medium truncate">{{ $t->name }}</h3>
+                        <div class="font-medium truncate">{{ $t->name }}</div>
                         <div class="text-sm opacity-70">Анкет: {{ number_format_i18n((int) $t->count) }}</div>
                     </a>
                 </li>
