@@ -12,13 +12,12 @@
     $cfg = is_array($config ?? null) ? $config : [];
     $showFilters = (bool) ($showFilters ?? true);
 
-    // SSR через REST-контроллер
+    // SSR through the REST controller.
     $req = new \WP_REST_Request('GET', '/site/v1/models');
     $req->set_param('page', 1);
     $req->set_param('per_page', (int) ($cfg['per_page'] ?? 12));
     $req->set_param('sort', $cfg['sort'] ?? ($cfg['order'] ?? 'date'));
 
-    // Применяем пресеты
     foreach ((array) ($cfg['tax'] ?? []) as $tax => $vals) {
         if (!empty($vals)) {
             $req->set_param($tax, array_values((array) $vals));
@@ -77,7 +76,7 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-[20rem_1fr] lg:items-start gap-4 lg:gap-6">
         @if ($showFilters)
-            {{-- Мобильная кнопка открытия фильтров --}}
+            {{-- Mobile button to open filters --}}
             <button type="button" id="filters-toggle-{{ $id }}"
                 class="lg:hidden fixed bottom-6 right-6 z-30 flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,21 +87,21 @@
                 <span class="font-medium">Фильтры</span>
             </button>
 
-            {{-- Оверлей для модального окна --}}
+            {{-- Overlay for modal window --}}
             <div id="filters-overlay-{{ $id }}"
                 class="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300 lg:hidden">
             </div>
 
-            {{-- Фильтры: модальное окно на мобильных, боковая панель на десктопе --}}
+            {{-- Filters: modal on mobile, sidebar on desktop --}}
             <aside id="filters-sidebar-{{ $id }}"
                 class="fixed inset-y-0 left-0 z-9999 lg:z-1 w-full bg-gray-950 shadow-2xl -translate-x-full transition-transform duration-300 ease-out
          lg:static lg:translate-x-0 lg:w-80 lg:shadow-none lg:bg-transparent lg:h-auto lg:overflow-visible lg:sticky lg:top-24">
 
-                {{-- Форма фильтров --}}
+                {{-- Filters form --}}
                 <form class="models-grid__form p-4 lg:p-0 h-full lg:h-auto overflow-y-auto lg:overflow-visible">
                     <div class="lg:pb-0 form__div">
                         <div class="lg:pb-0 form__div">
-                            {{-- Скрытые пресеты --}}
+                            {{-- Hidden presets --}}
                             @if (!empty($cfg['tax']) && is_array($cfg['tax']))
                                 @foreach ($cfg['tax'] as $taxKey => $vals)
                                     @foreach ((array) $vals as $val)
@@ -112,17 +111,16 @@
                                 @endforeach
                             @endif
 
-                            {{-- Подключаем компонент аккордеон-фильтров --}}
-                            @include ('components.filters-multilevel')
+                            @include('components.filters-multilevel')
                         </div>
                     </div>
                 </form>
             </aside>
         @endif
 
-        {{-- Основной контент --}}
+        {{-- Main content --}}
         <section class="flex-1">
-            {{-- Сортировка и счетчик --}}
+            {{-- Sorting and counter --}}
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-4 border-b">
                 <div class="text-sm text-gray-600">
                     Найдено: <span class="font-semibold text-gray-900"
@@ -141,14 +139,14 @@
                 </div>
             </div>
 
-            {{-- Грид моделей --}}
+            {{-- Models grid --}}
             <div class="models-grid__root">
                 @if ($hasSSR)
                     @include('components.models-cards', ['items' => $ssrItems])
                 @endif
             </div>
 
-            {{-- Пустой результат --}}
+            {{-- Empty state --}}
             <div class="models-grid__empty {{ $hasSSR ? 'hidden' : '' }} text-center py-12">
                 <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor"
                     viewBox="0 0 24 24">
@@ -159,7 +157,7 @@
                 <p class="text-gray-400 text-sm mt-2">Попробуйте изменить параметры поиска</p>
             </div>
 
-            {{-- Кнопка "Показать ещё" --}}
+            {{-- Show more button --}}
             <div class="text-center mt-8 {{ $hasMoreSSR ? '' : 'hidden' }}" data-more-wrap>
                 <button type="button" data-more
                     class="px-8 py-3 bg-white border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:border-orange-500 hover:text-orange-600 hover:shadow-md transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
