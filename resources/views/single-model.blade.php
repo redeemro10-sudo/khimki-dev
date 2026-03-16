@@ -52,7 +52,7 @@
         $relatedModelsArgs = [
             'post_type' => 'model',
             'post_status' => 'publish',
-            'posts_per_page' => 8,
+            'posts_per_page' => 4,
             'post__not_in' => [$id],
             'orderby' => 'rand',
             'ignore_sticky_posts' => true,
@@ -69,11 +69,6 @@
         }
         $relatedModelsQuery = new \WP_Query($relatedModelsArgs);
         $relatedModels = $relatedModelsQuery->posts;
-        if (empty($relatedModels) && !empty($districtTermIds)) {
-            unset($relatedModelsArgs['tax_query']);
-            $relatedModelsQuery = new \WP_Query($relatedModelsArgs);
-            $relatedModels = $relatedModelsQuery->posts;
-        }
         wp_reset_postdata();
 
         // Галерея и видео
@@ -784,11 +779,11 @@
             <section class="mt-12">
                 <div class="rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-blue-50 p-6 shadow-sm lg:p-8">
                     <div class="mb-6">
-                        <h2 class="text-2xl font-bold text-gray-900">Похожие анкеты</h2>
+                        <h2 class="text-2xl font-bold text-gray-900">Похожие модели</h2>
                         @if ($districtName)
-                            <p class="mt-2 text-sm text-gray-600">Случайные анкеты из того же района: {{ $districtName }}</p>
+                            <p class="mt-2 text-sm text-gray-600">Модели из того же района: {{ $districtName }}</p>
                         @else
-                            <p class="mt-2 text-sm text-gray-600">Случайные анкеты, которые могут вам подойти</p>
+                            <p class="mt-2 text-sm text-gray-600">Похожие модели</p>
                         @endif
                     </div>
 
