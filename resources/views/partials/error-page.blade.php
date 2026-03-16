@@ -1,0 +1,134 @@
+<?php
+$statusCode = (int) ($statusCode ?? 404);
+$isGone = $statusCode === 410;
+
+$content = $isGone
+    ? [
+        'title' => 'СТРАНИЦА УДАЛЕНА',
+        'lead' => 'Похоже, эта страница была удалена и больше недоступна.',
+        'sublead' => 'Но вы можете перейти в актуальные разделы каталога и найти подходящие анкеты.',
+    ]
+    : [
+        'title' => 'СТРАНИЦА НЕ НАЙДЕНА',
+        'lead' => 'Похоже, вы перешли по устаревшей ссылке.',
+        'sublead' => 'Но не расстраивайтесь, у нас есть много других прекрасных моделей!',
+    ];
+
+$resolvePageLink = static function (array $slugs, string $label, ?string $fallback = null): ?array {
+    foreach ($slugs as $slug) {
+        $page = get_page_by_path($slug);
+        if ($page instanceof \WP_Post) {
+            return [
+                'label' => $label,
+                'url' => get_permalink($page),
+            ];
+        }
+    }
+
+    if ($fallback) {
+        return [
+            'label' => $label,
+            'url' => $fallback,
+        ];
+    }
+
+    return null;
+};
+
+$resolveTermLink = static function (string $taxonomy, array $slugs, string $label, ?string $fallback = null): ?array {
+    if (taxonomy_exists($taxonomy)) {
+        foreach ($slugs as $slug) {
+            $term = get_term_by('slug', $slug, $taxonomy);
+            if ($term instanceof \WP_Term) {
+                $url = get_term_link($term);
+                if (!is_wp_error($url)) {
+                    return [
+                        'label' => $label,
+                        'url' => $url,
+                    ];
+                }
+            }
+        }
+    }
+
+    if ($fallback) {
+        return [
+            'label' => $label,
+            'url' => $fallback,
+        ];
+    }
+
+    return null;
+};
+
+$catalogLink = $resolvePageLink(
+    ['proverennye', 'elitnye', 'deshovyye', 'na-vyyezd'],
+    'Смотреть каталог',
+    home_url('/'),
+);
+
+$popularLinks = array_values(array_filter([
+    $resolvePageLink(['elitnye'], 'Элитные', home_url('/elitnye/')),
+    $resolveTermLink('hair_color', ['blondinka', 'blondinki'], 'Блондинки'),
+    $resolvePageLink(['na-vyyezd'], 'На выезд', home_url('/na-vyyezd/')),
+    $resolvePageLink(['uslugi'], 'Услуги', home_url('/uslugi/')),
+]));
+?>
+
+<section class="py-6 sm:py-10">
+    <div class="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_24px_70px_-40px_rgba(15,23,42,0.45)]">
+        <div class="relative isolate px-6 py-12 text-center sm:px-10 sm:py-16 lg:px-16 lg:py-20">
+            <div
+                class="pointer-events-none absolute inset-x-0 top-6 bg-gradient-to-b from-slate-100/80 via-white/30 to-transparent text-[7rem] font-black leading-none tracking-[-0.08em] text-slate-100 sm:text-[9rem] lg:text-[12rem]">
+                {{ $statusCode }}
+            </div>
+
+            <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
+            <div class="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
+
+            <div class="relative mx-auto max-w-3xl">
+                <div
+                    class="mx-auto mb-8 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 text-xl font-black text-white shadow-lg shadow-orange-500/25">
+                    {{ $statusCode }}
+                </div>
+
+                <h1 class="text-3xl font-black uppercase tracking-[0.04em] text-slate-950 sm:text-4xl lg:text-5xl">
+                    {{ $content['title'] }}
+                </h1>
+
+                <div class="mx-auto mt-6 max-w-2xl space-y-2 text-base leading-7 text-slate-600 sm:text-lg">
+                    <p>{{ $content['lead'] }}</p>
+                    <p>{{ $content['sublead'] }}</p>
+                </div>
+
+                <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                    <a href="{{ esc_url($catalogLink['url'] ?? home_url('/')) }}"
+                        class="inline-flex min-w-[220px] items-center justify-center rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600 px-8 py-4 text-sm font-extrabold uppercase tracking-[0.12em] text-white shadow-lg shadow-orange-500/25 transition hover:-translate-y-0.5 hover:shadow-xl">
+                        Смотреть каталог
+                    </a>
+                    <a href="{{ esc_url(home_url('/')) }}"
+                        class="inline-flex min-w-[180px] items-center justify-center rounded-2xl border border-slate-200 bg-white px-8 py-4 text-sm font-extrabold uppercase tracking-[0.12em] text-slate-900 transition hover:border-slate-300 hover:bg-slate-50">
+                        На главную
+                    </a>
+                </div>
+
+                @if (!empty($popularLinks))
+                    <div class="mx-auto mt-12 max-w-2xl border-t border-slate-200 pt-8">
+                        <p class="text-xs font-bold uppercase tracking-[0.28em] text-slate-400">
+                            Популярные разделы
+                        </p>
+
+                        <div class="mt-5 flex flex-wrap items-center justify-center gap-3">
+                            @foreach ($popularLinks as $link)
+                                <a href="{{ esc_url($link['url']) }}"
+                                    class="inline-flex items-center justify-center rounded-full border border-slate-200 bg-slate-50 px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-white hover:text-slate-950">
+                                    {{ $link['label'] }}
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+</section>

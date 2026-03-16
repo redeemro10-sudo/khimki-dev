@@ -4,6 +4,34 @@
 @source "../views/";
 @source "../../app/";
 
+.fab-btn {
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease,
+    background-color 0.22s ease;
+}
+
+.fab-btn svg {
+  transition: transform 0.22s ease;
+}
+
+.fab-btn:hover {
+  transform: translateY(-3px) scale(1.04);
+  border-color: rgba(59, 130, 246, 0.24);
+  box-shadow:
+    0 16px 28px -18px rgba(15, 23, 42, 0.45),
+    0 10px 18px -14px rgba(59, 130, 246, 0.4);
+}
+
+.fab-btn:hover svg {
+  transform: scale(1.08);
+}
+
+.fab-btn:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
 div h2 {
   @apply text-2xl;
 }

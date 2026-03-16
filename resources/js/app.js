@@ -362,6 +362,86 @@ import.meta.glob([
       }
     };
 
+    let contactToast = null;
+    let contactToastTimeout = null;
+
+    const showContactToast = (message) => {
+      if (!message) return;
+
+      if (!contactToast) {
+        contactToast = document.createElement('div');
+        contactToast.setAttribute('role', 'status');
+        contactToast.setAttribute('aria-live', 'polite');
+        contactToast.className = 'pointer-events-none fixed bottom-6 left-1/2 z-[140] -translate-x-1/2 rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white opacity-0 shadow-lg transition-opacity duration-200';
+        document.body.appendChild(contactToast);
+      }
+
+      contactToast.textContent = message;
+      contactToast.classList.remove('opacity-0');
+      contactToast.classList.add('opacity-100');
+
+      if (contactToastTimeout) {
+        window.clearTimeout(contactToastTimeout);
+      }
+
+      contactToastTimeout = window.setTimeout(() => {
+        contactToast?.classList.remove('opacity-100');
+        contactToast?.classList.add('opacity-0');
+      }, 2200);
+    };
+
+    const copyTextToClipboard = async (text) => {
+      if (!text) return false;
+
+      if (navigator.clipboard?.writeText) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch (error) {
+          console.warn('Clipboard API is unavailable', error);
+        }
+      }
+
+      const fallbackField = document.createElement('textarea');
+      fallbackField.value = text;
+      fallbackField.setAttribute('readonly', '');
+      fallbackField.className = 'fixed left-[-9999px] top-0';
+      document.body.appendChild(fallbackField);
+      fallbackField.select();
+
+      const isCopied = document.execCommand('copy');
+      document.body.removeChild(fallbackField);
+
+      return isCopied;
+    };
+
+    const isTelephoneLink = (value) => /^tel:/i.test(value);
+    const isProbablyMobileDevice = () =>
+      Boolean(navigator.userAgentData?.mobile) ||
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone/i.test(navigator.userAgent);
+
+    const phoneNumberFromLink = (value) => {
+      const rawValue = value.replace(/^tel:/i, '').trim();
+
+      if (/^\d{11}$/.test(rawValue) && rawValue.startsWith('7')) {
+        return `+${rawValue}`;
+      }
+
+      return rawValue;
+    };
+
+    const handleTelephoneFallback = async (phoneLink) => {
+      const phoneNumber = phoneNumberFromLink(phoneLink);
+      const isCopied = await copyTextToClipboard(phoneNumber);
+
+      if (isCopied) {
+        showContactToast('Номер телефона скопирован');
+        return;
+      }
+
+      window.prompt('Скопируйте номер телефона:', phoneNumber);
+    };
+
     document.querySelectorAll('[data-contact-text]').forEach((element) => {
       const decodedText = decodeContactValue(element.getAttribute('data-contact-text'));
 
@@ -376,6 +456,7 @@ import.meta.glob([
       if (!decodedLink) return;
 
       const isExternalLink = /^https?:\/\//i.test(decodedLink);
+      const isPhoneLink = isTelephoneLink(decodedLink);
 
       if (element.tagName === 'A') {
         element.setAttribute('href', decodedLink);
@@ -385,12 +466,31 @@ import.meta.glob([
           element.setAttribute('rel', 'noopener');
         }
 
+        if (isPhoneLink) {
+          element.addEventListener('click', async (event) => {
+            if (isProbablyMobileDevice()) return;
+
+            event.preventDefault();
+            await handleTelephoneFallback(decodedLink);
+          });
+        }
+
         return;
       }
 
-      element.addEventListener('click', () => {
+      element.addEventListener('click', async () => {
         if (isExternalLink) {
           window.open(decodedLink, '_blank', 'noopener');
+          return;
+        }
+
+        if (isPhoneLink) {
+          if (isProbablyMobileDevice()) {
+            window.location.href = decodedLink;
+            return;
+          }
+
+          await handleTelephoneFallback(decodedLink);
           return;
         }
 

@@ -1,13 +1,11 @@
 @extends('layouts.app')
 
+@push('head')
+    <meta name="robots" content="noindex,follow">
+@endpush
+
 @section('content')
-  @include('partials.page-header')
+    @php($statusCode = (int) http_response_code() === 410 ? 410 : 404)
 
-  @if (! have_posts())
-    <x-alert type="warning">
-      {!! __('Sorry, but the page you are trying to view does not exist.', 'sage') !!}
-    </x-alert>
-
-    {!! get_search_form(false) !!}
-  @endif
+    @include('partials.error-page', ['statusCode' => $statusCode])
 @endsection

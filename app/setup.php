@@ -428,6 +428,17 @@ add_filter('document_title_parts', function ($parts) {
     }
     return $parts;
 });
+
+add_filter('document_title_parts', function ($parts) {
+    if (!is_404()) {
+        return $parts;
+    }
+
+    $parts['title'] = (int) http_response_code() === 410 ? 'Ошибка 410' : 'Ошибка 404';
+
+    return $parts;
+}, 20);
+
 add_action('wp_head', function () {
     if (is_post_type_archive('blog')) {
         if ($p = get_page_by_path('blog-seo')) {
