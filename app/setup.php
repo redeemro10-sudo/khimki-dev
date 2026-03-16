@@ -413,6 +413,132 @@ add_action('save_post_page', function ($postId) {
     update_post_meta($postId, '_faq_items', $items);
 });
 
+add_action('add_meta_boxes_model', function ($post) {
+    if (! $post instanceof \WP_Post) {
+        return;
+    }
+
+    add_meta_box(
+        'model_seo_description',
+        'Description',
+        function (\WP_Post $post) {
+            $description = (string) get_post_meta($post->ID, '_seo_description', true);
+
+            wp_nonce_field('save_model_seo_description', 'model_seo_description_nonce');
+            ?>
+            <p style="margin:0 0 8px;">
+                <label for="model-seo-description" style="display:block;font-weight:600;margin-bottom:6px;">
+                    <?php esc_html_e('Meta description', 'sage'); ?>
+                </label>
+                <textarea
+                    id="model-seo-description"
+                    name="model_seo_description"
+                    rows="4"
+                    style="width:100%;"
+                    maxlength="300"
+                ><?php echo esc_textarea($description); ?></textarea>
+            </p>
+            <p class="description" style="margin:0 0 6px;">
+                <?php esc_html_e('Used for the profile page meta description. Leave empty to generate it automatically.', 'sage'); ?>
+            </p>
+            <p class="description" style="margin:0;">
+                <span id="model-seo-description-count"><?php echo esc_html((string) mb_strlen(trim($description))); ?></span>/160
+            </p>
+            <?php
+        },
+        'model',
+        'normal',
+        'default'
+    );
+});
+
+add_action('save_post_model', function ($postId) {
+    if (
+        ! isset($_POST['model_seo_description_nonce']) ||
+        ! wp_verify_nonce(
+            sanitize_text_field(wp_unslash($_POST['model_seo_description_nonce'])),
+            'save_model_seo_description'
+        )
+    ) {
+        return;
+    }
+
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    if (! current_user_can('edit_post', $postId)) {
+        return;
+    }
+
+    if (! array_key_exists('model_seo_description', $_POST)) {
+        return;
+    }
+
+    $description = sanitize_textarea_field(wp_unslash((string) $_POST['model_seo_description']));
+
+    if ($description === '') {
+        delete_post_meta($postId, '_seo_description');
+        return;
+    }
+
+    update_post_meta($postId, '_seo_description', $description);
+});
+
+add_action('admin_footer', function () {
+    $screen = get_current_screen();
+
+    if (
+        ! $screen ||
+        $screen->base !== 'post' ||
+        $screen->post_type !== 'model'
+    ) {
+        return;
+    }
+    ?>
+    <script>
+        (() => {
+            const seoBox = document.getElementById('model_seo_description');
+            const textarea = document.getElementById('model-seo-description');
+            const counter = document.getElementById('model-seo-description-count');
+            const profileLabelNeedle = '\u0442\u0435\u043a\u0441\u0442 \u0430\u043d\u043a\u0435\u0442\u044b';
+
+            if (textarea && counter) {
+                const syncCounter = () => {
+                    counter.textContent = textarea.value.trim().length.toString();
+                };
+
+                syncCounter();
+                textarea.addEventListener('input', syncCounter);
+            }
+
+            if (!seoBox) {
+                return;
+            }
+
+            const profileField = document.querySelector(
+                'textarea[name="_profile_text"], textarea[name="profile_text"], input[name="_profile_text"], input[name="profile_text"]'
+            );
+
+            let anchorBox = profileField ? profileField.closest('.postbox') : null;
+
+            if (!anchorBox) {
+                const labels = Array.from(document.querySelectorAll('label, .postbox-header h2, .hndle'));
+                const profileLabel = labels.find((element) =>
+                    element.textContent && element.textContent.toLowerCase().includes(profileLabelNeedle)
+                );
+
+                anchorBox = profileLabel ? profileLabel.closest('.postbox') : null;
+            }
+
+            if (anchorBox && anchorBox.parentNode && anchorBox.nextSibling !== seoBox) {
+                anchorBox.parentNode.insertBefore(seoBox, anchorBox.nextSibling);
+            }
+        })();
+    </script>
+    <?php
+});
+
 add_action('after_setup_theme', function () {
     add_theme_support('post-thumbnails');
     add_image_size('post-card', 640, 480, true); // 4:3 под карточки
@@ -445,6 +571,28 @@ function trim_seo_description_text(string $text, int $limit = 160): string
     }
 
     return rtrim($cut) . '...';
+}
+
+function model_meta_description(int $postId): string
+{
+    $custom = preg_replace('~\s+~u', ' ', trim((string) get_post_meta($postId, '_seo_description', true)));
+    $custom = $custom === null ? '' : trim($custom);
+
+    if ($custom !== '') {
+        return $custom;
+    }
+
+    $profileText = trim((string) get_post_meta($postId, '_profile_text', true));
+    if ($profileText !== '') {
+        return trim_seo_description_text($profileText, 150);
+    }
+
+    $content = trim((string) get_post_field('post_content', $postId));
+    if ($content !== '') {
+        return trim_seo_description_text($content, 150);
+    }
+
+    return '';
 }
 
 function blog_archive_base_description(): string
@@ -541,6 +689,13 @@ add_action('wp_head', function () {
     if (!is_singular('model')) {
         return;
     }
+
+    $customDescription = model_meta_description(get_queried_object_id());
+    if ($customDescription !== '') {
+        echo '<meta name="description" content="' . esc_attr($customDescription) . '">' . "\n";
+        return;
+    }
+
     $raw = wp_strip_all_tags(get_the_content());
     $raw = preg_replace('~\s+~u', ' ', $raw);
     $limit = 150;
