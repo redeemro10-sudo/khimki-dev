@@ -710,6 +710,7 @@
         </div>
 
         {{-- FAQ секция --}}
+        @if(false)
         <div class="bg-gray-50 py-12 mt-12">
             <div class="container max-w-7xl mx-auto px-4">
                 <div class="max-w-3xl mx-auto">
@@ -745,6 +746,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </article>
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"
