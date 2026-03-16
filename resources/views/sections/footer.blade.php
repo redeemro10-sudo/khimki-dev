@@ -1,15 +1,15 @@
 @php
     $footerMenus = collect([
         [
-            'title' => 'Р Р°Р·РґРµР»С‹',
+            'title' => 'Разделы',
             'location' => 'footer_navigation',
         ],
         [
-            'title' => 'РРЅС„РѕСЂРјР°С†РёСЏ',
+            'title' => 'Информация',
             'location' => 'footer_community',
         ],
         [
-            'title' => 'РџСЂР°РІРѕРІР°СЏ РёРЅС„РѕСЂРјР°С†РёСЏ',
+            'title' => 'Правовая информация',
             'location' => 'footer_legal',
         ],
     ])->filter(fn ($menu) => has_nav_menu($menu['location']));
@@ -44,7 +44,7 @@
             @endif
 
             <div class="max-w-xs text-sm leading-6 text-slate-500">
-                РљР°С‚Р°Р»РѕРі РїСЂРѕРІРµСЂРµРЅРЅС‹С… РёРЅРґРёРІРёРґСѓР°Р»РѕРє РІ РҐРёРјРєР°С…. Р РµР°Р»СЊРЅС‹Рµ С„РѕС‚Рѕ, РѕС‚Р·С‹РІС‹ РєР»РёРµРЅС‚РѕРІ, РІСЃРµ СЂР°Р№РѕРЅС‹ РіРѕСЂРѕРґР°.
+                Каталог проверенных индивидуалок в Химках. Реальные фото, отзывы клиентов, все районы города.
             </div>
 
             <ul class="space-y-3 text-sm leading-6 text-slate-500">
@@ -59,8 +59,8 @@
                                 <a class="{{ !empty($contact['label']) ? 'font-semibold text-slate-800 hover:text-blue-600' : 'hover:text-blue-600' }} transition"
                                     data-contact-link="{{ $contact['encoded_url'] }}"
                                     data-contact-text="{{ $contact['encoded_value'] }}"
-                                    aria-label="{{ $contact['label'] ?: 'РљРѕРЅС‚Р°РєС‚' }}">
-                                    РџРѕРєР°Р·Р°С‚СЊ
+                                    aria-label="{{ $contact['label'] ?: 'Контакт' }}">
+                                    Показать
                                 </a>
                             @else
                                 <span class="{{ !empty($contact['label']) ? 'font-semibold text-slate-800' : '' }}">{{ $contact['value'] }}</span>
@@ -83,14 +83,14 @@
     <div class="mx-auto max-w-7xl px-4 pb-6">
         <div class="lg:max-w-xs rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-500 shadow-sm">
             <span class="font-semibold text-slate-700">[18+]</span>
-            РЎР°Р№С‚ СЃРѕРґРµСЂР¶РёС‚ РєРѕРЅС‚РµРЅС‚, РЅРµ РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ Р»РёС† РјР»Р°РґС€Рµ 18 Р»РµС‚. РџСЂРѕРґРѕР»Р¶Р°СЏ, РІС‹ РїРѕРґС‚РІРµСЂР¶РґР°РµС‚Рµ СЃРІРѕР№ РІРѕР·СЂР°СЃС‚.
+            Сайт содержит контент, не предназначенный для лиц младше 18 лет. Продолжая, вы подтверждаете свой возраст.
         </div>
     </div>
 
     <div class="border-t border-slate-200">
         <div class="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-4 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
-            <div>&copy; {{ $copyrightYears }} {!! $siteName !!}. Р’СЃРµ РїСЂР°РІР° Р·Р°С‰РёС‰РµРЅС‹.</div>
-            <a class="transition hover:text-slate-600" href="{{ $sitemapUrl }}">РљР°СЂС‚Р° СЃР°Р№С‚Р°</a>
+            <div>&copy; {{ $copyrightYears }} {!! $siteName !!}. Все права защищены.</div>
+            <a class="transition hover:text-slate-600" href="{{ $sitemapUrl }}">Карта сайта</a>
         </div>
     </div>
 </footer>

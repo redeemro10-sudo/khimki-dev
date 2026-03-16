@@ -1,7 +1,6 @@
 {{-- resources/views/components/filters-multilevel.blade.php --}}
 
 <div class="filters-container bg-white rounded-lg shadow-lg overflow-hidden" data-filter-id="{{ $id ?? 'filter-1' }}">
-    {{-- Р—Р°РіРѕР»РѕРІРѕРє С„РёР»СЊС‚СЂРѕРІ --}}
     <div class="filter-header bg-gray-100 px-4 py-3 border-b flex items-center justify-between">
         <button type="button" class="back-btn hidden text-gray-600 hover:text-gray-900 transition-colors">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -24,12 +23,9 @@
         </button>
     </div>
 
-    {{-- РљРѕРЅС‚РµРЅС‚ С„РёР»СЊС‚СЂРѕРІ --}}
     <div class="filter-content relative min-h-[400px]">
-        {{-- РћСЃРЅРѕРІРЅРѕР№ СѓСЂРѕРІРµРЅСЊ --}}
         <div class="filter-level active overflow-y-auto" data-level="main">
             <div class="p-4 overflow-y-auto space-y-2">
-                {{-- РЈСЃР»СѓРіРё --}}
                 <button type="button"
                     class="filter-nav-item w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 rounded-lg transition-colors"
                     data-target="services">
@@ -43,7 +39,6 @@
                     </span>
                 </button>
 
-                {{-- Р›РѕРєР°С†РёСЏ --}}
                 <button type="button"
                     class="filter-nav-item w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 rounded-lg transition-colors"
                     data-target="location">
@@ -57,7 +52,6 @@
                     </span>
                 </button>
 
-                {{-- Р’РЅРµС€РЅРѕСЃС‚СЊ --}}
                 <button type="button"
                     class="filter-nav-item w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 rounded-lg transition-colors"
                     data-target="appearance">
@@ -71,11 +65,9 @@
                     </span>
                 </button>
 
-                {{-- РџР°СЂР°РјРµС‚СЂС‹ --}}
                 <div class="pt-2 space-y-3">
                     <h4 class="text-sm font-semibold text-gray-600 uppercase tracking-wider">Параметры</h4>
 
-                    {{-- Р’РѕР·СЂР°СЃС‚ --}}
                     <div>
                         <label class="text-xs text-gray-500 mb-1 block">Возраст</label>
                         <div class="flex items-center gap-2">
@@ -89,7 +81,6 @@
                         </div>
                     </div>
 
-                    {{-- Р¦РµРЅР° --}}
                     <div>
                         <label class="text-xs text-gray-500 mb-1 block">Цена (₽)</label>
                         <div class="flex items-center gap-2">
@@ -104,13 +95,12 @@
                     </div>
                 </div>
 
-                {{-- РћСЃРѕР±РµРЅРЅРѕСЃС‚Рё --}}
                 <div class="pt-3 space-y-2">
                     <h4 class="text-sm font-semibold text-gray-600 uppercase tracking-wider">Особенности</h4>
                     <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
                         <input type="checkbox" name="has_video" value="1"
                             class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
-                        <span class="text-gray-700 text-sm">Только с видео</span>
+                        <span class="text-gray-700 text-sm">С видео</span>
                     </label>
                     <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
                         <input type="checkbox" name="feature[]" value="proverennyye"
@@ -126,7 +116,6 @@
             </div>
         </div>
 
-        {{-- РЈСЂРѕРІРµРЅСЊ СѓСЃР»СѓРі --}}
         <div class="filter-level overflow-y-auto absolute inset-0 bg-white min-h-[400px]" data-level="services"
             style="display: none;">
             <div class="p-4 overflow-y-auto">
@@ -160,11 +149,9 @@
             </div>
         </div>
 
-        {{-- РЈСЂРѕРІРµРЅСЊ Р»РѕРєР°С†РёРё --}}
         <div class="filter-level overflow-y-auto absolute inset-0 bg-white min-h-[400px]" data-level="location"
             style="display: none;">
             <div class="p-4 overflow-y-auto">
-                {{-- Р Р°Р№РѕРЅС‹ --}}
                 <div class="mb-4">
                     <h4 class="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">Районы</h4>
                     <fieldset class="space-y-1">
@@ -189,36 +176,9 @@
                         @endif
                     </fieldset>
                 </div>
-
-                {{-- РњРµС‚СЂРѕ --}}
-                {{-- <div>
-                    <h4 class="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">РњРµС‚СЂРѕ</h4>
-                    <div class="space-y-1">
-                        @php
-                            $stations = get_terms(['taxonomy' => 'rail_station', 'hide_empty' => true]);
-                        @endphp
-                        @if (!is_wp_error($stations) && !empty($stations))
-                            @foreach ($stations as $term)
-                                <label
-                                    class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
-                                    <div class="flex items-center gap-3">
-                                        <input type="checkbox" name="rail_station[]" value="{{ $term->slug }}"
-                                            class="location-checkbox w-4 h-4 text-blue-600 border-gray-300 rounded">
-                                        <span class="text-gray-700 text-sm">{{ $term->name }}</span>
-                                    </div>
-                                    @if ($term->count > 0)
-                                        <span
-                                            class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">{{ $term->count }}</span>
-                                    @endif
-                                </label>
-                            @endforeach
-                        @endif
-                    </div>
-                </div> --}}
             </div>
         </div>
 
-        {{-- РЈСЂРѕРІРµРЅСЊ РІРЅРµС€РЅРѕСЃС‚Рё --}}
         <div class="filter-level overflow-y-auto absolute inset-0 bg-white min-h-[400px]" data-level="appearance"
             style="display: none;">
             <div class="p-4 overflow-y-auto">
@@ -264,7 +224,6 @@
         </div>
     </div>
 
-    {{-- РљРЅРѕРїРєРё РґРµР№СЃС‚РІРёР№ --}}
     <div class="filter-footer bg-gray-50 px-4 py-3 border-t flex gap-3">
         <button type="reset"
             class="reset-btn flex-1 px-4 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium">

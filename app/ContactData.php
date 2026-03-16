@@ -54,12 +54,12 @@ class ContactData
         }
 
         $email = self::value('email', 'info@prostitutkikhimki.com');
-        $city = self::value('city', 'РҐРёРјРєРё, РњРѕСЃРєРѕРІСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ');
-        $hours = self::value('hours', '24/7 (РљСЂСѓРіР»РѕСЃСѓС‚РѕС‡РЅРѕ)');
+        $city = self::value('city', 'Химки, Московская область');
+        $hours = self::value('hours', '24/7 (Круглосуточно)');
 
         return [
             [
-                'label' => 'РўРµР»РµРіСЂР°Рј',
+                'label' => 'Телеграм',
                 'encoded_value' => self::encoded($telegramLabel),
                 'encoded_url' => self::encoded($telegramUrl),
             ],
