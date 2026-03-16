@@ -6,7 +6,6 @@
 
 namespace App;
 
-use App\Support\GoneUrls;
 use Illuminate\Support\Facades\Vite;
 
 function get_faq_items(int $postId): array
@@ -162,59 +161,6 @@ add_action('after_setup_theme', function () {
      */
     add_theme_support('customize-selective-refresh-widgets');
 }, 20);
-add_action('template_redirect', function () {
-    if (is_admin() || wp_doing_ajax() || defined('REST_REQUEST') || !GoneUrls::isGoneRequest()) {
-        return;
-    }
-
-    global $wp_query;
-
-    $wp_query->set_404();
-    $wp_query->posts = [];
-    $wp_query->post = null;
-    $wp_query->post_count = 0;
-    $wp_query->found_posts = 0;
-    $wp_query->queried_object = null;
-    $wp_query->queried_object_id = 0;
-
-    status_header(410);
-    nocache_headers();
-
-    echo view('404')->render();
-    exit;
-}, 0);
-
-add_filter('wp_sitemaps_posts_query_args', function (array $args, string $postType): array {
-    if ($postType !== 'page') {
-        return $args;
-    }
-
-    $excludedIds = GoneUrls::excludedPageIds();
-    if ($excludedIds === []) {
-        return $args;
-    }
-
-    $args['post__not_in'] = array_values(array_unique(array_merge(
-        (array) ($args['post__not_in'] ?? []),
-        $excludedIds,
-    )));
-
-    return $args;
-}, 10, 2);
-
-add_filter('wp_sitemaps_taxonomies_query_args', function (array $args, string $taxonomy): array {
-    $excludedIds = GoneUrls::excludedTermIds($taxonomy);
-    if ($excludedIds === []) {
-        return $args;
-    }
-
-    $args['exclude'] = array_values(array_unique(array_merge(
-        (array) ($args['exclude'] ?? []),
-        $excludedIds,
-    )));
-
-    return $args;
-}, 10, 2);
 
 /**
  * Register the theme sidebars.

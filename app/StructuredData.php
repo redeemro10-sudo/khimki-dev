@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Support\GoneUrls;
 use WP_Post;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -1004,11 +1003,7 @@ class StructuredData
                 continue;
             }
 
-            if (
-                (int) $page->ID === $currentPageId ||
-                (int) $page->post_parent !== 0 ||
-                GoneUrls::isGonePageId((int) $page->ID)
-            ) {
+            if ((int) $page->ID === $currentPageId || (int) $page->post_parent !== 0) {
                 continue;
             }
 
@@ -1047,10 +1042,6 @@ class StructuredData
 
             foreach ($terms as $term) {
                 if (!$term instanceof WP_Term) {
-                    continue;
-                }
-
-                if (GoneUrls::isGoneTerm($term)) {
                     continue;
                 }
 
