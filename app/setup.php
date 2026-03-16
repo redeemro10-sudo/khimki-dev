@@ -426,14 +426,80 @@ add_filter('excerpt_more', function () {
     return '…';
 });
 
+function trim_seo_description_text(string $text, int $limit = 160): string
+{
+    $text = preg_replace('~\s+~u', ' ', trim(wp_strip_all_tags($text)));
+    if ($text === null || $text === '') {
+        return '';
+    }
+
+    if (mb_strlen($text) <= $limit) {
+        return $text;
+    }
+
+    $cut = mb_substr($text, 0, $limit);
+    $rest = mb_substr($text, $limit);
+
+    if (preg_match('~^\S+\b~u', $rest, $matches)) {
+        $cut .= $matches[0];
+    }
+
+    return rtrim($cut) . '...';
+}
+
+function blog_archive_base_description(): string
+{
+    $page = get_page_by_path('blog-seo');
+
+    if ($page instanceof \WP_Post) {
+        $seoDescription = trim((string) get_post_meta($page->ID, '_seo_description', true));
+        if ($seoDescription !== '') {
+            return $seoDescription;
+        }
+
+        $pageText = trim((string) get_post_meta($page->ID, '_page_text', true));
+        if ($pageText !== '') {
+            return trim_seo_description_text($pageText);
+        }
+
+        $h1 = trim((string) get_post_meta($page->ID, '_page_h1', true));
+        if ($h1 !== '') {
+            return sprintf(
+                '%s на сайте %s. Свежие статьи, полезные материалы и новые публикации.',
+                $h1,
+                get_bloginfo('name')
+            );
+        }
+    }
+
+    return sprintf(
+        'Блог сайта %s. Свежие статьи, полезные материалы и новые публикации.',
+        get_bloginfo('name')
+    );
+}
+
+function blog_archive_meta_description(): string
+{
+    $description = blog_archive_base_description();
+    $paged = max(1, (int) get_query_var('paged'), (int) get_query_var('page'));
+
+    if ($paged > 1) {
+        $description .= ' — Страница ' . $paged;
+    }
+
+    return $description;
+}
+
 add_filter('document_title_parts', function ($parts) {
-    if (is_post_type_archive('blog')) {
+    if (is_post_type_archive('blog') || is_home()) {
         if ($p = get_page_by_path('blog-seo')) {
             $t = (string) get_post_meta($p->ID, '_seo_title', true);
             if ($t !== '') {
                 $parts['title'] = $t;
             }
         }
+
+        unset($parts['page']);
     }
     return $parts;
 });
@@ -449,13 +515,8 @@ add_filter('document_title_parts', function ($parts) {
 }, 20);
 
 add_action('wp_head', function () {
-    if (is_post_type_archive('blog')) {
-        if ($p = get_page_by_path('blog-seo')) {
-            $d = (string) get_post_meta($p->ID, '_seo_description', true);
-            if ($d !== '') {
-                echo '<meta name="description" content="' . esc_attr($d) . "\" />\n";
-            }
-        }
+    if (is_post_type_archive('blog') || is_home()) {
+        echo '<meta name="description" content="' . esc_attr(blog_archive_meta_description()) . "\" />\n";
     }
 }, 1);
 

@@ -737,13 +737,9 @@ class StructuredData
     private static function metaDescription(): ?string
     {
         if (is_post_type_archive('blog') || is_home()) {
-            $page = get_page_by_path('blog-seo');
-            if ($page instanceof WP_Post) {
-                $description = (string) get_post_meta($page->ID, '_seo_description', true);
-                if ($description !== '') {
-                    return $description;
-                }
-            }
+            return function_exists(__NAMESPACE__ . '\\blog_archive_meta_description')
+                ? \App\blog_archive_meta_description()
+                : null;
         }
 
         if (is_tax() || is_category() || is_tag()) {
