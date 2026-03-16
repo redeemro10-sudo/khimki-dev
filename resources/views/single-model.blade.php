@@ -42,33 +42,29 @@
         $sado = wp_get_post_terms($id, 'sado_maso', ['fields' => 'names'])[0] ?? null;
         $online = (int) get_post_meta($id, '_online', true) === 1;
         $profileText = get_post_meta($id, '_profile_text', true);
-        $districtTermIds = array_values(
-            array_filter(
-                array_map(static function ($term) {
-                    return $term instanceof \WP_Term ? (int) $term->term_id : 0;
-                }, $districtTerms),
-            ),
-        );
-        $relatedModelsArgs = [
-            'post_type' => 'model',
-            'post_status' => 'publish',
-            'posts_per_page' => 4,
-            'post__not_in' => [$id],
-            'orderby' => 'rand',
-            'ignore_sticky_posts' => true,
-            'no_found_rows' => true,
-        ];
-        if (!empty($districtTermIds)) {
-            $relatedModelsArgs['tax_query'] = [
-                [
-                    'taxonomy' => 'district',
-                    'field' => 'term_id',
-                    'terms' => $districtTermIds,
+        $currentDistrictTermId = !empty($districtTerms[0]) && $districtTerms[0] instanceof \WP_Term
+            ? (int) $districtTerms[0]->term_id
+            : 0;
+        $relatedModels = [];
+        if ($currentDistrictTermId > 0) {
+            $relatedModelsQuery = new \WP_Query([
+                'post_type' => 'model',
+                'post_status' => 'publish',
+                'posts_per_page' => 4,
+                'post__not_in' => [$id],
+                'orderby' => 'rand',
+                'ignore_sticky_posts' => true,
+                'no_found_rows' => true,
+                'tax_query' => [
+                    [
+                        'taxonomy' => 'district',
+                        'field' => 'term_id',
+                        'terms' => [$currentDistrictTermId],
+                    ],
                 ],
-            ];
+            ]);
+            $relatedModels = $relatedModelsQuery->posts;
         }
-        $relatedModelsQuery = new \WP_Query($relatedModelsArgs);
-        $relatedModels = $relatedModelsQuery->posts;
         wp_reset_postdata();
 
         // Галерея и видео
