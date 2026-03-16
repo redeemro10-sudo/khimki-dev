@@ -42,6 +42,39 @@
         $sado = wp_get_post_terms($id, 'sado_maso', ['fields' => 'names'])[0] ?? null;
         $online = (int) get_post_meta($id, '_online', true) === 1;
         $profileText = get_post_meta($id, '_profile_text', true);
+        $districtTermIds = array_values(
+            array_filter(
+                array_map(static function ($term) {
+                    return $term instanceof \WP_Term ? (int) $term->term_id : 0;
+                }, $districtTerms),
+            ),
+        );
+        $relatedModelsArgs = [
+            'post_type' => 'model',
+            'post_status' => 'publish',
+            'posts_per_page' => 8,
+            'post__not_in' => [$id],
+            'orderby' => 'rand',
+            'ignore_sticky_posts' => true,
+            'no_found_rows' => true,
+        ];
+        if (!empty($districtTermIds)) {
+            $relatedModelsArgs['tax_query'] = [
+                [
+                    'taxonomy' => 'district',
+                    'field' => 'term_id',
+                    'terms' => $districtTermIds,
+                ],
+            ];
+        }
+        $relatedModelsQuery = new \WP_Query($relatedModelsArgs);
+        $relatedModels = $relatedModelsQuery->posts;
+        if (empty($relatedModels) && !empty($districtTermIds)) {
+            unset($relatedModelsArgs['tax_query']);
+            $relatedModelsQuery = new \WP_Query($relatedModelsArgs);
+            $relatedModels = $relatedModelsQuery->posts;
+        }
+        wp_reset_postdata();
 
         // Галерея и видео
         $galleryIds = array_filter(array_map('intval', (array) get_post_meta($id, '_gallery_ids', true)));
@@ -746,6 +779,22 @@
                 </div>
             </div>
         </div>
+        @endif
+        @if (!empty($relatedModels))
+            <section class="mt-12">
+                <div class="rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-blue-50 p-6 shadow-sm lg:p-8">
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900">Похожие анкеты</h2>
+                        @if ($districtName)
+                            <p class="mt-2 text-sm text-gray-600">Случайные анкеты из того же района: {{ $districtName }}</p>
+                        @else
+                            <p class="mt-2 text-sm text-gray-600">Случайные анкеты, которые могут вам подойти</p>
+                        @endif
+                    </div>
+
+                    @include('components.models-cards', ['items' => $relatedModels])
+                </div>
+            </section>
         @endif
     </article>
 
