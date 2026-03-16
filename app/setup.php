@@ -50,6 +50,15 @@ add_filter('block_editor_settings_all', function ($settings) {
     return $settings;
 });
 
+// Force UTF-8 for front-end HTML responses so UTF-8 templates are not decoded as Windows-1251.
+add_filter('pre_option_blog_charset', function () {
+    return 'UTF-8';
+});
+
+add_filter('pre_option_html_type', function () {
+    return 'text/html';
+});
+
 /**
  * Inject scripts into the block editor.
  *
