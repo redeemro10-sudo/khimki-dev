@@ -595,6 +595,121 @@ function model_meta_description(int $postId): string
     return '';
 }
 
+function current_meta_description(): string
+{
+    if (is_singular('model')) {
+        return model_meta_description(get_queried_object_id());
+    }
+
+    if (is_post_type_archive('blog') || is_home()) {
+        return blog_archive_meta_description();
+    }
+
+    if (is_tax() || is_category() || is_tag()) {
+        $term = get_queried_object();
+
+        if ($term instanceof \WP_Term) {
+            foreach (['_seo_description', 'seo_description', 'term_description'] as $metaKey) {
+                $value = $metaKey === 'term_description'
+                    ? trim(wp_strip_all_tags(term_description($term)))
+                    : trim((string) get_term_meta($term->term_id, $metaKey, true));
+
+                if ($value !== '') {
+                    return $value;
+                }
+            }
+        }
+    }
+
+    if (is_singular()) {
+        $postId = get_queried_object_id();
+        $custom = trim((string) get_post_meta($postId, '_seo_description', true));
+        if ($custom !== '') {
+            return preg_replace('~\s+~u', ' ', $custom) ?: $custom;
+        }
+
+        if (is_singular('blog')) {
+            $seoText = trim((string) get_post_meta($postId, '_post_text', true));
+            if ($seoText !== '') {
+                return trim_seo_description_text($seoText, 160);
+            }
+        }
+
+        $pageText = trim((string) get_post_meta($postId, '_page_text', true));
+        if ($pageText !== '') {
+            return trim_seo_description_text($pageText, 160);
+        }
+
+        $post = get_post($postId);
+        if ($post instanceof \WP_Post) {
+            $content = get_the_excerpt($post) ?: $post->post_content;
+            $content = trim((string) preg_replace('~\s+~u', ' ', wp_strip_all_tags($content)));
+
+            if ($content !== '') {
+                return trim_seo_description_text($content, 160);
+            }
+        }
+    }
+
+    return trim((string) get_bloginfo('description'));
+}
+
+function current_og_type(): string
+{
+    if (is_singular('blog')) {
+        return 'article';
+    }
+
+    if (is_singular('model')) {
+        return 'profile';
+    }
+
+    return 'website';
+}
+
+function current_og_image_url(): string
+{
+    $logoId = (int) get_theme_mod('custom_logo');
+    if ($logoId > 0) {
+        $logoUrl = wp_get_attachment_image_url($logoId, 'full');
+        if ($logoUrl) {
+            return $logoUrl;
+        }
+    }
+
+    $siteIconId = (int) get_option('site_icon');
+    if ($siteIconId > 0) {
+        $siteIconUrl = wp_get_attachment_image_url($siteIconId, 'full');
+        if ($siteIconUrl) {
+            return $siteIconUrl;
+        }
+    }
+
+    return get_theme_file_uri('resources/images/web-app-manifest-512x512.png');
+}
+
+function current_og_url(): string
+{
+    $pagedUrl = get_pagenum_link(max(1, (int) get_query_var('paged'), (int) get_query_var('page')));
+    if (is_string($pagedUrl) && $pagedUrl !== '') {
+        return $pagedUrl;
+    }
+
+    if (is_singular()) {
+        $canonical = wp_get_canonical_url(get_queried_object_id());
+        if (is_string($canonical) && $canonical !== '') {
+            return $canonical;
+        }
+
+        $permalink = get_permalink(get_queried_object_id());
+        if (is_string($permalink) && $permalink !== '') {
+            return $permalink;
+        }
+    }
+
+    return home_url(add_query_arg([], $GLOBALS['wp']->request ?? ''));
+}
+
 function blog_archive_base_description(): string
 {
     $page = get_page_by_path('blog-seo');
@@ -709,6 +824,28 @@ add_action('wp_head', function () {
     }
     echo '<meta name="description" content="' . esc_attr($raw) . '">' . "\n";
 }, 5);
+
+add_action('wp_head', function () {
+    if (is_admin()) {
+        return;
+    }
+
+    $title = trim((string) wp_get_document_title());
+    $description = current_meta_description();
+    $image = trim((string) current_og_image_url());
+    $url = trim((string) current_og_url());
+    $type = current_og_type();
+
+    if ($title === '' || $description === '' || $image === '' || $url === '') {
+        return;
+    }
+
+    echo '<meta property="og:title" content="' . esc_attr($title) . '">' . "\n";
+    echo '<meta property="og:description" content="' . esc_attr($description) . '">' . "\n";
+    echo '<meta property="og:image" content="' . esc_url($image) . '">' . "\n";
+    echo '<meta property="og:url" content="' . esc_url($url) . '">' . "\n";
+    echo '<meta property="og:type" content="' . esc_attr($type) . '">' . "\n";
+}, 6);
 
 add_action('wp_enqueue_scripts', function () {
     // Только фронт (не админка, не редактор)
