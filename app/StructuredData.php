@@ -121,7 +121,7 @@ class StructuredData
         return [
             '@type' => 'Organization',
             '@id' => $siteUrl . '#organization',
-            'name' => get_bloginfo('name'),
+            'name' => 'PKhimki',
             'url' => $siteUrl,
             'logo' => self::logoSchema(),
             'email' => self::contact('email') ?: null,
