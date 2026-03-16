@@ -50,7 +50,7 @@
             $relatedModelsQuery = new \WP_Query([
                 'post_type' => 'model',
                 'post_status' => 'publish',
-                'posts_per_page' => 4,
+                'posts_per_page' => 24,
                 'post__not_in' => [$id],
                 'orderby' => 'rand',
                 'ignore_sticky_posts' => true,
@@ -63,7 +63,21 @@
                     ],
                 ],
             ]);
-            $relatedModels = $relatedModelsQuery->posts;
+            $relatedModels = array_values(array_filter($relatedModelsQuery->posts, static function ($post) use (
+                $currentDistrictTermId
+            ) {
+                if (! $post instanceof \WP_Post) {
+                    return false;
+                }
+
+                $postDistrictTerms = wp_get_post_terms($post->ID, 'district', ['fields' => 'all']);
+                if (is_wp_error($postDistrictTerms) || empty($postDistrictTerms[0]) || ! $postDistrictTerms[0] instanceof \WP_Term) {
+                    return false;
+                }
+
+                return (int) $postDistrictTerms[0]->term_id === $currentDistrictTermId;
+            }));
+            $relatedModels = array_slice($relatedModels, 0, 4);
         }
         wp_reset_postdata();
 
