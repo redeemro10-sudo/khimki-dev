@@ -67,12 +67,6 @@ $catalogLink = $resolvePageLink(
     home_url('/'),
 );
 
-$popularLinks = array_values(array_filter([
-    $resolvePageLink(['elitnye'], 'Элитные', home_url('/elitnye/')),
-    $resolveTermLink('hair_color', ['blondinka', 'blondinki'], 'Блондинки'),
-    $resolvePageLink(['na-vyyezd'], 'На выезд', home_url('/na-vyyezd/')),
-    $resolvePageLink(['uslugi'], 'Услуги', home_url('/uslugi/')),
-]));
 ?>
 
 <section class="py-6 sm:py-10">
@@ -112,22 +106,6 @@ $popularLinks = array_values(array_filter([
                     </a>
                 </div>
 
-                @if (!empty($popularLinks))
-                    <div class="mx-auto mt-12 max-w-2xl border-t border-slate-200 pt-8">
-                        <p class="text-xs font-bold uppercase tracking-[0.28em] text-slate-400">
-                            Популярные разделы
-                        </p>
-
-                        <div class="mt-5 flex flex-wrap items-center justify-center gap-3">
-                            @foreach ($popularLinks as $link)
-                                <a href="{{ esc_url($link['url']) }}"
-                                    class="inline-flex items-center justify-center rounded-full border border-slate-200 bg-slate-50 px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-white hover:text-slate-950">
-                                    {{ $link['label'] }}
-                                </a>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
             </div>
         </div>
     </div>
