@@ -46,7 +46,7 @@ class ContactData
 
     public static function footerContacts(): array
     {
-        $telegramUrl = self::value('telegram_url', 'https://t.me/prostitutkikhimki');
+        $telegramUrl = self::value('telegram_url', 'https://t.me/elllie_mng');
         $telegramLabel = self::value('telegram');
 
         if ($telegramLabel === null && $telegramUrl !== null) {
@@ -54,29 +54,25 @@ class ContactData
         }
 
         $email = self::value('email', 'info@prostitutkikhimki.com');
-        $city = self::value('city', 'Химки, Московская область');
-        $hours = self::value('hours', '24/7 (Круглосуточно)');
+        $city = self::value('city', 'РҐРёРјРєРё, РњРѕСЃРєРѕРІСЃРєР°СЏ РѕР±Р»Р°СЃС‚СЊ');
+        $hours = self::value('hours', '24/7 (РљСЂСѓРіР»РѕСЃСѓС‚РѕС‡РЅРѕ)');
 
         return [
             [
-                'kind' => 'telegram',
-                'label' => 'Телеграм',
+                'label' => 'РўРµР»РµРіСЂР°Рј',
                 'encoded_value' => self::encoded($telegramLabel),
                 'encoded_url' => self::encoded($telegramUrl),
             ],
             [
-                'kind' => 'email',
                 'label' => 'Email',
                 'encoded_value' => self::encoded($email),
                 'encoded_url' => self::encoded($email ? 'mailto:' . $email : null),
             ],
             [
-                'kind' => 'city',
                 'label' => null,
                 'value' => $city,
             ],
             [
-                'kind' => 'hours',
                 'label' => null,
                 'value' => $hours,
             ],
