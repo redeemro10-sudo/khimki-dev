@@ -74,6 +74,18 @@
           $resolvePageLink(['rajony'], 'Районы', home_url('/rajony/')),
       ]));
 
+      foreach ($sectionLinks as &$link) {
+          if (($link['url'] ?? '') !== home_url('/rajony/')) {
+              continue;
+          }
+
+          $districtSectionLink = $resolvePageLink(['rayony', 'rajony'], $link['label'], home_url('/rayony/'));
+          if ($districtSectionLink) {
+              $link = $districtSectionLink;
+          }
+      }
+      unset($link);
+
       $districtTerms = [];
       if (taxonomy_exists('district')) {
           $districtTerms = get_terms([
