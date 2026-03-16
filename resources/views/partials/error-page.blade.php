@@ -88,7 +88,7 @@ $popularLinks = array_values(array_filter([
 
             <div class="relative mx-auto max-w-3xl">
                 <div
-                    class="mx-auto mb-8 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 text-xl font-black text-white shadow-lg shadow-orange-500/25">
+                    class="mx-auto mb-8 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-xl font-black text-white shadow-lg shadow-blue-500/20">
                     {{ $statusCode }}
                 </div>
 
@@ -103,7 +103,7 @@ $popularLinks = array_values(array_filter([
 
                 <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
                     <a href="{{ esc_url($catalogLink['url'] ?? home_url('/')) }}"
-                        class="inline-flex min-w-[220px] items-center justify-center rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600 px-8 py-4 text-sm font-extrabold uppercase tracking-[0.12em] text-white shadow-lg shadow-orange-500/25 transition hover:-translate-y-0.5 hover:shadow-xl">
+                        class="inline-flex min-w-[220px] items-center justify-center rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-4 text-sm font-extrabold uppercase tracking-[0.12em] text-white shadow-lg shadow-blue-500/20 transition hover:-translate-y-0.5 hover:shadow-xl">
                         Смотреть каталог
                     </a>
                     <a href="{{ esc_url(home_url('/')) }}"
