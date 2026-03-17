@@ -4,16 +4,23 @@
     @php
         $page = get_page_by_path('blog-seo');
         $h1 = $page ? (get_post_meta($page->ID, '_page_h1', true) ?: 'Блог') : 'Блог';
-        $text = $page ? (string) get_post_meta($page->ID, '_page_text', true) : '';
+        $h2 = $page ? (string) get_post_meta($page->ID, '_page_h2', true) : '';
+        $pageText = $page ? (string) get_post_meta($page->ID, '_page_text', true) : '';
+        $text = trim($pageText) !== ''
+            ? $pageText
+            : ($page ? apply_filters('the_content', $page->post_content) : '');
     @endphp
 
     <section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <header class="mb-10 overflow-hidden rounded-[2rem] p-6 shadow-sm sm:p-8">
             <div class="max-w-3xl mx-auto space-y-4">
                 <h1 class="text-3xl font-semibold leading-tight text-center text-slate-950 sm:text-4xl">{{ $h1 }}</h1>
+                @if ($h2 !== '')
+                    <p class="text-center text-base text-slate-600 sm:text-lg">{{ $h2 }}</p>
+                @endif
                 @if ($text !== '')
                     <div class="prose max-w-none prose-slate prose-p:text-slate-600 prose-headings:text-slate-900">
-                        {!! wpautop(wp_kses_post($text)) !!}
+                        {!! $text !!}
                     </div>
                 @endif
             </div>
