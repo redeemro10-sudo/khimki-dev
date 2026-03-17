@@ -6,81 +6,27 @@ $content = $isGone
     ? [
         'title' => 'СТРАНИЦА УДАЛЕНА',
         'lead' => 'Похоже, эта страница была удалена и больше недоступна.',
-        'sublead' => 'Но вы можете перейти в актуальные разделы каталога и найти подходящие анкеты.',
+        'sublead' => 'Но вы можете перейти на главную и продолжить просмотр актуальных разделов сайта.',
     ]
     : [
         'title' => 'СТРАНИЦА НЕ НАЙДЕНА',
         'lead' => 'Похоже, вы перешли по устаревшей ссылке.',
-        'sublead' => 'Но не расстраивайтесь, у нас есть много других прекрасных моделей!',
+        'sublead' => 'Но не расстраивайтесь, на сайте есть и другие актуальные страницы.',
     ];
-
-$resolvePageLink = static function (array $slugs, string $label, ?string $fallback = null): ?array {
-    foreach ($slugs as $slug) {
-        $page = get_page_by_path($slug);
-        if ($page instanceof \WP_Post) {
-            return [
-                'label' => $label,
-                'url' => get_permalink($page),
-            ];
-        }
-    }
-
-    if ($fallback) {
-        return [
-            'label' => $label,
-            'url' => $fallback,
-        ];
-    }
-
-    return null;
-};
-
-$resolveTermLink = static function (string $taxonomy, array $slugs, string $label, ?string $fallback = null): ?array {
-    if (taxonomy_exists($taxonomy)) {
-        foreach ($slugs as $slug) {
-            $term = get_term_by('slug', $slug, $taxonomy);
-            if ($term instanceof \WP_Term) {
-                $url = get_term_link($term);
-                if (!is_wp_error($url)) {
-                    return [
-                        'label' => $label,
-                        'url' => $url,
-                    ];
-                }
-            }
-        }
-    }
-
-    if ($fallback) {
-        return [
-            'label' => $label,
-            'url' => $fallback,
-        ];
-    }
-
-    return null;
-};
-
-$catalogLink = $resolvePageLink(
-    ['proverennye', 'elitnye', 'deshovyye', 'na-vyyezd'],
-    'Смотреть каталог',
-    home_url('/'),
-);
-
 ?>
 
 <section class="py-6 sm:py-10">
     <div class="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_24px_70px_-40px_rgba(15,23,42,0.45)]">
         <div class="relative isolate px-6 py-12 text-center sm:px-10 sm:py-16 lg:px-16 lg:py-20">
             <div
-                class="pointer-events-none absolute inset-x-0 top-6 bg-gradient-to-b from-slate-100/80 via-white/30 to-transparent text-[7rem] font-black leading-none tracking-[-0.08em] text-slate-100 sm:text-[9rem] lg:text-[12rem]">
+                class="pointer-events-none absolute inset-x-0 -top-2 bg-gradient-to-b from-slate-100/80 via-white/30 to-transparent text-[7rem] font-black leading-none tracking-[-0.08em] text-slate-100 sm:-top-4 sm:text-[9rem] lg:-top-6 lg:text-[12rem]">
                 {{ $statusCode }}
             </div>
 
             <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
             <div class="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
 
-            <div class="relative mx-auto max-w-3xl">
+            <div class="relative mx-auto max-w-3xl pt-20 sm:pt-24 lg:pt-28">
                 <div
                     class="mx-auto mb-8 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-xl font-black text-white shadow-lg shadow-blue-500/20">
                     {{ $statusCode }}
@@ -95,17 +41,12 @@ $catalogLink = $resolvePageLink(
                     <p>{{ $content['sublead'] }}</p>
                 </div>
 
-                <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                    <a href="{{ esc_url($catalogLink['url'] ?? home_url('/')) }}"
-                        class="inline-flex min-w-[220px] items-center justify-center rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-4 text-sm font-extrabold uppercase tracking-[0.12em] text-white shadow-lg shadow-blue-500/20 transition hover:-translate-y-0.5 hover:shadow-xl">
-                        Смотреть каталог
-                    </a>
+                <div class="mt-10 flex items-center justify-center">
                     <a href="{{ esc_url(home_url('/')) }}"
                         class="inline-flex min-w-[180px] items-center justify-center rounded-2xl border border-slate-200 bg-white px-8 py-4 text-sm font-extrabold uppercase tracking-[0.12em] text-slate-900 transition hover:border-slate-300 hover:bg-slate-50">
                         На главную
                     </a>
                 </div>
-
             </div>
         </div>
     </div>
