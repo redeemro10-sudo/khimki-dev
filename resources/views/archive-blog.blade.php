@@ -36,11 +36,6 @@
                 @if ($h2 !== '')
                     <p class="text-center text-base text-slate-600 sm:text-lg">{{ $h2 }}</p>
                 @endif
-                @if ($text !== '')
-                    <div class="prose max-w-none prose-slate prose-p:text-slate-600 prose-headings:text-slate-900">
-                        {!! $text !!}
-                    </div>
-                @endif
             </div>
         </header>
 
@@ -65,6 +60,16 @@
                 <p class="text-lg font-medium text-slate-700">Публикаций пока нет.</p>
                 <p class="mt-2 text-sm text-slate-500">Когда появятся новые материалы, они будут показаны здесь.</p>
             </div>
+        @endif
+
+        @if ($text !== '')
+            <section class="mt-10">
+                <div class="mx-auto max-w-3xl rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+                    <div class="prose max-w-none prose-slate prose-p:text-slate-600 prose-headings:text-slate-900">
+                        {!! $text !!}
+                    </div>
+                </div>
+            </section>
         @endif
     </section>
 @endsection
